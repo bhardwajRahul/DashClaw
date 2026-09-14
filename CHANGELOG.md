@@ -13,9 +13,12 @@ Through 3.x the platform and the SDKs versioned independently, which is why olde
 
 ## [Unreleased]
 
-*Shipped to main 2026-09-08 → 09-09 (#233–#238) and deployed, but never
-versioned — the arc carries no release commit, and this entry was written
-retroactively on 2026-09-14. It is versioned at the next release.*
+## [5.37.0] - 2026-09-14
+
+*Shipped to main 2026-09-08 → 09-09 (#233–#238) and deployed, but versioned
+only now: the arc carried no release commit, and both this entry and the
+maintainer-log entries for it were written retroactively on 2026-09-14.
+Production served these features at 5.36.0 for six days.*
 
 ### Added
 
@@ -32,6 +35,11 @@ retroactively on 2026-09-14. It is versioned at the next release.*
 - **`/api/calibration/proposals` 500'd deterministically.** The proposals loader cast `guard_decisions.context` to `::json` inside SQL, so one malformed context row aborted the entire query — authenticated GETs failed in ~0.8s regardless of window. A poison row, not a timeout. Both the route and `scripts/mine-calibration-candidates.mjs` now gate the cast with `pg_input_is_valid(…, 'json')` (PG16+, the CI and self-host baseline); a bad row degrades to `ctx NULL` instead of taking the surface down.
 - **The catastrophe floor's form fields were never rendered** — the repo's own classic failure mode, caught by the owner rather than by a test. The policy type was in the dropdown, in backend validation and in the save/load compile logic, but `PolicyRuleBuilderSection` had no section for it, so the form always submitted an empty `action_types` and the server correctly rejected it. What the operator saw was "Validation failed" with no cause. Added the missing section (destructive-action presets plus free-text types, min risk, hold/block consequence, irreversible-only, ungrantable) **and a regression test asserting every policy type in the options list has a rendered builder section**, so this class cannot recur silently. `Ledger.tsx` now appends `body.details`, so server validation detail reaches the editor instead of dying in the response.
 - **Agent-scope picker rebuilt for scale** — searchable, namespace-grouped, collapsible checkbox picker with per-group and global selected counts, select-all/clear per group, removable chips, match counts while searching and a bounded scroll height, replacing an undifferentiated wall of chips. Empty selection keeps the existing "All Agents" semantic; no backend or stored-policy shape change.
+
+### Release notes
+
+- Platform only. No Node/Python SDK source changed in this arc, so the SDKs are intentionally not republished and npm/PyPI stay at their last SDK release. Plugin bundle unchanged at 3.3.0.
+- `npm run version:set` now also stamps the platform guide's `sdk-node` / `sdk-python` area versions. Every prior bump left `guide:drift:check` red on those two fields because the examples regen rewrites only `liveExamples` and `meta`; this release is where that finally blocked a cut, so the recipe learned it. (`scripts/set-version.mjs`)
 
 ## [5.36.0] - 2026-09-06
 

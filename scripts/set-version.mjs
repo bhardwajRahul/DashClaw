@@ -37,9 +37,33 @@ function setPyprojectVersion(rel) {
   writeFileSync(p, updated);
 }
 
+/**
+ * The platform guide stamps the unified version in its sdk-node / sdk-python
+ * area metadata, and the examples regen rewrites only liveExamples + meta —
+ * never those fields. So a bump that skipped this left `guide:drift:check`
+ * red with "Node SDK version says <old>; manifest says <new>", which is what
+ * stopped the 5.37.0 release. The cli / mcp / plugin areas track their own
+ * manifests and are deliberately not touched here.
+ */
+function setGuideSdkVersions(rel) {
+  const p = resolve(ROOT, rel);
+  const dataset = JSON.parse(readFileSync(p, 'utf8'));
+  const stamped = [];
+  for (const id of ['sdk-node', 'sdk-python']) {
+    const area = dataset.areas?.find((candidate) => candidate.id === id);
+    if (area?.package) {
+      area.package.version = version;
+      stamped.push(id);
+    }
+  }
+  if (stamped.length) writeFileSync(p, JSON.stringify(dataset, null, 2) + '\n');
+  return stamped;
+}
+
 setJsonVersion('package.json');
 setJsonVersion('sdk/package.json');
 setPyprojectVersion('sdk-python/pyproject.toml');
+const stampedAreas = setGuideSdkVersions('public/guides/platform-guide-data.json');
 
 // Contract convergence gate: release-plan current_versions must match the
 // manifests, so they advance in the same stroke (see lib/bump-release-plan.mjs).
@@ -49,6 +73,9 @@ writeFileSync(planPath, bumpReleasePlan(readFileSync(planPath, 'utf8'), version)
 console.log(`Set DashClaw version to ${version} in:`);
 console.log('  package.json, sdk/package.json, sdk-python/pyproject.toml');
 console.log('  contracts/sdk/release-plan.json (current_versions + reason version refs)');
+if (stampedAreas.length) {
+  console.log(`  public/guides/platform-guide-data.json (areas: ${stampedAreas.join(', ')})`);
+}
 console.log('If SDK source changed this release, rewrite the release-plan reasons by hand.');
 console.log('Next: `npm install` to sync package-lock.json, regen the platform guide');
 console.log('(stale after any version bump), then commit — or run the whole recipe:');

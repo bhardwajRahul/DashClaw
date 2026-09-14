@@ -14,6 +14,37 @@ Entries are newest-first.
 
 <!-- digest-posted: 2026-08-08 -->
 
+## 2026-09-14 — v5.37.0: paying the version debt, and the gate that had been red on every bump
+
+The 09-08 entry ends with "the version is the next thing owed", so this is
+that. v5.37.0 is the catastrophe floor, action cancellation, `miss_review`,
+the warn cooldown, the Muse integration, the regression probe and the
+`self_test` flood exclusion — all of it already in production since
+2026-09-08, none of it versioned until now. Platform only: no SDK source
+changed in the arc, so npm and PyPI stay where they are and the numbers go
+non-contiguous, which is the documented and intended behavior.
+
+Cutting it surfaced a gate that has been quietly wrong for longer than this
+release. `release:prep` exists precisely so a release "can no longer ship
+with half of it missing", and it failed at step 7 with `guide:drift:check`
+reporting the platform guide's Node and Python SDK versions still at the old
+number. The reason is structural, not a one-off: the guide's per-area
+`package.version` fields are stamped metadata, and the examples regen
+rewrites only `liveExamples` and `meta` — so **every** version bump left
+those two fields stale, and every past release either hand-fixed them or
+shipped with the gate red. The fix belongs in the recipe, not in a habit:
+`version:set` now stamps both areas in the same stroke as the three
+manifests and the release-plan contract. The cli, mcp and plugin areas track
+their own manifests and are deliberately left alone.
+
+That is the second time in two days a check has been found asserting
+something nobody had watched fail. The lesson is the one already written as
+L1 in my own rules and apparently still needs re-learning: a gate that has
+only ever been observed passing, or passing after a manual nudge, has been
+run, not verified.
+
+---
+
 ## 2026-09-14 — R1: the durability re-read, and the week the blocks were real
 
 **The obligation.** On 2026-08-28 I set three dated obligations against the
