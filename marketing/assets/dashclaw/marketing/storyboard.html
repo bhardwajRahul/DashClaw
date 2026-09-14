@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>DashClaw — storyboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root {
+    --bg: #0e1014;
+    --surface: #15171c;
+    --surface2: #1d2026;
+    --line: #272b32;
+    --ink: #fafafa;
+    --ink2: #c2c2cc;
+    --ink3: #9b9ba8;
+    --brand: #f97316;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 40px 24px 80px;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+    line-height: 1.5;
+  }
+  .page { max-width: 880px; margin: 0 auto; }
+  header.masthead {
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 24px;
+    margin-bottom: 32px;
+  }
+  .brand-name { font-size: 28px; font-weight: 700; margin: 0 0 4px; color: var(--ink); }
+  .tagline { color: var(--ink2); margin: 0 0 12px; font-size: 15px; }
+  .meta { color: var(--ink3); font-size: 12px; font-family: "Consolas", "Courier New", monospace; margin: 0 0 20px; }
+  .voice-callout {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--brand);
+    border-radius: 6px;
+    padding: 14px 16px;
+    font-size: 14px;
+    color: var(--ink2);
+  }
+  .voice-callout .label { margin: 0 0 6px; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink3); }
+  .voice-callout p.voice-text { margin: 0; font-style: italic; }
+  section.block { margin-bottom: 40px; }
+  .block-title {
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink3);
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 8px;
+    margin: 0 0 16px;
+  }
+  .headline { font-size: 32px; font-weight: 700; margin: 0 0 20px; color: var(--ink); }
+  .label { font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink3); margin: 0 0 6px; }
+  .alt-headlines { margin: 0; padding-left: 20px; color: var(--ink2); font-size: 15px; }
+  .alt-headlines li { margin-bottom: 4px; }
+  .card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 16px;
+  }
+  .card-rank { margin: 0 0 6px; font-size: 11px; color: var(--brand); font-weight: 700; }
+  .card-heading { margin: 0 0 10px; font-size: 17px; color: var(--ink); }
+  .benefit-lines { margin: 0 0 12px; padding-left: 18px; font-size: 14px; color: var(--ink2); }
+  .benefit-lines li { margin-bottom: 3px; }
+  .rationale { margin: 0 0 10px; font-size: 12px; color: var(--ink3); }
+  .chip {
+    display: inline-block;
+    font-family: "Consolas", "Courier New", monospace;
+    font-size: 11px;
+    background: var(--surface2);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 2px 8px;
+    color: var(--ink2);
+  }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th, td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { color: var(--ink3); font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600; }
+  .act-cell code { color: var(--brand); font-family: "Consolas", "Courier New", monospace; font-size: 12px; }
+  .cta { font-size: 20px; font-weight: 700; margin: 0 0 8px; }
+  .differentiator { color: var(--ink2); margin: 0; }
+  footer.provenance {
+    border-top: 1px solid var(--line);
+    padding-top: 16px;
+    margin-top: 40px;
+    font-size: 12px;
+    color: var(--ink3);
+  }
+  .muted { color: var(--ink3); font-style: italic; }
+  .grounding-item { margin-bottom: 20px; font-size: 14px; color: var(--ink2); }
+  .grounding-item p { margin: 0 0 8px; }
+  .lang-row { line-height: 2; }
+  @media (max-width: 640px) {
+    .card-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="masthead">
+    <p class="brand-name">DashClaw</p>
+    <p class="tagline">The approval layer for unattended AI agents</p>
+    <p class="meta">Storyboard generated 2026-09-06T16:10:42.958Z</p>
+    <div class="voice-callout">
+      <p class="label">Voice rules</p>
+      <p class="voice-text">Governance runtime that sits between an agent&#39;s intent and the real world. Serious, precise, trustworthy. Verbs: intercept, enforce, record, verify. No hype, no exclamation marks. Brand orange #f97316 is a SIGNAL, never decoration: the mark, a focused state, a primary CTA, attention required. Never a hero wash or ambient glow-spam. The accent &#39;profit&#39; slot is the lighter brand orange #fb923c and is reserved for CTA text. Dark mode only. Not generic SaaS, not consumer-AI, not heavy-enterprise, not crypto/web3.</p>
+    </div>
+  </header>
+
+  
+<section class="block">
+  <h2 class="block-title">Hook</h2>
+  <p class="headline">Intercept the dangerous action before it runs <code class="chip">value</code></p>
+  <div class="alt-headlines-wrap">
+    <p class="label">Alt headlines</p>
+    <ul class="alt-headlines"><li>The approval layer for unattended agents <code class="chip">category</code></li><li>Away from the keyboard is not away from control <code class="chip">contrarian</code></li></ul>
+  </div>
+</section>
+  
+<section class="block">
+  <h2 class="block-title">Production direction</h2>
+  <p class="muted">No direction.json recorded.</p>
+  <p class="label">References and intended attributes</p>
+  <p class="muted">No references recorded.</p>
+</section>
+<section class="block">
+  <h2 class="block-title">Shot grammar</h2>
+  <p class="muted">No shot-plan.json recorded.</p>
+</section>
+  
+<section class="block">
+  <h2 class="block-title">Features (ranked)</h2>
+  <div class="card-grid">
+  <article class="card">
+    <p class="card-rank">#1</p>
+    <h3 class="card-heading">Intercept and hold</h3>
+    <ul class="benefit-lines">
+      <li>Sensitive actions are held before they run</li><li>Risk scored and bound to the exact command</li><li>One click to allow or deny in the inbox</li>
+    </ul>
+    <p class="rationale">The hero surface. The README&#39;s core promise (hold it before it runs, ask you first) is literally this inbox; the demo footage shows a held deploy action resolved with one click.</p>
+    <code class="chip">/approvals</code>
+  </article>
+  <article class="card">
+    <p class="card-rank">#2</p>
+    <h3 class="card-heading">Recorded and verified</h3>
+    <ul class="benefit-lines">
+      <li>Every governed action lands in one ledger</li><li>Chained to the decision that allowed it</li><li>Verified where receipts are issued, spend and risk on the record</li>
+    </ul>
+    <p class="rationale">The trust half of the loop: approval alone is a gate, the causal chain is the proof. Differentiates from log viewers because entries bind to the decision that released them. Verification is conditional in the thesis (receipts where issued), so the line says so.</p>
+    <code class="chip">/decisions</code>
+  </article></div>
+</section>
+  
+<section class="block">
+  <h2 class="block-title">Narration</h2>
+  <table class="narration-table">
+    <thead><tr><th>Act</th><th>VO line</th></tr></thead>
+    <tbody><tr><td class="act-cell"><code>hall</code></td><td>At three in the morning, your agent is still working.</td></tr><tr><td class="act-cell"><code>agent</code></td><td>It reads. It writes. It deploys. Nobody is watching.</td></tr><tr><td class="act-cell"><code>reach</code></td><td>Until it reaches for something that cannot be undone.</td></tr><tr><td class="act-cell"><code>intercept</code></td><td>DashClaw holds it. Risk scored, bound to the exact command. Waiting for you, wherever you are.</td></tr><tr><td class="act-cell"><code>release</code></td><td>One click. It runs. And the decision is on the record.</td></tr><tr><td class="act-cell"><code>ledger</code></td><td>Every governed action, chained to the decision that allowed it. Not a log after the fact.</td></tr><tr><td class="act-cell"><code>wide</code></td><td>Govern your agents at dashclaw dot io.</td></tr></tbody>
+  </table>
+</section>
+  
+<section class="block">
+  <h2 class="block-title">Social</h2>
+  <table class="social-table">
+    <thead><tr><th>Platform</th><th>Hook</th><th>Headline</th></tr></thead>
+    <tbody><tr><td>X</td><td>Your agent just tried something sensitive. DashClaw asked you first.</td><td>Intercepted before it runs</td></tr><tr><td>LinkedIn</td><td>Every governed action, chained to the decision that allowed it.</td><td>Chained to the decision, not a log after the fact</td></tr><tr><td>Vertical (TikTok/Reels/Shorts)</td><td>Your agent works while you are away. DashClaw holds the risky parts.</td><td>The approval layer for unattended agents</td></tr></tbody>
+  </table>
+</section>
+  
+<section class="block">
+  <h2 class="block-title">CTA &amp; positioning</h2>
+  <p class="cta">Govern your agents at dashclaw.io</p>
+  <p class="differentiator">DashClaw governs the action itself. It holds the real command before it runs and binds the release to a recorded human decision, instead of showing you a log of what already happened.</p>
+</section>
+  
+<section class="block">
+  <h2 class="block-title">Grounding</h2>
+  
+  <div class="grounding-item">
+    <p class="label">Audience</p>
+    <p>Developers who run coding agents (Claude Code, Codex, Hermes, OpenClaw) unattended for hours and cannot watch every call</p>
+    <ul class="benefit-lines"><li>The agent reaches for a deploy, a table drop, a force push or a .env read while nobody is at the keyboard</li><li>Local permission prompts only work for the operator sitting at the terminal</li><li>Interrupt too often and the policies get switched off; the maintainer turned every policy off for 18 days after false interruptions</li><li>A log of what already ran is not control over what runs next</li></ul>
+  </div>
+  <div class="grounding-item">
+    <p class="label">Customer language</p>
+    <p class="lang-row">use: <code class="chip">unattended</code> <code class="chip">held</code> <code class="chip">allow or deny</code> <code class="chip">one click</code> <code class="chip">on the record</code> <code class="chip">chained to the decision</code> <code class="chip">governed action</code></p>
+    <p class="lang-row">avoid: <code class="chip">guardrails</code> <code class="chip">AI safety</code> <code class="chip">observability</code> <code class="chip">blocks everything</code> <code class="chip">supercharge</code> <code class="chip">seamless</code></p>
+  </div>
+  <div class="grounding-item">
+    <p class="label">Switching forces (JTBD)</p>
+    <table><tbody><tr><td class="act-cell"><code>Push</code></td><td>An unattended agent did something irreversible, or the fear that it will</td></tr><tr><td class="act-cell"><code>Pull</code></td><td>The dangerous call freezes until a person says yes, and the record proves it</td></tr><tr><td class="act-cell"><code>Habit</code></td><td>Watching the terminal, or accepting every prompt to make it stop</td></tr><tr><td class="act-cell"><code>Anxiety</code></td><td>Another layer that blocks work or floods the inbox; answered by hold-not-block and the calibration loop</td></tr></tbody></table>
+  </div>
+  <div class="grounding-item">
+    <p class="label">Objections</p>
+    <table>
+      <thead><tr><th>Objection</th><th>Response the copy carries</th></tr></thead>
+      <tbody><tr><td>My CLI already prompts me before dangerous commands</td><td>Those prompts serve the person at the keyboard. DashClaw holds the action and lets you approve minutes or hours later, from wherever you are</td></tr><tr><td>This will interrupt me constantly</td><td>Approve and deny decisions feed a calibration loop; an interruption has to earn its cost, and nothing is blocked outright by default</td></tr><tr><td>Is this just another audit log</td><td>DashClaw holds the real command before it runs and binds the release to a recorded human decision. The ledger is what was stopped and released, not a log after the fact</td></tr></tbody>
+    </table>
+  </div>
+</section>
+
+  <footer class="provenance">Grounding sources — README: yes &middot; routes: 47 &middot; landing DOM captured: no &middot; changelog: no &middot; issues: no</footer>
+</div>
+</body>
+</html>

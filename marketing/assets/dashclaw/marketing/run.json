@@ -1,0 +1,194 @@
+{
+  "brand": "dashclaw",
+  "project": "C:/Projects/DashClaw",
+  "startedAt": "2026-09-06T14:30:00-07:00",
+  "runLabel": "2026-09-06-full-fresh-rerun-night-shift",
+  "supersedes": "run-2026-07-10-evening.json",
+  "mode": "executor-judge",
+  "intake": {
+    "scope": "full fresh re-run of all assets; launch film = NIGHT SHIFT bespoke DashClawFilm (direction.md + film-spec.md approved 2026-09-03, plates reused as footage cache)",
+    "destination": "C:/Projects/DashClaw/public/media/marketing/",
+    "ogStaticsOverwrite": "C:/Projects/DashClaw/public/social/",
+    "uiPolish": false,
+    "uiPolishReason": "user opted out 2026-09-06: no product code edits this run",
+    "audio": "music+voiceover, sound-design led, default brand voice (existing film-audio VO reused unless copy changes)",
+    "socialClips": [
+      "x",
+      "linkedin",
+      "vertical-9x16"
+    ],
+    "socialSource": "NIGHT SHIFT footage (the hold + inbox beat)",
+    "postkitPlatforms": [
+      "x",
+      "linkedin",
+      "tiktok",
+      "shorts",
+      "instagram",
+      "youtube",
+      "bluesky"
+    ],
+    "repoHygiene": "gitignore media under marketing/assets, commit json/md sidecars + docs/launch",
+    "checkpointMode": "full-auto (executor-judge, Fable judge)"
+  },
+  "contentGate": {
+    "brief": "marketing/brief.json",
+    "lint": "PASS after 2 fixes",
+    "storyboard": "built 2026-09-06 (marketing/storyboard.html)",
+    "copyCouncil": "ran (wf_44dd1d5f-fab): positioning=revise, resonance=revise, evidence-dissenter=kill; consensus fixes applied: headline verb intercept, end card = category line, altHeadlines cut to 2 + strategies, shot4 remote cue, shot6 governed + not-a-log, ledger verified-where-receipts, social headlines scoped; noted not applied: on-screen illustrative label (goes to postkit captions/DISCLOSURE), remote visual cue in shot 4 (narration carries it)"
+  },
+  "assets": [
+    {
+      "id": "logo-reveal",
+      "skill": "logo-reveal",
+      "model": "claude-sonnet-5",
+      "status": "approved",
+      "artifact": "marketing/assets/dashclaw/logo-reveal.mp4",
+      "durationSec": 5.056,
+      "frames": 150,
+      "stills": [
+        "marketing/stills/logo-reveal-f30.png",
+        "marketing/stills/logo-reveal-f80.png",
+        "marketing/stills/logo-reveal-f130.png"
+      ],
+      "judgeNote": "approved 2026-09-06 after 1 correction: draw-on/lockup/alpha clean; tagline was the stale AGENT DECISION INFRASTRUCTURE, corrected to the brand tagline in props/dashclaw-logo-reveal.json (hand-authored props, no builder)",
+      "correctionRounds": 1
+    },
+    {
+      "id": "product-demo",
+      "skill": "product-demo",
+      "model": "claude-opus-5",
+      "status": "approved",
+      "artifact": "marketing/assets/dashclaw/demo.mp4",
+      "durationSec": 27.392,
+      "frames": 820,
+      "stills": [
+        "marketing/stills/product-demo-beat1.png",
+        "marketing/stills/product-demo-beat3.png",
+        "marketing/stills/product-demo-beat4.png"
+      ],
+      "correctionRounds": 0,
+      "judgeNote": "approved 2026-09-06: 5 beats, allow-click resolves queue 4->3, captions match the revised brief; July capture script was broken against v5.36.0 (approvals locator, /policies ready-locator) and the executor repaired it in feeders/capture/record-dashclaw-demo.mjs; focus rects re-derived for coverage-based camera; feature-approvals/feature-ledger screenshots NOT refreshed (no shooter owns them; SocialClip/LaunchVideo templates fall back to placeholders, social clips this run come from NIGHT SHIFT footage instead)"
+    },
+    {
+      "id": "launch-video",
+      "skill": "launch-video",
+      "model": "claude-opus-5",
+      "status": "approved",
+      "route": "bespoke DashClawFilm (NIGHT SHIFT)",
+      "artifact": "marketing/assets/dashclaw/film/film-v5.mp4",
+      "frames": 1200,
+      "durationSec": 40.04,
+      "productionPlan": "marketing/production-plan.json",
+      "styleFrame": "marketing/stage/style-frame.png",
+      "animatic": "marketing/stage/animatic.mp4 (scratch VO: old wording on shots 4 and 6; the real score is asset 4)",
+      "judgeNote": "picture lock approved 2026-09-06 after 1 correction round: green rack LEDs removed at the Unreal source (dashclaw_hall.py LED_OK_HEX = ink2), all five plates re-rendered in one launch, proven by per-frame green-pixel counts (v4 plates 1064-2156 px, v5 0 px; only green left = 220 px verified tick at f888); hold/card/flip/ledger/end line verified; open review notes: shot 4 card top-weighted (taste), contact-sheet start samples fall inside the 8-frame handover for shots 2-7 (evidence artifact, engine gap)",
+      "correctionRounds": 1,
+      "renderSha256Prefix": "81eb8eb171a5e8fc",
+      "sourceBundle": "ec3609cc82d2",
+      "contactSheet": "marketing/stills/Production-sheet.html",
+      "judgeProduction": "INCOMPLETE (0 FAIL, 9 INCOMPLETE = human stage + perceptual attestations for Mission Control)"
+    },
+    {
+      "id": "audio-track",
+      "skill": "audio-track",
+      "model": "claude-sonnet-5",
+      "status": "approved",
+      "recipe": "A0",
+      "artifact": "marketing/assets/dashclaw/film/film-v5-scored.mp4",
+      "measured": {
+        "I": -13.7,
+        "TP": -1.9,
+        "LRA": 4.3
+      },
+      "lines": 7,
+      "trimApplied": false,
+      "judgeNote": "approved 2026-09-06: score-film PASS no trim; verify-cue PASS; judge-audio (new --film/--manifest mode) PASS 7/7 heard in order; film captions 7 cues; engine gained bespoke-film support in judge-audio.mjs and build-captions.mjs (645 script tests pass)",
+      "earGate": "marketing/judge-audio-film.json PASS: 7/7 lines heard in order, trailing silence 0.60s, loudness -13.7 LUFS / -1.9 dBTP, duck WARNs are loudnorm compression (same as July)",
+      "captions": [
+        "captions/film.srt",
+        "captions/film.vtt"
+      ]
+    },
+    {
+      "id": "social-clip-x",
+      "skill": "social-clip",
+      "model": "claude-sonnet-5",
+      "status": "approved",
+      "artifact": "marketing/assets/dashclaw/social-x-final.mp4",
+      "frames": 300,
+      "durationSec": 10,
+      "measured": {
+        "I": -15.5,
+        "TP": -2.1
+      },
+      "plate": "film-v5 frame 390 cropped to the rack face (x-panel.png)",
+      "correctionRounds": 1,
+      "judgeNote": "approved 2026-09-06 after 1 correction (plate pre-cropped so the orange rule under deploy --prod reads at panel scale; SocialClip has no zoom prop, FeaturePanel zoom is hardcoded); scored with the brief x hook; -15.5 LUFS passes check-audio ±2 band, misses master-audio ±0.5 (documented short-clip loudnorm shortfall)"
+    },
+    {
+      "id": "social-clip-linkedin",
+      "skill": "social-clip",
+      "model": "claude-sonnet-5",
+      "status": "approved",
+      "artifact": "marketing/assets/dashclaw/social-linkedin-final.mp4",
+      "frames": 300,
+      "durationSec": 10,
+      "measured": {
+        "I": -15.6,
+        "TP": -2
+      },
+      "plate": "film-v5 frame 888 cropped to the ledger table (linkedin-panel.png)",
+      "correctionRounds": 1,
+      "judgeNote": "approved 2026-09-06 after 1 correction (table-only crop; rows, chain rule and verified tick legible)"
+    },
+    {
+      "id": "social-clip-vertical",
+      "skill": "social-clip",
+      "model": "claude-sonnet-5",
+      "status": "approved",
+      "artifact": "marketing/assets/dashclaw/social-vertical-final.mp4",
+      "frames": 300,
+      "durationSec": 10,
+      "measured": {
+        "I": -15.6,
+        "TP": -2.2
+      },
+      "plate": "film-v5 frame 560 (HELD card) as portrait plate; frame 240 aisle rejected (half-cut label at the crop edge)",
+      "correctionRounds": 0,
+      "judgeNote": "approved 2026-09-06: card legible in 9:16, copy per brief"
+    },
+    {
+      "id": "og-assets",
+      "skill": "og-assets",
+      "model": "claude-sonnet-5",
+      "status": "planned"
+    },
+    {
+      "id": "cards",
+      "skill": "cards",
+      "status": "skipped",
+      "judgeNote": "brief carries no numeric proofPoints; a figureless proof point is not a card"
+    }
+  ],
+  "judgeNotes": [
+    {
+      "asset": "product-demo",
+      "forUser": true,
+      "productBugs": [
+        "/approvals renders an amber Bound act (unavailable) / not recorded for this historical action line for any pending row lacking context.act; historical is false for an action held seconds ago, and amber spends the attention colour on a data gap (app/approvals/page.tsx ~651-658)",
+        "/decisions demo fixtures render PAYLOAD SIGNATURE UNKNOWN on every row, which reads badly under a verified claim; fixture data, not a code defect, but it is in the footage",
+        "a faint dark-red blurred rectangle sits right of the STABLE badge on /approvals and /decisions headers (pseudo-element or glow); bakes into footage as a smudge",
+        "/policies has a visible Add a rule button and a hidden zero-height New rule button with near-identical accessible names"
+      ]
+    }
+  ],
+  "deviations": [
+    "Unreal hall plates re-rendered in correction round 1 (green rack LEDs violated the accent budget); the 2026-09-03 plates were the footage cache for film-v4 only",
+    "Production plan schema cannot express a bespoke film plus a separate social composition; exports.social declared as DashClawFilm without props and NOT a delivery route; matrix runs --only launch-16x9 for the film (16:9 lock), social clips carry the vertical/square formats",
+    "judge-palette is vacuous for dashclaw (voice has no never-<colour> clause) and judge-motion scans source, not the render; both PASS lines are not evidence about the film",
+    "July delivery files (launch.mp4, launch-final.mp4, social-*.mp4, old matrix/, postkit/, wrap/, thumbs/, proof/) moved to marketing/assets/dashclaw/superseded/2026-07-10/ as immutable before-media, outside the check-audio delivery scan",
+    "Engine extended for bespoke films: judge-audio.mjs --film/--manifest (report marketing/judge-audio-film.json) and build-captions.mjs --manifest; commit at close-out",
+    "Social clips scored via a scratch mix reusing score-social-clip.mjs pure helpers (its CLI writes the shared LaunchVideo audio manifest); VO+bed under public/dashclaw/social/audio/; new engine scripts feeders/capture/extract-dashclaw-film-stills.mjs and scripts/build-dashclaw-social-props.mjs",
+    "master-audio.mjs ±0.5 LU gate fails on all three 10 s social clips (-15.5/-15.6 LUFS) while check-audio ±2 LU passes; engine tolerance gap noted for Wes"
+  ]
+}

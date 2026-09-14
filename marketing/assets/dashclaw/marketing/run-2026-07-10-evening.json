@@ -1,0 +1,298 @@
+{
+  "brand": "dashclaw",
+  "startedAt": "2026-07-10T17:15:00-07:00",
+  "runLabel": "2026-07-10-evening-full-rerun",
+  "supersedes": "run-2026-07-10-morning.json",
+  "mode": "executor-judge",
+  "intake": {
+    "destination": "C:/Projects/DashClaw/public/media/marketing/",
+    "ogStaticsOverwrite": "C:/Projects/DashClaw/public/social/",
+    "uiPolish": false,
+    "uiPolishReason": "user opted out: UI unchanged since this morning's polished run (commits 219f017f + 20433c6)",
+    "audio": "music+voiceover",
+    "socialClips": [
+      "x",
+      "linkedin",
+      "vertical-9x16"
+    ],
+    "postkitPlatforms": [
+      "x",
+      "linkedin",
+      "tiktok",
+      "shorts",
+      "instagram",
+      "youtube"
+    ],
+    "checkpointMode": "full-auto (executor-judge, Fable judge)"
+  },
+  "phases": {
+    "brandOnboarding": "complete (brands/dashclaw.json pre-existing)",
+    "contentApproval": "complete 2026-07-10: brief.json synthesized from morning run's shipped copy + altHeadlines; lint-copy exit 0 (4 WARN feature-speak on 'Nothing' headline judged false positive, headline is the proven shipped hook); storyboard.html built, judge approved",
+    "uiPolish": "skipped by intake (UI unchanged since morning run)",
+    "templateFix": "complete 2026-07-10 evening: FeaturePanel portraitScreenshot prop (orientation-gated, optional) + feature-ledger-portrait.png; smoke 6/6, landscape SHA-identical, judge approved portrait proofs for both comps",
+    "mechanicalJudges": "av-sync PASS; demo-pacing 5 dwell WARNs judged acceptable (caption changes + zoom motion within each window, matches shipped morning choreography); palette PASS x2; budgets: matrix launch 16x9/9x16 OVER 8MB budget, recheck + compress after full matrix render",
+    "matrix": "complete 2026-07-10 evening: 10 exports delivered (12 rendered; 2 launch captioned variants EXCLUDED by judge: 19s wall-of-text cue + collision with demo act native captions; social captioned = uncaptioned copies, correct since clip has no VO); 6 launch rows re-encoded to <=8MB budget (950kbps, quality verified); captions launch.srt/vtt cues split by sentence (5 -> 7 cues); FOLLOW-UP for engine: burned-caption chunking + native-caption suppression",
+    "sweep": "complete 2026-07-10 evening: 8 stills reviewed by parallel workflow (12 agents), 4 raw findings, 1 CONFIRMED (FloatBar at rest in static OG exports reads as fake video scrubber) -> fixed via optional showFloatBar prop on AnimatedOG (smoke 6/6, tsc clean), 3 statics re-rendered bar-free, animated loop untouched; 3 findings refuted (product-UI false positives)",
+    "delivery": "complete 2026-07-10 evening: core assets + postkit (6 platforms) + captions to public/media/marketing/, 3 OG statics to public/social/, launch-poster.jpg refreshed; matrix originals kept engine-side (postkit carries per-platform videos); commit b89d5734 pushed to main",
+    "closeout": "complete: engine commit 598e500 (templates + builders + props), product commit b89d5734 pushed; gates green both repos; Mission Control served at http://localhost:4600/",
+    "operatorRedo": "complete 2026-07-10 late: hook-3 variant applied end to end + music changed per review.json note; av-sync PASS, budgets 21/21 PASS"
+  },
+  "assets": [
+    {
+      "id": "logo-reveal",
+      "skill": "logo-reveal",
+      "status": "delivered",
+      "artifact": "out/dashclaw/logo-reveal.mp4",
+      "duration": "5.06s",
+      "resolution": "1920x1080",
+      "fps": 30,
+      "judgeNote": "approved 2026-07-10 evening: draw-on/lockup/tagline all clean, tagline on brand color slot, no clipping",
+      "deliveredTo": "C:/Projects/DashClaw/public/media/marketing/logo-reveal.mp4"
+    },
+    {
+      "id": "product-demo",
+      "skill": "product-demo",
+      "status": "delivered",
+      "artifact": "out/dashclaw/demo.mp4",
+      "duration": "28.39s",
+      "resolution": "1920x1080",
+      "fps": 30,
+      "judgeNote": "approved 2026-07-10 evening: 5 beats clean, no demo/read-only chrome, captions match narration, allow-click resolves queue 4->3",
+      "note": "re-captured (cache miss, no prior capture entry); props/dashclaw-demo.json regenerated; contact-sheet.mjs lacks ProductDemo comp so gate satisfied via remotion still x5",
+      "deliveredTo": "C:/Projects/DashClaw/public/media/marketing/demo.mp4"
+    },
+    {
+      "id": "launch-video",
+      "skill": "launch-video",
+      "status": "delivered",
+      "variants": [
+        {
+          "id": "hook-1",
+          "path": "out/dashclaw/marketing/hooks/hook-1.mp4",
+          "label": "Nothing sensitive runs until you allow it"
+        },
+        {
+          "id": "hook-2",
+          "path": "out/dashclaw/marketing/hooks/hook-2.mp4",
+          "label": "The approval layer for unattended agents"
+        },
+        {
+          "id": "hook-3",
+          "path": "out/dashclaw/marketing/hooks/hook-3.mp4",
+          "label": "Catch the dangerous action before it runs"
+        }
+      ],
+      "artifact": "out/dashclaw/launch.mp4",
+      "frames": 1660,
+      "duration": "55.33s",
+      "resolution": "1920x1080",
+      "fps": 30,
+      "judgeNote": "approved 2026-07-10 evening picture-lock: all 5 acts clean; hook winner = main headline (VO sync + proven copy), alternates registered as variants; +5 frames vs morning from longer demo telemetry; contains a SILENT AAC track (peak 0) from the new demo capture audio, verified harmless; operator variant pick hook-3 (Catch the dangerous action before it runs) applied: brief updated, props builder gained the missing brief-overlay, picture re-locked 1660 frames, matrix/captions/thumbs/postkit cascaded",
+      "hookWinner": "Nothing sensitive runs until you allow it",
+      "deliveredTo": "C:/Projects/DashClaw/public/media/marketing/launch.mp4 (scored master)",
+      "selectedVariant": "hook-3"
+    },
+    {
+      "id": "audio-track",
+      "skill": "audio-track",
+      "status": "delivered",
+      "artifact": "out/dashclaw/launch-final.mp4",
+      "frames": 1660,
+      "duration": "55.33s",
+      "judgeNote": "REDO satisfied 2026-07-10 late: new driving ~112bpm pulse bed (was ambient 90bpm), hook VO regenerated for operator-picked headline, mix -16.34 LUFS/-1.41 dBTP, 1660/1660 frames, new sting remuxed into all 3 social clips; executor self-caught + fixed a stereo->mono downgrade before delivery",
+      "sting": "out/dashclaw/sting.mp3 4.127s -16.69 LUFS",
+      "deliveredTo": "C:/Projects/DashClaw/public/media/marketing/launch.mp4 (merged) + sting.mp3",
+      "redoNote": "change the music"
+    },
+    {
+      "id": "social-clip-x",
+      "skill": "social-clip",
+      "status": "delivered",
+      "artifact": "out/dashclaw/social-x.mp4",
+      "frames": 300,
+      "duration": "10.0s",
+      "resolution": "1920x1080",
+      "fps": 30,
+      "judgeNote": "approved 2026-07-10 evening: 3 acts clean, new approvals screenshot, sting adelay 5873ms lands on final frame, -16.87 LUFS/-2.20 dBTP",
+      "engineBugFlag": "contact-sheet.mjs SocialClip resolveProps falls back to alphabetically-first dashclaw-social-*.json (picked linkedin props silently); same resolver duplicated in render-matrix.mjs — pass explicit props downstream; fix at close-out",
+      "deliveredTo": "C:/Projects/DashClaw/public/media/marketing/social-x.mp4"
+    },
+    {
+      "id": "social-clip-linkedin",
+      "skill": "social-clip",
+      "status": "delivered",
+      "artifact": "out/dashclaw/social-linkedin.mp4",
+      "frames": 300,
+      "duration": "10.0s",
+      "resolution": "1920x1080",
+      "fps": 30,
+      "judgeNote": "approved 2026-07-10 evening: ledger beat, headline corrected to brief (Recorded and verified), -16.50 LUFS/-2.19 dBTP sample-peak, 300 frames verified",
+      "deliveredTo": "C:/Projects/DashClaw/public/media/marketing/social-linkedin.mp4"
+    },
+    {
+      "id": "social-clip-vertical",
+      "skill": "social-clip",
+      "status": "delivered",
+      "artifact": "out/dashclaw/social-vertical.mp4",
+      "frames": 300,
+      "duration": "10.0s",
+      "resolution": "1080x1920",
+      "fps": 30,
+      "judgeNote": "approved 2026-07-10 evening after 1 correction round: initial gate FAIL (7:5 cover crop clipped sidebar mid-word on the regenerated screenshot); fixed via sidebar-free portrait screenshot feature-approvals-portrait.png (cut at x=224) + props repoint, no template edits; -16.50 LUFS/-2.18 dBTP, 300 frames verified",
+      "deliveredTo": "C:/Projects/DashClaw/public/media/marketing/social-vertical.mp4"
+    },
+    {
+      "id": "og-assets",
+      "skill": "og-assets",
+      "status": "delivered",
+      "artifact": "out/dashclaw/og-image.png + twitter-card.png + github-social-preview.png + og.mp4 + og.gif + readme-demo.gif",
+      "judgeNote": "approved 2026-07-10 evening: lockup statics clean, animated loop good, README GIF real footage 2.78MB (under 5MB); NEW engine script scripts/render-dashclaw-readme-gif.mjs to commit at close-out; check-budgets.mjs only gates a file literally named readme.gif — manual verify done; statics re-rendered bar-free after sweep (showFloatBar=false), loop keeps animated bar",
+      "deliveredTo": "C:/Projects/DashClaw/public/media/marketing/og-loop.mp4/gif + readme-demo.gif + 3 statics in public/social/"
+    }
+  ],
+  "exports": [
+    {
+      "id": "launch-16x9",
+      "path": "out/dashclaw/matrix/launch-16x9.mp4",
+      "width": 1920,
+      "height": 1080,
+      "bytes": 6317362
+    },
+    {
+      "id": "launch-9x16",
+      "path": "out/dashclaw/matrix/launch-9x16.mp4",
+      "width": 1080,
+      "height": 1920,
+      "bytes": 5037607
+    },
+    {
+      "id": "launch-1x1",
+      "path": "out/dashclaw/matrix/launch-1x1.mp4",
+      "width": 1080,
+      "height": 1080,
+      "bytes": 5944036
+    },
+    {
+      "id": "launch-4x5",
+      "path": "out/dashclaw/matrix/launch-4x5.mp4",
+      "width": 1080,
+      "height": 1350,
+      "bytes": 5810649
+    },
+    {
+      "id": "social-16x9",
+      "path": "out/dashclaw/matrix/social-16x9.mp4",
+      "width": 1920,
+      "height": 1080,
+      "bytes": 3455741
+    },
+    {
+      "id": "social-9x16",
+      "path": "out/dashclaw/matrix/social-9x16.mp4",
+      "width": 1080,
+      "height": 1920,
+      "bytes": 3000721
+    },
+    {
+      "id": "social-9x16-captioned",
+      "path": "out/dashclaw/matrix/social-9x16-captioned.mp4",
+      "width": 1080,
+      "height": 1920,
+      "bytes": 3000721,
+      "note": "identical to uncaptioned clip by judge ruling: social clip has no VO, launch voLines were wrong content; on-screen text already covers muted autoplay"
+    },
+    {
+      "id": "social-1x1",
+      "path": "out/dashclaw/matrix/social-1x1.mp4",
+      "width": 1080,
+      "height": 1080,
+      "bytes": 1661050
+    },
+    {
+      "id": "social-1x1-captioned",
+      "path": "out/dashclaw/matrix/social-1x1-captioned.mp4",
+      "width": 1080,
+      "height": 1080,
+      "bytes": 1661050,
+      "note": "identical to uncaptioned clip by judge ruling: social clip has no VO, launch voLines were wrong content; on-screen text already covers muted autoplay"
+    },
+    {
+      "id": "social-4x5",
+      "path": "out/dashclaw/matrix/social-4x5.mp4",
+      "width": 1080,
+      "height": 1350,
+      "bytes": 3407117
+    },
+    {
+      "id": "intercept-and-hold-wrap-16x9",
+      "path": "out/dashclaw/matrix/wrap-intercept-and-hold/wrap-16x9.png",
+      "width": 1920,
+      "height": 1080,
+      "bytes": 679720
+    },
+    {
+      "id": "intercept-and-hold-wrap-9x16",
+      "path": "out/dashclaw/matrix/wrap-intercept-and-hold/wrap-9x16.mp4",
+      "width": 1080,
+      "height": 1920,
+      "bytes": 2302002
+    },
+    {
+      "id": "intercept-and-hold-wrap-1x1",
+      "path": "out/dashclaw/matrix/wrap-intercept-and-hold/wrap-1x1.mp4",
+      "width": 1080,
+      "height": 1080,
+      "bytes": 2324047
+    },
+    {
+      "id": "intercept-and-hold-wrap-4x5",
+      "path": "out/dashclaw/matrix/wrap-intercept-and-hold/wrap-4x5.mp4",
+      "width": 1080,
+      "height": 1350,
+      "bytes": 2306207
+    },
+    {
+      "id": "recorded-and-verified-wrap-16x9",
+      "path": "out/dashclaw/matrix/wrap-recorded-and-verified/wrap-16x9.mp4",
+      "width": 1920,
+      "height": 1080,
+      "bytes": 1884308
+    },
+    {
+      "id": "recorded-and-verified-wrap-9x16",
+      "path": "out/dashclaw/matrix/wrap-recorded-and-verified/wrap-9x16.mp4",
+      "width": 1080,
+      "height": 1920,
+      "bytes": 1200115
+    },
+    {
+      "id": "recorded-and-verified-wrap-1x1",
+      "path": "out/dashclaw/matrix/wrap-recorded-and-verified/wrap-1x1.mp4",
+      "width": 1080,
+      "height": 1080,
+      "bytes": 1214865
+    },
+    {
+      "id": "recorded-and-verified-wrap-4x5",
+      "path": "out/dashclaw/matrix/wrap-recorded-and-verified/wrap-4x5.mp4",
+      "width": 1080,
+      "height": 1350,
+      "bytes": 1198550
+    },
+    {
+      "id": "launch-9x16-captioned",
+      "path": "out/dashclaw/matrix/launch-9x16-captioned.mp4",
+      "width": 1080,
+      "height": 1920,
+      "bytes": 5183050
+    },
+    {
+      "id": "launch-1x1-captioned",
+      "path": "out/dashclaw/matrix/launch-1x1-captioned.mp4",
+      "width": 1080,
+      "height": 1080,
+      "bytes": 5937682
+    }
+  ],
+  "variants": []
+}

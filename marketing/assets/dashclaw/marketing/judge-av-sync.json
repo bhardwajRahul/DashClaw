@@ -1,0 +1,56 @@
+{
+  "judge": "av-sync",
+  "brand": "dashclaw",
+  "generatedAt": "2026-09-06T17:55:56.498Z",
+  "verdict": "PASS",
+  "inputs": {
+    "launch": "props/dashclaw-launch.json",
+    "audio": "props/dashclaw-audio.json",
+    "telemetry": "props/dashclaw-demo.json"
+  },
+  "timing": {
+    "logo": {
+      "from": 0,
+      "len": 150
+    },
+    "hook": {
+      "from": 150,
+      "len": 186
+    },
+    "demo": {
+      "from": 336,
+      "len": 814
+    },
+    "features": [
+      {
+        "from": 1150,
+        "len": 180
+      },
+      {
+        "from": 1330,
+        "len": 180
+      }
+    ],
+    "end": {
+      "from": 1510,
+      "len": 150
+    },
+    "total": 1660
+  },
+  "hookOnset": {
+    "frame": 150,
+    "seconds": 5,
+    "actsResolved": 6,
+    "message": "hook copy on screen at frame 150 (5.0s); 6 acts resolved."
+  },
+  "summary": {
+    "voLines": 5,
+    "wordLines": 0,
+    "estimatedWordLines": 0,
+    "cuedActs": 0,
+    "features": 2,
+    "captionSteps": 5,
+    "findings": 0
+  },
+  "findings": []
+}

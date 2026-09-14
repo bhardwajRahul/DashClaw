@@ -1,0 +1,45 @@
+[
+  {
+    "platform": "x",
+    "url": null,
+    "variant": null,
+    "published": false
+  },
+  {
+    "platform": "linkedin",
+    "url": null,
+    "variant": null,
+    "published": false
+  },
+  {
+    "platform": "tiktok",
+    "url": null,
+    "variant": null,
+    "published": false
+  },
+  {
+    "platform": "shorts",
+    "url": null,
+    "variant": null,
+    "published": false
+  },
+  {
+    "platform": "youtube",
+    "url": "https://youtu.be/Tes2JIvnXQI",
+    "variant": null,
+    "published": true,
+    "postedAt": "2026-09-01T20:48:04.687Z"
+  },
+  {
+    "platform": "instagram",
+    "url": null,
+    "variant": null,
+    "published": false
+  },
+  {
+    "platform": "bluesky",
+    "url": null,
+    "variant": null,
+    "published": false
+  }
+]

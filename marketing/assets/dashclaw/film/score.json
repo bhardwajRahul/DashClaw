@@ -1,0 +1,15 @@
+{
+  "film": "out/dashclaw/film/film-v3.mp4",
+  "out": "out/dashclaw/film/film-v3-scored.mp4",
+  "manifest": "props/dashclaw-film-audio.json",
+  "voLines": 7,
+  "sfxCues": 9,
+  "musicOnly": false,
+  "measured": {
+    "I": -13.7,
+    "TP": -1.7,
+    "LRA": 5.5
+  },
+  "passes": 2,
+  "verdict": "PASS"
+}

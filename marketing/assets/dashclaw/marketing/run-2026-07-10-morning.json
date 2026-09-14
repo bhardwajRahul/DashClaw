@@ -1,0 +1,115 @@
+{
+  "brand": "dashclaw",
+  "startedAt": "2026-07-10",
+  "mode": "executor-judge",
+  "intake": {
+    "destination": "C:/Projects/DashClaw/public/media/marketing/",
+    "ogStaticsOverwrite": "C:/Projects/DashClaw/public/social/",
+    "uiPolish": true,
+    "audio": "music+voiceover",
+    "socialClips": [
+      "x",
+      "linkedin",
+      "vertical-9x16"
+    ],
+    "checkpointMode": "full-auto (executor-judge)"
+  },
+  "phases": {
+    "brandOnboarding": "complete (brands/dashclaw.json pre-existing)",
+    "uiPolish": "complete (commit 219f017f + 20433c6 on DashClaw main, not pushed; judged approved from rendered screenshots 2026-07-10)",
+    "sweep": "complete 2026-07-10: 11 stills reviewed, 1 confirmed finding (logo kicker color slot) fixed + re-rendered, 1 refuted (FloatBar false positive), smoke 6/6",
+    "delivery": "complete 2026-07-10: 9 files to public/media/marketing/ + 3 OG statics to public/social/ + README hero GIF swap + gallery.html; gallery sent to user"
+  },
+  "assets": [
+    {
+      "id": "logo-reveal",
+      "skill": "logo-reveal",
+      "status": "delivered",
+      "artifact": "out/dashclaw/logo-reveal.mp4",
+      "note": "re-rendered 2026-07-10 fixing kicker color slot (fb923c -> f97316 via brand slot); root cause was studio/src/templates/LogoReveal.tsx hardcoding the tagline text to brand.colors.profit (CTA-reserved slot) even though the LogoReveal 'cta' prop for dashclaw carries the tagline, not a real CTA -- fixed at the shared template (no other brand had an approved LogoReveal render to contradict), tagline now brand.colors.brand matching the shield mark",
+      "deliveredTo": "C:/Projects/DashClaw/public/media/marketing/logo-reveal.mp4"
+    },
+    {
+      "id": "product-demo",
+      "skill": "product-demo",
+      "status": "delivered",
+      "artifact": "out/dashclaw/demo.mp4",
+      "delivered": "C:/Projects/DashClaw/public/media/marketing/demo.mp4",
+      "duration": "28.2s",
+      "resolution": "1920x1080",
+      "fps": 30,
+      "note": "5 beats: approvals hero (wide) + tight card + one-click Allow resolve, decisions ledger, policies workbench. Admin view via Playwright route-intercept of /api/session/effective + curated pending queue; server DASHCLAW_MODE=demo, client bundle non-demo so no demo/read-only banners. Raw footage: studio/public/dashclaw/demo.webm + props/dashclaw-demo.json",
+      "deliveredTo": "C:/Projects/DashClaw/public/media/marketing/demo.mp4"
+    },
+    {
+      "id": "launch-video",
+      "skill": "launch-video",
+      "status": "delivered",
+      "artifact": "out/dashclaw/launch.mp4",
+      "duration": "55.2s",
+      "resolution": "1920x1080",
+      "fps": 30,
+      "frames": 1655,
+      "note": "Picture-lock (no audio; /audio-track pass follows). 5 acts: logo reveal (0-5s) -> hook headline (5-11.2s) -> product demo w/ captions (11.2-38.2s) -> feature 'Intercept and hold' /approvals (38.2-44.2s) -> feature 'Recorded and verified' /decisions (44.2-50.2s) -> end card CTA (50.2-55.2s). Copy source of truth: scripts/build-dashclaw-launch-props.mjs -> props/dashclaw-launch.json. Feature screenshots extracted from demo.webm into studio/public/dashclaw/feature-approvals.png + feature-ledger.png. Timing per launchTiming.ts (2 features). Uncommitted per orchestrator close-out.",
+      "deliveredTo": "C:/Projects/DashClaw/public/media/marketing/launch.mp4 (launch-final.mp4 master)"
+    },
+    {
+      "id": "audio-track",
+      "skill": "audio-track",
+      "status": "delivered",
+      "artifact": "out/dashclaw/launch-final.mp4",
+      "duration": "55.17s",
+      "frames": 1655,
+      "note": "Video stream frame-identical to picture-lock (1655/1655 frames, -c:v copy, verified via ffprobe -count_frames on both files); audio is AAC 192kbps muxed in. Music: props/dashclaw-audio.json + studio/public/dashclaw/audio/music.mp3 (55.25s, restrained ~90bpm instrumental; REGENERATED round 2 with a structural prompt after the v1 bed faded to silence 40-51s, then hand-shaped per the authorized fallback with a 2.26 percent atempo stretch so the closing chord rings to the final frame: full level through ~53s, resolve rings out 53-55.2s, zero silence >=0.5s at -45dB). VO: 5 lines (hook/demo/feature-0/feature-1/end, no logo-act line) in studio/public/dashclaw/audio/*.mp3, all within their act's frame budget after one trim pass on feature-0/feature-1. Copy source of truth: scripts/build-dashclaw-audio.mjs -> props/dashclaw-audio.json (music.mp3 on disk additionally carries the atempo shaping; a bare --force music re-run reproduces only the raw generation); scripts/merge-launch-audio.mjs dashclaw -> out/dashclaw/launch-audio-props.json. Mix rendered audio-only via `npx remotion render LaunchVideo ...wav` (SoundTrack ducking: BASE 0.35/DUCKED 0.12, untouched defaults) then muxed onto the untouched launch.mp4 video stream with remotion's bundled ffmpeg. Standalone deliverables: out/dashclaw/launch-mix.wav (full mix, loudness-normalized), out/dashclaw/launch-vo-only.wav (dry VO timeline, no music, NOT normalized), out/dashclaw/sting.mp3 (4.05s cut at 51.2-55.2s of the round-2 bed: last full-level bar + closing chord ring-out, natural ending). Distribution loudness (judge round 1+2): mix two-pass loudnorm to I=-16/TP=-1.5 plus a -1.0dB linear trim after loudnorm's limiter overshot to -15.0; final master measures -16.05 LUFS integrated / -2.12 dBTP in AAC, and the 50.2-55.2s end-card segment measures -17.07 LUFS (within 1.02dB of overall, CTA fully scored). Sting: -15.93 LUFS / -1.76 dBTP. Not yet copied into C:/Projects/DashClaw (non-negotiable: don't touch that repo from this phase) or committed (orchestrator close-out).",
+      "deliveredTo": "C:/Projects/DashClaw/public/media/marketing/launch.mp4 (merged)"
+    },
+    {
+      "id": "social-clip-x",
+      "skill": "social-clip",
+      "status": "delivered",
+      "artifact": "out/dashclaw/social-x.mp4",
+      "duration": "10.0s",
+      "resolution": "1920x1080",
+      "fps": 30,
+      "note": "Props: props/dashclaw-social-x.json (headline/feature-approvals lines/CTA reused verbatim from dashclaw-launch.json for copy continuity). Three acts (300 frames): headline word-spring (0-90) -> feature-approvals.png panel + 3 lines (78-240, template-default zoom 1->1.04 at 50%/30%, no clipping) -> end card CTA (228-300). Rendered video-only via remotion, then muxed with out/dashclaw/sting.mp3 (adelay 5950ms so the resolving chord lands on the final frame under the CTA); bundled ffmpeg build lacks the afade filter so the entry has a hard onset, no crossfade. Measured post-mux: -16.19 LUFS integrated / -1.76 dBTP (within spec, sting was already pre-normalized). Not copied into C:/Projects/DashClaw or committed here per orchestrator close-out (matches launch-final.mp4/logo-reveal handling this run).",
+      "deliveredTo": "C:/Projects/DashClaw/public/media/marketing/social-x.mp4"
+    },
+    {
+      "id": "social-clip-linkedin",
+      "skill": "social-clip",
+      "status": "delivered",
+      "artifact": "out/dashclaw/social-linkedin.mp4",
+      "duration": "10.0s",
+      "resolution": "1920x1080",
+      "fps": 30,
+      "note": "Props: props/dashclaw-social-linkedin.json. Same 3-act SocialClip structure as social-x (headline word-spring 0-90 -> feature panel 78-240 -> end card 228-300, template zoom 1->1.04 at 50%/30%) for family continuity; differentiated via the decisions-ledger beat instead of a 4th act -- screenshot swapped to feature-ledger.png and headline/lines reused verbatim from dashclaw-launch.json's 'Recorded and verified' feature (operator/infrastructure register vs the X clip's approvals-inbox framing). A true 4th act was considered but declined: SocialClip's Composition durationInFrames is hardcoded to 300 in Root.tsx and the template has a single FeaturePanel Sequence, both shared with noban's approved SocialClip render -- extending duration/adding a second panel is template-design work outside this recipe's solved path and risks the other brand's asset; not attempted without an explicit go. Muxed with the same out/dashclaw/sting.mp3 via adelay=5951ms (10.0s clip minus the sting's measured 4.049s) so the resolving chord lands under the end card, mirroring social-x's mux approach. Measured post-mux: -16.20 LUFS integrated / -1.76 dBTP (within spec). Not copied into C:/Projects/DashClaw or committed here per orchestrator close-out (matches social-x/launch-final.mp4 handling this run).",
+      "deliveredTo": "C:/Projects/DashClaw/public/media/marketing/social-linkedin.mp4"
+    },
+    {
+      "id": "social-clip-vertical",
+      "skill": "social-clip",
+      "status": "delivered",
+      "artifact": "out/dashclaw/social-vertical.mp4",
+      "duration": "10.0s",
+      "resolution": "1080x1920",
+      "fps": 30,
+      "note": "Props: props/dashclaw-social-vertical.json (headline/lines/screenshot/cta copied verbatim from dashclaw-social-x.json for family continuity -- approvals-hook framing, since vertical feeds skew toward the hook message). Same SocialClip Composition (300 frames, same 3-act structure) rendered portrait via CLI dimension override (--width=1080 --height=1920); no new Composition needed -- PLAYBOOK.md already documents FeaturePanel as orientation-aware for this exact case. Template work: FeaturePanel.tsx gained a portrait-only refinement (studio/src/components/FeaturePanel.tsx) -- the pre-existing isPortrait column layout left ~500px of dead space above and below the screenshot+bullets block (native 16:10 screenshot has no more vertical content to show at a taller aspect box). Fixed by (1) a portrait-only 7:5 aspect-ratio crop with object-fit:cover on the screenshot (mild ~7% edge crop, sidebar nav stays legible, matches the existing zoom.origin '50% 30%' money-shot framing), (2) moving the entrance zoom animation to the outer card wrapper so it no longer compounds with the cover-fit crop, (3) top-anchored layout (justifyContent: flex-start, 220px top padding) so leftover space collects below the bullets -- inside the expected bottom-20% platform-chrome zone -- instead of splitting awkwardly top/middle, and (4) larger bullet type (46px vs 40px) and bigger dot markers for portrait. All changes are gated behind isPortrait so the noban/social-x/social-linkedin landscape renders are byte-identical (verified: re-rendered dashclaw-social-x.json landscape still at frame 150, matches original). node scripts/smoke.mjs passed (6/6 compositions). Muxed with the same out/dashclaw/sting.mp3 via adelay=5951ms (10.0s clip minus the sting's measured 4.049s), apad=whole_dur=10.0 on the audio branch (NOT -shortest, which truncated the video to 296/300 frames on the first attempt -- caught via -count_frames before delivery, fixed by padding audio instead of trimming video). Measured post-mux: -16.21 LUFS integrated / -1.76 dBTP (within spec, matches social-x/social-linkedin). Not copied into C:/Projects/DashClaw or committed here, matching this run's established handling for all other assets (orchestrator close-out).",
+      "deliveredTo": "C:/Projects/DashClaw/public/media/marketing/social-vertical.mp4"
+    },
+    {
+      "id": "og-assets",
+      "skill": "og-assets",
+      "status": "delivered",
+      "artifacts": {
+        "og-image.png": "out/dashclaw/og-image.png",
+        "twitter-card.png": "out/dashclaw/twitter-card.png",
+        "github-social-preview.png": "out/dashclaw/github-social-preview.png",
+        "readme-demo.gif": "out/dashclaw/readme-demo.gif",
+        "og.mp4": "out/dashclaw/og.mp4",
+        "og.gif": "out/dashclaw/og.gif"
+      },
+      "note": "Three sitewide social statics rendered from the AnimatedOG template (studio/src/templates/AnimatedOG.tsx) at the exact dims of the live files they replace (verified via PIL against public/social/*.png + app/lib/marketingSeo.ts): og-image.png 1200x630 (native), twitter-card.png 1200x600, github-social-preview.png 1280x640 (all --width/--height CLI overrides on `npx remotion still`, no new Composition). Copy: tagline 'Agent decision infrastructure' (brands/dashclaw.json, matches product tagline verbatim), CTA 'Govern your agents at dashclaw.io' (approved copy family). heroImage/loopSequence null -- dashclaw.json effects.wash is 0 (voice: orange is a signal, never a wash/decoration), same flat-black spec-compliant fallback as paperroute, not a placeholder. Bonus animated OG loop (og.mp4 8s/240f, og.gif) rendered per recipe default at native 1200x630. New script: scripts/render-dashclaw-statics.mjs (mirrors render-paperroute-statics.mjs). README GIF deliberately does NOT use AnimatedOG -- task spec called for the product's actual money moment instead of the logo lockup. Sourced from out/dashclaw/demo.mp4 (Remotion-rendered, telemetry ms map 1:1 to seconds, verified via props/dashclaw-demo.json + accurate-seek frame extraction): risk-82 'Deploy build 4f2a91c to production-api' card visible t=6.277-10.09s, Allow click at t=10.091s, list resolved (card removed, risk-94 card promoted to top) by t=10.1-10.3s. Clip window 8.0-11.3s (3.3s) captures steady risk-82 card + caption 'Risk scored, systems named, bound to the exact command.' -> click -> resolved state + caption 'One click releases it. The decision is recorded.' Two-pass palette GIF (palettegen/paletteuse, engine ffmpeg build has no fps/select filters so framerate reduction used the -r output flag instead of a fps filter), 960x540, 12fps, 41 frames, 678KB (well under the 4MB README budget). Not a seamless loop by construction (jump-cuts from resolved back to risk-82 on repeat) -- acceptable for a README demo GIF per recipe guidance, unlike the AnimatedOG loop's seamless requirement. All three statics + the GIF inspected via Read at full/native res before finalizing (non-negotiable stills gate); FloatBar progress-bar remnant at frame-0 in the statics matches the established noban/paperroute AnimatedOG-still precedent, not a new defect -- template not touched. Not copied into C:/Projects/DashClaw (non-negotiable: don't touch that repo from this phase) or committed here (orchestrator close-out, matches this run's handling of every other asset).",
+      "deliveredTo": "C:/Projects/DashClaw/public/media/marketing/readme-demo.gif + og-loop.* + public/social/*.png"
+    }
+  ]
+}

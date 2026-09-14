@@ -1,0 +1,68 @@
+{
+  "brand": "dashclaw",
+  "fetchedAt": "2026-09-01T20:48:05.132Z",
+  "posts": [
+    {
+      "platform": "x",
+      "url": null,
+      "id": null,
+      "variant": null,
+      "metrics": null,
+      "source": "skipped"
+    },
+    {
+      "platform": "linkedin",
+      "url": null,
+      "id": null,
+      "variant": null,
+      "metrics": null,
+      "source": "skipped"
+    },
+    {
+      "platform": "tiktok",
+      "url": null,
+      "id": null,
+      "variant": null,
+      "metrics": null,
+      "source": "skipped"
+    },
+    {
+      "platform": "shorts",
+      "url": null,
+      "id": null,
+      "variant": null,
+      "metrics": null,
+      "source": "skipped"
+    },
+    {
+      "platform": "youtube",
+      "url": "https://youtu.be/Tes2JIvnXQI",
+      "id": null,
+      "variant": null,
+      "metrics": {
+        "impressions": 0,
+        "likes": 0,
+        "reposts": 0,
+        "replies": 0,
+        "bookmarks": 0
+      },
+      "source": "youtube-api"
+    },
+    {
+      "platform": "instagram",
+      "url": null,
+      "id": null,
+      "variant": null,
+      "metrics": null,
+      "source": "skipped"
+    },
+    {
+      "platform": "bluesky",
+      "url": null,
+      "id": null,
+      "variant": null,
+      "metrics": null,
+      "source": "skipped"
+    }
+  ]
+}

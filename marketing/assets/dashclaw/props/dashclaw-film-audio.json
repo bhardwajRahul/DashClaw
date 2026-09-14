@@ -1,0 +1,503 @@
+{
+  "brandId": "dashclaw",
+  "composition": "DashClawFilm",
+  "fps": 30,
+  "totalFrames": 1200,
+  "music": {
+    "src": "film-audio/music.mp3",
+    "durationMs": 40046
+  },
+  "lines": [
+    {
+      "id": "hall",
+      "text": "At three in the morning, your agent is still working.",
+      "src": "film-audio/hall.mp3",
+      "startMs": 1000,
+      "durationMs": 2833,
+      "words": [
+        {
+          "w": "At",
+          "startMs": 0,
+          "endMs": 151
+        },
+        {
+          "w": "three",
+          "startMs": 197,
+          "endMs": 418
+        },
+        {
+          "w": "in",
+          "startMs": 453,
+          "endMs": 511
+        },
+        {
+          "w": "the",
+          "startMs": 546,
+          "endMs": 615
+        },
+        {
+          "w": "morning,",
+          "startMs": 662,
+          "endMs": 1045
+        },
+        {
+          "w": "your",
+          "startMs": 1091,
+          "endMs": 1231
+        },
+        {
+          "w": "agent",
+          "startMs": 1300,
+          "endMs": 1637
+        },
+        {
+          "w": "is",
+          "startMs": 1683,
+          "endMs": 1753
+        },
+        {
+          "w": "still",
+          "startMs": 1800,
+          "endMs": 2032
+        },
+        {
+          "w": "working.",
+          "startMs": 2090,
+          "endMs": 2833
+        }
+      ]
+    },
+    {
+      "id": "agent",
+      "text": "It reads. It writes. It deploys. Nobody is watching.",
+      "src": "film-audio/agent.mp3",
+      "startMs": 6000,
+      "durationMs": 4319,
+      "words": [
+        {
+          "w": "It",
+          "startMs": 0,
+          "endMs": 151
+        },
+        {
+          "w": "reads.",
+          "startMs": 221,
+          "endMs": 755
+        },
+        {
+          "w": "It",
+          "startMs": 964,
+          "endMs": 1091
+        },
+        {
+          "w": "writes.",
+          "startMs": 1138,
+          "endMs": 1649
+        },
+        {
+          "w": "It",
+          "startMs": 1823,
+          "endMs": 1950
+        },
+        {
+          "w": "deploys.",
+          "startMs": 1997,
+          "endMs": 2705
+        },
+        {
+          "w": "Nobody",
+          "startMs": 3030,
+          "endMs": 3379
+        },
+        {
+          "w": "is",
+          "startMs": 3425,
+          "endMs": 3495
+        },
+        {
+          "w": "watching.",
+          "startMs": 3553,
+          "endMs": 4319
+        }
+      ]
+    },
+    {
+      "id": "reach",
+      "text": "Until it reaches for something that cannot be undone.",
+      "src": "film-audio/reach.mp3",
+      "startMs": 12000,
+      "durationMs": 3019,
+      "words": [
+        {
+          "w": "Until",
+          "startMs": 0,
+          "endMs": 337
+        },
+        {
+          "w": "it",
+          "startMs": 383,
+          "endMs": 441
+        },
+        {
+          "w": "reaches",
+          "startMs": 499,
+          "endMs": 789
+        },
+        {
+          "w": "for",
+          "startMs": 848,
+          "endMs": 940
+        },
+        {
+          "w": "something",
+          "startMs": 998,
+          "endMs": 1289
+        },
+        {
+          "w": "that",
+          "startMs": 1335,
+          "endMs": 1451
+        },
+        {
+          "w": "cannot",
+          "startMs": 1509,
+          "endMs": 1904
+        },
+        {
+          "w": "be",
+          "startMs": 1962,
+          "endMs": 2067
+        },
+        {
+          "w": "undone.",
+          "startMs": 2136,
+          "endMs": 3019
+        }
+      ]
+    },
+    {
+      "id": "intercept",
+      "text": "DashClaw holds it. Risk scored, bound to the exact command. Waiting for you, wherever you are.",
+      "src": "film-audio/intercept.mp3",
+      "startMs": 15500,
+      "durationMs": 5712,
+      "words": [
+        {
+          "w": "DashClaw",
+          "startMs": 0,
+          "endMs": 522
+        },
+        {
+          "w": "holds",
+          "startMs": 580,
+          "endMs": 813
+        },
+        {
+          "w": "it.",
+          "startMs": 859,
+          "endMs": 1022
+        },
+        {
+          "w": "Risk",
+          "startMs": 1196,
+          "endMs": 1440
+        },
+        {
+          "w": "scored,",
+          "startMs": 1509,
+          "endMs": 1950
+        },
+        {
+          "w": "bound",
+          "startMs": 2032,
+          "endMs": 2310
+        },
+        {
+          "w": "to",
+          "startMs": 2345,
+          "endMs": 2392
+        },
+        {
+          "w": "the",
+          "startMs": 2438,
+          "endMs": 2508
+        },
+        {
+          "w": "exact",
+          "startMs": 2554,
+          "endMs": 2937
+        },
+        {
+          "w": "command.",
+          "startMs": 2995,
+          "endMs": 3553
+        },
+        {
+          "w": "Waiting",
+          "startMs": 3727,
+          "endMs": 4040
+        },
+        {
+          "w": "for",
+          "startMs": 4087,
+          "endMs": 4180
+        },
+        {
+          "w": "you,",
+          "startMs": 4238,
+          "endMs": 4505
+        },
+        {
+          "w": "wherever",
+          "startMs": 4574,
+          "endMs": 4957
+        },
+        {
+          "w": "you",
+          "startMs": 5016,
+          "endMs": 5097
+        },
+        {
+          "w": "are.",
+          "startMs": 5178,
+          "endMs": 5712
+        }
+      ]
+    },
+    {
+      "id": "release",
+      "text": "One click. It runs. And the decision is on the record.",
+      "src": "film-audio/release.mp3",
+      "startMs": 22500,
+      "durationMs": 3529,
+      "words": [
+        {
+          "w": "One",
+          "startMs": 0,
+          "endMs": 221
+        },
+        {
+          "w": "click.",
+          "startMs": 267,
+          "endMs": 650
+        },
+        {
+          "w": "It",
+          "startMs": 801,
+          "endMs": 952
+        },
+        {
+          "w": "runs.",
+          "startMs": 1010,
+          "endMs": 1544
+        },
+        {
+          "w": "And",
+          "startMs": 1660,
+          "endMs": 1811
+        },
+        {
+          "w": "the",
+          "startMs": 1858,
+          "endMs": 1927
+        },
+        {
+          "w": "decision",
+          "startMs": 1974,
+          "endMs": 2380
+        },
+        {
+          "w": "is",
+          "startMs": 2461,
+          "endMs": 2554
+        },
+        {
+          "w": "on",
+          "startMs": 2612,
+          "endMs": 2682
+        },
+        {
+          "w": "the",
+          "startMs": 2717,
+          "endMs": 2786
+        },
+        {
+          "w": "record.",
+          "startMs": 2833,
+          "endMs": 3529
+        }
+      ]
+    },
+    {
+      "id": "ledger",
+      "text": "Every governed action, chained to the decision that allowed it. Not a log after the fact.",
+      "src": "film-audio/ledger.mp3",
+      "startMs": 27500,
+      "durationMs": 5898,
+      "words": [
+        {
+          "w": "Every",
+          "startMs": 0,
+          "endMs": 348
+        },
+        {
+          "w": "governed",
+          "startMs": 418,
+          "endMs": 766
+        },
+        {
+          "w": "action,",
+          "startMs": 824,
+          "endMs": 1393
+        },
+        {
+          "w": "chained",
+          "startMs": 1567,
+          "endMs": 1939
+        },
+        {
+          "w": "to",
+          "startMs": 1962,
+          "endMs": 2020
+        },
+        {
+          "w": "the",
+          "startMs": 2078,
+          "endMs": 2148
+        },
+        {
+          "w": "decision",
+          "startMs": 2194,
+          "endMs": 2566
+        },
+        {
+          "w": "that",
+          "startMs": 2612,
+          "endMs": 2728
+        },
+        {
+          "w": "allowed",
+          "startMs": 2763,
+          "endMs": 3088
+        },
+        {
+          "w": "it.",
+          "startMs": 3135,
+          "endMs": 3379
+        },
+        {
+          "w": "Not",
+          "startMs": 3657,
+          "endMs": 3936
+        },
+        {
+          "w": "a",
+          "startMs": 4005,
+          "endMs": 4040
+        },
+        {
+          "w": "log",
+          "startMs": 4133,
+          "endMs": 4505
+        },
+        {
+          "w": "after",
+          "startMs": 4621,
+          "endMs": 4969
+        },
+        {
+          "w": "the",
+          "startMs": 5016,
+          "endMs": 5085
+        },
+        {
+          "w": "fact.",
+          "startMs": 5143,
+          "endMs": 5898
+        }
+      ]
+    },
+    {
+      "id": "wide",
+      "text": "Govern your agents at dashclaw dot io.",
+      "src": "film-audio/wide.mp3",
+      "startMs": 35000,
+      "durationMs": 2508,
+      "words": [
+        {
+          "w": "Govern",
+          "startMs": 0,
+          "endMs": 302
+        },
+        {
+          "w": "your",
+          "startMs": 337,
+          "endMs": 441
+        },
+        {
+          "w": "agents",
+          "startMs": 499,
+          "endMs": 824
+        },
+        {
+          "w": "at",
+          "startMs": 859,
+          "endMs": 917
+        },
+        {
+          "w": "dashclaw",
+          "startMs": 975,
+          "endMs": 1463
+        },
+        {
+          "w": "dot",
+          "startMs": 1521,
+          "endMs": 1707
+        },
+        {
+          "w": "io.",
+          "startMs": 1765,
+          "endMs": 2508
+        }
+      ]
+    }
+  ],
+  "sfx": [
+    {
+      "frame": 390,
+      "name": "tick"
+    },
+    {
+      "frame": 458,
+      "name": "whoosh"
+    },
+    {
+      "frame": 600,
+      "name": "tick"
+    },
+    {
+      "frame": 675,
+      "name": "whoosh"
+    },
+    {
+      "frame": 822,
+      "name": "whoosh"
+    },
+    {
+      "frame": 996,
+      "name": "tick"
+    },
+    {
+      "frame": 1032,
+      "name": "tick"
+    },
+    {
+      "frame": 1071,
+      "name": "tick"
+    },
+    {
+      "frame": 1113,
+      "name": "tick"
+    }
+  ]
+}

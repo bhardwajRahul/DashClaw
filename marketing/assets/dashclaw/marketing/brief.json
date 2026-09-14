@@ -1,0 +1,87 @@
+{
+  "brandId": "dashclaw",
+  "hook": {
+    "headline": "Intercept the dangerous action before it runs",
+    "altHeadlines": [
+      "The approval layer for unattended agents",
+      "Away from the keyboard is not away from control"
+    ],
+    "strategies": ["value", "category", "contrarian"]
+  },
+  "audience": {
+    "who": "Developers who run coding agents (Claude Code, Codex, Hermes, OpenClaw) unattended for hours and cannot watch every call",
+    "painPoints": [
+      "The agent reaches for a deploy, a table drop, a force push or a .env read while nobody is at the keyboard",
+      "Local permission prompts only work for the operator sitting at the terminal",
+      "Interrupt too often and the policies get switched off; the maintainer turned every policy off for 18 days after false interruptions",
+      "A log of what already ran is not control over what runs next"
+    ]
+  },
+  "customerLanguage": {
+    "use": ["unattended", "held", "allow or deny", "one click", "on the record", "chained to the decision", "governed action"],
+    "avoid": ["guardrails", "AI safety", "observability", "blocks everything", "supercharge", "seamless"]
+  },
+  "objections": [
+    {"objection": "My CLI already prompts me before dangerous commands", "response": "Those prompts serve the person at the keyboard. DashClaw holds the action and lets you approve minutes or hours later, from wherever you are"},
+    {"objection": "This will interrupt me constantly", "response": "Approve and deny decisions feed a calibration loop; an interruption has to earn its cost, and nothing is blocked outright by default"},
+    {"objection": "Is this just another audit log", "response": "DashClaw holds the real command before it runs and binds the release to a recorded human decision. The ledger is what was stopped and released, not a log after the fact"}
+  ],
+  "switchingForces": {
+    "push": "An unattended agent did something irreversible, or the fear that it will",
+    "pull": "The dangerous call freezes until a person says yes, and the record proves it",
+    "habit": "Watching the terminal, or accepting every prompt to make it stop",
+    "anxiety": "Another layer that blocks work or floods the inbox; answered by hold-not-block and the calibration loop"
+  },
+  "features": [
+    {
+      "key": "approvals",
+      "heading": "Intercept and hold",
+      "benefitLines": [
+        "Sensitive actions are held before they run",
+        "Risk scored and bound to the exact command",
+        "One click to allow or deny in the inbox"
+      ],
+      "rationale": "The hero surface. The README's core promise (hold it before it runs, ask you first) is literally this inbox; the demo footage shows a held deploy action resolved with one click.",
+      "sourceRoute": "/approvals"
+    },
+    {
+      "key": "ledger",
+      "heading": "Recorded and verified",
+      "benefitLines": [
+        "Every governed action lands in one ledger",
+        "Chained to the decision that allowed it",
+        "Verified where receipts are issued, spend and risk on the record"
+      ],
+      "rationale": "The trust half of the loop: approval alone is a gate, the causal chain is the proof. Differentiates from log viewers because entries bind to the decision that released them. Verification is conditional in the thesis (receipts where issued), so the line says so.",
+      "sourceRoute": "/decisions"
+    }
+  ],
+  "positioning": {
+    "differentiator": "DashClaw governs the action itself. It holds the real command before it runs and binds the release to a recorded human decision, instead of showing you a log of what already happened."
+  },
+  "proofPoints": [],
+  "cta": "Govern your agents at dashclaw.io",
+  "narration": [
+    {"act": "hall", "text": "At three in the morning, your agent is still working."},
+    {"act": "agent", "text": "It reads. It writes. It deploys. Nobody is watching."},
+    {"act": "reach", "text": "Until it reaches for something that cannot be undone."},
+    {"act": "intercept", "text": "DashClaw holds it. Risk scored, bound to the exact command. Waiting for you, wherever you are."},
+    {"act": "release", "text": "One click. It runs. And the decision is on the record."},
+    {"act": "ledger", "text": "Every governed action, chained to the decision that allowed it. Not a log after the fact."},
+    {"act": "wide", "text": "Govern your agents at dashclaw dot io."}
+  ],
+  "social": {
+    "x": {
+      "hook": "Your agent just tried something sensitive. DashClaw asked you first.",
+      "headline": "Intercepted before it runs"
+    },
+    "linkedin": {
+      "hook": "Every governed action, chained to the decision that allowed it.",
+      "headline": "Chained to the decision, not a log after the fact"
+    },
+    "vertical": {
+      "hook": "Your agent works while you are away. DashClaw holds the risky parts.",
+      "headline": "The approval layer for unattended agents"
+    }
+  }
+}

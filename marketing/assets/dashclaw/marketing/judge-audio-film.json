@@ -1,0 +1,275 @@
+{
+  "judge": "audio",
+  "brand": "dashclaw",
+  "asset": "film-v5-scored",
+  "generatedAt": "2026-09-06T17:37:57.776Z",
+  "verdict": "PASS",
+  "inputs": {
+    "video": "marketing/assets/dashclaw/film/film-v5-scored.mp4",
+    "manifest": "marketing/assets/dashclaw/props/dashclaw-film-audio.json",
+    "transcriptCache": "marketing/assets/dashclaw/marketing/heard-film-v5-scored.json"
+  },
+  "summary": {
+    "linesInManifest": 7,
+    "linesHeard": 7,
+    "whisperAvailable": true,
+    "videoDurationS": 40,
+    "findings": 28
+  },
+  "findings": [
+    {
+      "check": "stream",
+      "level": "PASS",
+      "videoDurationS": 40,
+      "audioDurationS": 40,
+      "message": "Audio stream spans the video (40.00s of 40.00s)."
+    },
+    {
+      "check": "sample-rate",
+      "level": "PASS",
+      "sampleRate": 48000,
+      "message": "Sample rate is 48000Hz."
+    },
+    {
+      "check": "loudness",
+      "level": "WARN",
+      "integratedLufs": -13.7,
+      "truePeakDb": -1.9,
+      "lra": 4.3,
+      "targetI": -14,
+      "chainTp": -2,
+      "targetLra": 7,
+      "message": "I: -13.7 LUFS (target -14), Peak: -1.9 dBTP (chain -2), LRA: 4.3 LU (target 7)."
+    },
+    {
+      "check": "leading-silence",
+      "level": "PASS",
+      "seconds": 0,
+      "message": "0.00s of leading silence (fail over 1.30s = FADE_IN 24f/30fps + 0.5s)."
+    },
+    {
+      "check": "trailing-silence",
+      "level": "PASS",
+      "seconds": 0.597458,
+      "message": "0.60s of trailing silence (fail over 1.70s = FADE_OUT 36f/30fps + 0.5s)."
+    },
+    {
+      "check": "content",
+      "level": "PASS",
+      "act": "hall",
+      "score": 0.881,
+      "manifestText": "At three in the morning, your agent is still working.",
+      "heardText": "At 3 in the morning, your agent is still working.",
+      "message": "Act \"hall\": heard as expected (score 0.88)."
+    },
+    {
+      "check": "content",
+      "level": "PASS",
+      "act": "agent",
+      "score": 1,
+      "manifestText": "It reads. It writes. It deploys. Nobody is watching.",
+      "heardText": "It reads. It writes. It deploys. Nobody is watching.",
+      "message": "Act \"agent\": heard as expected (score 1.00)."
+    },
+    {
+      "check": "content",
+      "level": "PASS",
+      "act": "reach",
+      "score": 1,
+      "manifestText": "Until it reaches for something that cannot be undone.",
+      "heardText": "Until it reaches for something that cannot be undone.",
+      "message": "Act \"reach\": heard as expected (score 1.00)."
+    },
+    {
+      "check": "content",
+      "level": "PASS",
+      "act": "intercept",
+      "score": 1,
+      "manifestText": "DashClaw holds it. Risk scored, bound to the exact command. Waiting for you, wherever you are.",
+      "heardText": "Dashclaw holds it. Risk scored. Bound to the exact command. Waiting for you. Wherever you are.",
+      "message": "Act \"intercept\": heard as expected (score 1.00)."
+    },
+    {
+      "check": "content",
+      "level": "PASS",
+      "act": "release",
+      "score": 1,
+      "manifestText": "One click. It runs. And the decision is on the record.",
+      "heardText": "One click. It runs. And the decision is on the record.",
+      "message": "Act \"release\": heard as expected (score 1.00)."
+    },
+    {
+      "check": "content",
+      "level": "PASS",
+      "act": "ledger",
+      "score": 1,
+      "manifestText": "Every governed action, chained to the decision that allowed it. Not a log after the fact.",
+      "heardText": "Every governed action. Chained to the decision that allowed it. Not a log after the fact.",
+      "message": "Act \"ledger\": heard as expected (score 1.00)."
+    },
+    {
+      "check": "content",
+      "level": "PASS",
+      "act": "wide",
+      "score": 0.903,
+      "manifestText": "Govern your agents at dashclaw dot io.",
+      "heardText": "Govern your agents at dashclaw .io",
+      "message": "Act \"wide\": heard as expected (score 0.90)."
+    },
+    {
+      "check": "order",
+      "level": "PASS",
+      "acts": [
+        "hall",
+        "agent",
+        "reach",
+        "intercept",
+        "release",
+        "ledger",
+        "wide"
+      ],
+      "message": "7/7 manifest lines heard in order."
+    },
+    {
+      "check": "timing",
+      "level": "PASS",
+      "act": "hall",
+      "measuredS": 2.74,
+      "manifestS": 2.83,
+      "deltaS": -0.09,
+      "withinActWindow": true,
+      "message": "Act \"hall\": measured 2.74s vs manifest 2.83s (delta -0.09s)."
+    },
+    {
+      "check": "timing",
+      "level": "WARN",
+      "act": "agent",
+      "measuredS": 3.8,
+      "manifestS": 4.32,
+      "deltaS": -0.52,
+      "withinActWindow": true,
+      "message": "Act \"agent\": measured 3.80s vs manifest 4.32s (delta -0.52s, tolerance 0.35s) but the line sits in its correct act window — likely whisper word-timestamp noise, worth an ear only if other findings agree."
+    },
+    {
+      "check": "timing",
+      "level": "WARN",
+      "act": "reach",
+      "measuredS": 2.56,
+      "manifestS": 3.02,
+      "deltaS": -0.46,
+      "withinActWindow": true,
+      "message": "Act \"reach\": measured 2.56s vs manifest 3.02s (delta -0.46s, tolerance 0.35s) but the line sits in its correct act window — likely whisper word-timestamp noise, worth an ear only if other findings agree."
+    },
+    {
+      "check": "timing",
+      "level": "PASS",
+      "act": "intercept",
+      "measuredS": 5.42,
+      "manifestS": 5.71,
+      "deltaS": -0.29,
+      "withinActWindow": true,
+      "message": "Act \"intercept\": measured 5.42s vs manifest 5.71s (delta -0.29s)."
+    },
+    {
+      "check": "timing",
+      "level": "PASS",
+      "act": "release",
+      "measuredS": 3.36,
+      "manifestS": 3.53,
+      "deltaS": -0.17,
+      "withinActWindow": true,
+      "message": "Act \"release\": measured 3.36s vs manifest 3.53s (delta -0.17s)."
+    },
+    {
+      "check": "timing",
+      "level": "PASS",
+      "act": "ledger",
+      "measuredS": 5.8,
+      "manifestS": 5.9,
+      "deltaS": -0.1,
+      "withinActWindow": true,
+      "message": "Act \"ledger\": measured 5.80s vs manifest 5.90s (delta -0.10s)."
+    },
+    {
+      "check": "timing",
+      "level": "PASS",
+      "act": "wide",
+      "measuredS": 2.34,
+      "manifestS": 2.51,
+      "deltaS": -0.17,
+      "withinActWindow": true,
+      "message": "Act \"wide\": measured 2.34s vs manifest 2.51s (delta -0.17s)."
+    },
+    {
+      "check": "interior-speechless",
+      "level": "PASS",
+      "gapS": 2.66,
+      "fromS": 3.34,
+      "toS": 6,
+      "message": "Largest interior speechless stretch is 2.7s."
+    },
+    {
+      "check": "duck",
+      "level": "WARN",
+      "act": "hall",
+      "voMeanDb": -18,
+      "musicMeanDb": -20,
+      "duckDb": -2,
+      "message": "Act \"hall\": music is only -2.0dB quieter during VO than the neighboring music-only region — duck not clearly measurable here (wide tolerance; master-audio's loudnorm compresses dynamics)."
+    },
+    {
+      "check": "duck",
+      "level": "WARN",
+      "act": "agent",
+      "voMeanDb": -19,
+      "musicMeanDb": -20,
+      "duckDb": -1,
+      "message": "Act \"agent\": music is only -1.0dB quieter during VO than the neighboring music-only region — duck not clearly measurable here (wide tolerance; master-audio's loudnorm compresses dynamics)."
+    },
+    {
+      "check": "duck",
+      "level": "WARN",
+      "act": "reach",
+      "voMeanDb": -18.8,
+      "musicMeanDb": -19.6,
+      "duckDb": -0.8,
+      "message": "Act \"reach\": music is only -0.8dB quieter during VO than the neighboring music-only region — duck not clearly measurable here (wide tolerance; master-audio's loudnorm compresses dynamics)."
+    },
+    {
+      "check": "duck",
+      "level": "WARN",
+      "act": "intercept",
+      "voMeanDb": -18,
+      "musicMeanDb": -18.3,
+      "duckDb": -0.3,
+      "message": "Act \"intercept\": music is only -0.3dB quieter during VO than the neighboring music-only region — duck not clearly measurable here (wide tolerance; master-audio's loudnorm compresses dynamics)."
+    },
+    {
+      "check": "duck",
+      "level": "WARN",
+      "act": "release",
+      "voMeanDb": -18.1,
+      "musicMeanDb": -18.3,
+      "duckDb": -0.2,
+      "message": "Act \"release\": music is only -0.2dB quieter during VO than the neighboring music-only region — duck not clearly measurable here (wide tolerance; master-audio's loudnorm compresses dynamics)."
+    },
+    {
+      "check": "duck",
+      "level": "WARN",
+      "act": "ledger",
+      "voMeanDb": -18,
+      "musicMeanDb": -18.1,
+      "duckDb": -0.1,
+      "message": "Act \"ledger\": music is only -0.1dB quieter during VO than the neighboring music-only region — duck not clearly measurable here (wide tolerance; master-audio's loudnorm compresses dynamics)."
+    },
+    {
+      "check": "duck",
+      "level": "WARN",
+      "act": "wide",
+      "voMeanDb": -18,
+      "musicMeanDb": -18.1,
+      "duckDb": -0.1,
+      "message": "Act \"wide\": music is only -0.1dB quieter during VO than the neighboring music-only region — duck not clearly measurable here (wide tolerance; master-audio's loudnorm compresses dynamics)."
+    }
+  ]
+}

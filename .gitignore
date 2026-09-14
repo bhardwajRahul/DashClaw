@@ -195,3 +195,16 @@ costclaw-out/
 # Mangled-Windows-path litter (absolute paths written as literal filenames by a buggy tool)
 /C[:U]sers*
 /C[:P]rojects*
+
+# Marketing workspace (marketing-studio runs): media stays local, sidecars (json/md/html/srt/vtt) are committed
+marketing/assets/**/*.png
+marketing/assets/**/*.jpg
+marketing/assets/**/*.gif
+marketing/assets/**/*.mp4
+marketing/assets/**/*.webm
+marketing/assets/**/*.mp3
+marketing/assets/**/*.wav
+marketing/assets/**/*.txt
+marketing/assets/**/.score-work/
+marketing/assets/**/public/
+marketing/assets/**/cache.json

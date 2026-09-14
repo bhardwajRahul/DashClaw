@@ -1,0 +1,544 @@
+{
+  "judge": "production",
+  "verdict": "INCOMPLETE",
+  "generatedAt": "2026-09-06T17:28:29.172Z",
+  "input": {
+    "brand": "dashclaw",
+    "projectRoot": "C:\\Projects\\DashClaw",
+    "productionPlanPath": "marketing/assets/dashclaw/marketing/production-plan.json",
+    "productionPlanSha256": "42038829707bded790504ba074ff0dbc8c1356ccde9e20ca7ddd9250d9384b75",
+    "sourceBundleSha256": "bb7aaf39b2ab91561a263d385726ef3e543d8e6bd6008a0b52f6f0a8b46ca262",
+    "sourceBundleFiles": 1068,
+    "directionPath": "marketing/assets/dashclaw/marketing/direction.json",
+    "directionSha256": "1c49c8c5725b997a6f6d2bb5525e5237f5058f7abd31fc14f2e6f476f282225a",
+    "shotPlanPath": "marketing/assets/dashclaw/marketing/shot-plan.json",
+    "shotPlanSha256": "e7c56a99b4fce793cd66f861f4d9f37008129637bbc09e7a3ff985bd0ff987bc",
+    "renderPath": "marketing/assets/dashclaw/film/film-v5-scored.mp4",
+    "renderSha256": "f5b5cff40cac852f92f74adc345f5507708bcb7cc402df8af37ad31ebfce2e41",
+    "renderBytes": 22282457,
+    "frames": 1200,
+    "shots": 7,
+    "reviewedFrames": 21
+  },
+  "machine": {
+    "render": {
+      "codec": "h264",
+      "width": 1920,
+      "height": 1080,
+      "fps": 30,
+      "frames": 1200,
+      "durationSec": 40,
+      "bytes": 22282457,
+      "path": "marketing/assets/dashclaw/film/film-v5-scored.mp4",
+      "sha256": "f5b5cff40cac852f92f74adc345f5507708bcb7cc402df8af37ad31ebfce2e41"
+    },
+    "grammar": {
+      "shots": 7,
+      "purposes": 7,
+      "scales": 4,
+      "cameras": 2,
+      "transitions": 2,
+      "readable": 7,
+      "heroes": 1,
+      "durations": 5
+    },
+    "references": 6,
+    "stageEvidence": {
+      "styleFrame": {
+        "path": "marketing/assets/dashclaw/marketing/stage/style-frame.png",
+        "sha256": "bed500122b5eb22d6efe375769ed579ad4b4f275dacd8b0e2d622236da9642c9",
+        "bytes": 2328969
+      },
+      "animatic": {
+        "path": "marketing/assets/dashclaw/marketing/stage/animatic.mp4",
+        "sha256": "1596161bb632a355b59c3f8742a323146ee36e8ce3e7b93d9a58911a5381a0d5",
+        "bytes": 9507997
+      }
+    },
+    "samples": [
+      {
+        "shotId": "hall",
+        "phase": "start",
+        "frame": 2,
+        "metrics": {
+          "width": 1920,
+          "height": 1080,
+          "pixels": 2073600,
+          "meanLuma": 35.85,
+          "lumaStdDev": 42.442,
+          "contrastSpan": 127.731,
+          "blackFraction": 0.248806,
+          "edgeOccupancy": 0.016419,
+          "dominantColorFraction": 0.434593
+        }
+      },
+      {
+        "shotId": "hall",
+        "phase": "middle",
+        "frame": 79,
+        "metrics": {
+          "width": 1920,
+          "height": 1080,
+          "pixels": 2073600,
+          "meanLuma": 34.547,
+          "lumaStdDev": 42.063,
+          "contrastSpan": 121.442,
+          "blackFraction": 0.258076,
+          "edgeOccupancy": 0.015871,
+          "dominantColorFraction": 0.470511
+        }
+      },
+      {
+        "shotId": "hall",
+        "phase": "end",
+        "frame": 155,
+        "metrics": {
+          "width": 1920,
+          "height": 1080,
+          "pixels": 2073600,
+          "meanLuma": 35.227,
+          "lumaStdDev": 42.292,
+          "contrastSpan": 124.505,
+          "blackFraction": 0.250741,
+          "edgeOccupancy": 0.014706,
+          "dominantColorFraction": 0.471181
+        }
+      },
+      {
+        "shotId": "agent",
+        "phase": "start",
+        "frame": 152,
+        "metrics": {
+          "width": 1920,
+          "height": 1080,
+          "pixels": 2073600,
+          "meanLuma": 33.415,
+          "lumaStdDev": 40.136,
+          "contrastSpan": 116.819,
+          "blackFraction": 0.249486,
+          "edgeOccupancy": 0.014353,
+          "dominantColorFraction": 0.460652
+        }
+      },
+      {
+        "shotId": "agent",
+        "phase": "middle",
+        "frame": 244,
+        "metrics": {
+          "width": 1920,
+          "height": 1080,
+          "pixels": 2073600,
+          "meanLuma": 36.448,
+          "lumaStdDev": 42.923,
+          "contrastSpan": 126.442,
+          "blackFraction": 0.249208,
+          "edgeOccupancy": 0.015728,
+          "dominantColorFraction": 0.436426
+        }
+      },
+      {
+        "shotId": "agent",
+        "phase": "end",
+        "frame": 335,
+        "metrics": {
+          "width": 1920,
+          "height": 1080,
+          "pixels": 2073600,
+          "meanLuma": 32.945,
+          "lumaStdDev": 37.28,
+          "contrastSpan": 104.147,
+          "blackFraction": 0.263676,
+          "edgeOccupancy": 0.008691,
+          "dominantColorFraction": 0.462293
+        }
+      },
+      {
+        "shotId": "reach",
+        "phase": "start",
+        "frame": 332,
+        "metrics": {
+          "width": 1920,
+          "height": 1080,
+          "pixels": 2073600,
+          "meanLuma": 31.352,
+          "lumaStdDev": 38.107,
+          "contrastSpan": 103.075,
+          "blackFraction": 0.27307,
+          "edgeOccupancy": 0.011168,
+          "dominantColorFraction": 0.482433
+        }
+      },
+      {
+        "shotId": "reach",
+        "phase": "middle",
+        "frame": 394,
+        "metrics": {
+          "width": 1920,
+          "height": 1080,
+          "pixels": 2073600,
+          "meanLuma": 27.711,
+          "lumaStdDev": 36.644,
+          "contrastSpan": 68.944,
+          "blackFraction": 0.327532,
+          "edgeOccupancy": 0.006961,
+          "dominantColorFraction": 0.537738
+        }
+      },
+      {
+        "shotId": "reach",
+        "phase": "end",
+        "frame": 455,
+        "metrics": {
+          "width": 1920,
+          "height": 1080,
+          "pixels": 2073600,
+          "meanLuma": 18.742,
+          "lumaStdDev": 8.907,
+          "contrastSpan": 18.366,
+          "blackFraction": 0.000081,
+          "edgeOccupancy": 0.00118,
+          "dominantColorFraction": 0.832221
+        }
+      },
+      {
+        "shotId": "intercept",
+        "phase": "start",
+        "frame": 452,
+        "metrics": {
+          "width": 1920,
+          "height": 1080,
+          "pixels": 2073600,
+          "meanLuma": 26.951,
+          "lumaStdDev": 34.302,
+          "contrastSpan": 64.944,
+          "blackFraction": 0.320523,
+          "edgeOccupancy": 0.006548,
+          "dominantColorFraction": 0.5466
+        }
+      },
+      {
+        "shotId": "intercept",
+        "phase": "middle",
+        "frame": 559,
+        "metrics": {
+          "width": 1920,
+          "height": 1080,
+          "pixels": 2073600,
+          "meanLuma": 19.722,
+          "lumaStdDev": 22.576,
+          "contrastSpan": 9.574,
+          "blackFraction": 0.000114,
+          "edgeOccupancy": 0.007575,
+          "dominantColorFraction": 0.961207
+        }
+      },
+      {
+        "shotId": "intercept",
+        "phase": "end",
+        "frame": 665,
+        "metrics": {
+          "width": 1920,
+          "height": 1080,
+          "pixels": 2073600,
+          "meanLuma": 25.831,
+          "lumaStdDev": 29.392,
+          "contrastSpan": 58.876,
+          "blackFraction": 0.279169,
+          "edgeOccupancy": 0.007006,
+          "dominantColorFraction": 0.55706
+        }
+      },
+      {
+        "shotId": "release",
+        "phase": "start",
+        "frame": 662,
+        "metrics": {
+          "width": 1920,
+          "height": 1080,
+          "pixels": 2073600,
+          "meanLuma": 19.868,
+          "lumaStdDev": 20.126,
+          "contrastSpan": 16,
+          "blackFraction": 0.000054,
+          "edgeOccupancy": 0.007071,
+          "dominantColorFraction": 0.924363
+        }
+      },
+      {
+        "shotId": "release",
+        "phase": "middle",
+        "frame": 739,
+        "metrics": {
+          "width": 1920,
+          "height": 1080,
+          "pixels": 2073600,
+          "meanLuma": 19.139,
+          "lumaStdDev": 39.036,
+          "contrastSpan": 77.458,
+          "blackFraction": 0.479233,
+          "edgeOccupancy": 0.007542,
+          "dominantColorFraction": 0.781301
+        }
+      },
+      {
+        "shotId": "release",
+        "phase": "end",
+        "frame": 815,
+        "metrics": {
+          "width": 1920,
+          "height": 1080,
+          "pixels": 2073600,
+          "meanLuma": 16.901,
+          "lumaStdDev": 10.43,
+          "contrastSpan": 22.932,
+          "blackFraction": 0.000023,
+          "edgeOccupancy": 0.001242,
+          "dominantColorFraction": 0.91459
+        }
+      },
+      {
+        "shotId": "ledger",
+        "phase": "start",
+        "frame": 812,
+        "metrics": {
+          "width": 1920,
+          "height": 1080,
+          "pixels": 2073600,
+          "meanLuma": 22.696,
+          "lumaStdDev": 42.694,
+          "contrastSpan": 90.008,
+          "blackFraction": 0.299139,
+          "edgeOccupancy": 0.009874,
+          "dominantColorFraction": 0.790791
+        }
+      },
+      {
+        "shotId": "ledger",
+        "phase": "middle",
+        "frame": 889,
+        "metrics": {
+          "width": 1920,
+          "height": 1080,
+          "pixels": 2073600,
+          "meanLuma": 16.224,
+          "lumaStdDev": 17.377,
+          "contrastSpan": 2,
+          "blackFraction": 0.000865,
+          "edgeOccupancy": 0.012022,
+          "dominantColorFraction": 0.980963
+        }
+      },
+      {
+        "shotId": "ledger",
+        "phase": "end",
+        "frame": 965,
+        "metrics": {
+          "width": 1920,
+          "height": 1080,
+          "pixels": 2073600,
+          "meanLuma": 29.672,
+          "lumaStdDev": 40.112,
+          "contrastSpan": 106.076,
+          "blackFraction": 0.477115,
+          "edgeOccupancy": 0.015328,
+          "dominantColorFraction": 0.641661
+        }
+      },
+      {
+        "shotId": "wide",
+        "phase": "start",
+        "frame": 962,
+        "metrics": {
+          "width": 1920,
+          "height": 1080,
+          "pixels": 2073600,
+          "meanLuma": 17.302,
+          "lumaStdDev": 17.086,
+          "contrastSpan": 11,
+          "blackFraction": 0.000643,
+          "edgeOccupancy": 0.012031,
+          "dominantColorFraction": 0.963601
+        }
+      },
+      {
+        "shotId": "wide",
+        "phase": "middle",
+        "frame": 1080,
+        "metrics": {
+          "width": 1920,
+          "height": 1080,
+          "pixels": 2073600,
+          "meanLuma": 34.638,
+          "lumaStdDev": 49.05,
+          "contrastSpan": 133.684,
+          "blackFraction": 0.37859,
+          "edgeOccupancy": 0.016713,
+          "dominantColorFraction": 0.585331
+        }
+      },
+      {
+        "shotId": "wide",
+        "phase": "end",
+        "frame": 1197,
+        "metrics": {
+          "width": 1920,
+          "height": 1080,
+          "pixels": 2073600,
+          "meanLuma": 42.753,
+          "lumaStdDev": 54.009,
+          "contrastSpan": 152.579,
+          "blackFraction": 0.305091,
+          "edgeOccupancy": 0.021166,
+          "dominantColorFraction": 0.513298
+        }
+      }
+    ],
+    "motion": [
+      {
+        "shotId": "hall",
+        "startFrame": 2,
+        "endFrame": 155,
+        "meanAbsDelta": 16.6447
+      },
+      {
+        "shotId": "agent",
+        "startFrame": 152,
+        "endFrame": 335,
+        "meanAbsDelta": 16.3114
+      },
+      {
+        "shotId": "reach",
+        "startFrame": 332,
+        "endFrame": 455,
+        "meanAbsDelta": 24.8717
+      },
+      {
+        "shotId": "intercept",
+        "startFrame": 452,
+        "endFrame": 665,
+        "meanAbsDelta": 4.0601
+      },
+      {
+        "shotId": "release",
+        "startFrame": 662,
+        "endFrame": 815,
+        "meanAbsDelta": 9.293
+      },
+      {
+        "shotId": "ledger",
+        "startFrame": 812,
+        "endFrame": 965,
+        "meanAbsDelta": 38.316
+      },
+      {
+        "shotId": "wide",
+        "startFrame": 962,
+        "endFrame": 1197,
+        "meanAbsDelta": 37.8834
+      }
+    ]
+  },
+  "perceptual": {
+    "reviews": 0,
+    "inherited": null,
+    "latest": null
+  },
+  "summary": {
+    "shots": 7,
+    "references": 6,
+    "evidenceSamples": 21,
+    "measuredSamples": 21,
+    "perceptualReviews": 0,
+    "fails": 0,
+    "incomplete": 9,
+    "warns": 6
+  },
+  "findings": [
+    {
+      "level": "WARN",
+      "category": "repetition",
+      "message": "Three consecutive shots repeat transition (dissolve). Review the run perceptually.",
+      "shotId": "intercept"
+    },
+    {
+      "level": "INCOMPLETE",
+      "category": "style-frame",
+      "message": "style-frame review record is missing or outside the repository."
+    },
+    {
+      "level": "INCOMPLETE",
+      "category": "style-frame",
+      "message": "style-frame is not explicitly approved."
+    },
+    {
+      "level": "INCOMPLETE",
+      "category": "style-frame",
+      "message": "style-frame approval requires a named director, operator, or independent reviewer."
+    },
+    {
+      "level": "INCOMPLETE",
+      "category": "style-frame",
+      "message": "style-frame approval is not bound to the current artifact hash."
+    },
+    {
+      "level": "INCOMPLETE",
+      "category": "animatic",
+      "message": "animatic review record is missing or outside the repository."
+    },
+    {
+      "level": "INCOMPLETE",
+      "category": "animatic",
+      "message": "animatic is not explicitly approved."
+    },
+    {
+      "level": "INCOMPLETE",
+      "category": "animatic",
+      "message": "animatic approval requires a named director, operator, or independent reviewer."
+    },
+    {
+      "level": "INCOMPLETE",
+      "category": "animatic",
+      "message": "animatic approval is not bound to the current artifact hash."
+    },
+    {
+      "level": "WARN",
+      "category": "render-measurement",
+      "message": "reach/end has unusually low measured contrast or edge occupancy; perceptual review must decide whether it is intentional.",
+      "shotId": "reach",
+      "frame": 455
+    },
+    {
+      "level": "WARN",
+      "category": "render-measurement",
+      "message": "intercept/middle has unusually low measured contrast or edge occupancy; perceptual review must decide whether it is intentional.",
+      "shotId": "intercept",
+      "frame": 559
+    },
+    {
+      "level": "WARN",
+      "category": "render-measurement",
+      "message": "release/end has unusually low measured contrast or edge occupancy; perceptual review must decide whether it is intentional.",
+      "shotId": "release",
+      "frame": 815
+    },
+    {
+      "level": "WARN",
+      "category": "render-measurement",
+      "message": "ledger/middle has unusually low measured contrast or edge occupancy; perceptual review must decide whether it is intentional.",
+      "shotId": "ledger",
+      "frame": 889
+    },
+    {
+      "level": "WARN",
+      "category": "render-measurement",
+      "message": "wide/start has unusually low measured contrast or edge occupancy; perceptual review must decide whether it is intentional.",
+      "shotId": "wide",
+      "frame": 962
+    },
+    {
+      "level": "INCOMPLETE",
+      "category": "perceptual-review",
+      "message": "No structured perceptual review has been recorded in Mission Control."
+    }
+  ]
+}

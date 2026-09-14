@@ -1,0 +1,85 @@
+{
+  "brandId": "dashclaw",
+  "video": "dashclaw/demo.webm",
+  "cta": "Govern your agents at dashclaw.io",
+  "telemetry": {
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "durationMs": 25312,
+    "events": [
+      {
+        "type": "step",
+        "t": 883,
+        "label": "Every action your unattended agent tries is intercepted and held here."
+      },
+      {
+        "type": "focus",
+        "t": 1675,
+        "x": 832,
+        "y": 450,
+        "w": 1112,
+        "h": 705
+      },
+      {
+        "type": "step",
+        "t": 5488,
+        "label": "Risk scored and bound to the exact command."
+      },
+      {
+        "type": "focus",
+        "t": 5488,
+        "x": 832,
+        "y": 380,
+        "w": 1044,
+        "h": 340
+      },
+      {
+        "type": "step",
+        "t": 9302,
+        "label": "One click releases it. The decision is recorded."
+      },
+      {
+        "type": "click",
+        "t": 9308,
+        "x": 1235,
+        "y": 320
+      },
+      {
+        "type": "focus",
+        "t": 10930,
+        "x": 832,
+        "y": 450,
+        "w": 1112,
+        "h": 705
+      },
+      {
+        "type": "step",
+        "t": 15633,
+        "label": "Every governed action, chained to the decision that allowed it."
+      },
+      {
+        "type": "focus",
+        "t": 16406,
+        "x": 829,
+        "y": 570,
+        "w": 1024,
+        "h": 420
+      },
+      {
+        "type": "step",
+        "t": 21502,
+        "label": "A short list of rules can interrupt the run. Everything else is recorded."
+      },
+      {
+        "type": "focus",
+        "t": 21502,
+        "x": 832,
+        "y": 430,
+        "w": 1024,
+        "h": 420
+      }
+    ]
+  }
+}

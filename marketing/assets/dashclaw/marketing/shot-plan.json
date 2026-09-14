@@ -1,0 +1,328 @@
+{
+  "version": 1,
+  "mode": "bespoke",
+  "composition": "DashClawFilm",
+  "brandId": "dashclaw",
+  "fps": 30,
+  "total": 1200,
+  "totalFrames": 1200,
+  "width": 1920,
+  "height": 1080,
+  "aspectLock": "16:9",
+  "overlapFrames": 8,
+  "holdFrame": 390,
+  "releaseFrame": 668,
+  "groundFlips": [
+    {
+      "atFrame": 450,
+      "from": "hall",
+      "to": "ui",
+      "carriedBy": "the hold"
+    },
+    {
+      "atFrame": 660,
+      "from": "ui",
+      "to": "hall",
+      "carriedBy": "the hold"
+    },
+    {
+      "atFrame": 810,
+      "from": "hall",
+      "to": "ui",
+      "carriedBy": "the hold"
+    },
+    {
+      "atFrame": 960,
+      "from": "ui",
+      "to": "hall",
+      "carriedBy": "the hold"
+    }
+  ],
+  "direction": {
+    "preset": "editorial",
+    "thesis": "At 3am an agent walks a dark data hall alone; the film is the moment it reaches for something that cannot be undone and the world stops until a person says yes."
+  },
+  "shots": [
+    {
+      "id": "hall",
+      "from": 0,
+      "len": 158,
+      "durationFrames": 158,
+      "durationSec": 5.267,
+      "purpose": "establish",
+      "ground": "hall",
+      "scale": "wide",
+      "camera": {
+        "cadence": "measured",
+        "move": "slow dolly down a dark aisle of racks, continuous"
+      },
+      "transition": {
+        "kind": "cut",
+        "frames": 0
+      },
+      "source": {
+        "kind": "plate",
+        "dir": "dashclaw/hall/",
+        "frames": 150
+      },
+      "onScreenText": {
+        "maxChars": 12,
+        "minHoldFrames": 150
+      },
+      "readability": {
+        "safeArea": true,
+        "minContrast": 4.5
+      },
+      "copyOnScreen": "timestamp 03:11:58 -> 03:12:03, bottom left, ink3",
+      "audioBeat": "room tone and rack fans establish; narration line hall at 1.0s",
+      "audioRef": "hall",
+      "hero": false,
+      "endingHoldFrames": 0,
+      "references": [
+        "hall-plates",
+        "direction-night-shift",
+        "brand-tokens"
+      ]
+    },
+    {
+      "id": "agent",
+      "from": 150,
+      "len": 188,
+      "durationFrames": 188,
+      "durationSec": 6.267,
+      "purpose": "problem",
+      "ground": "hall",
+      "scale": "medium",
+      "camera": {
+        "cadence": "measured",
+        "move": "camera follows the travelling light at a distance"
+      },
+      "transition": {
+        "kind": "dissolve",
+        "frames": 8
+      },
+      "source": {
+        "kind": "plate",
+        "dir": "dashclaw/hall/agent/",
+        "frames": 180
+      },
+      "onScreenText": {
+        "maxChars": 24,
+        "minHoldFrames": 90
+      },
+      "readability": {
+        "safeArea": true,
+        "minContrast": 4.5
+      },
+      "copyOnScreen": "agent-7 · unattended (once, small, ink3)",
+      "audioBeat": "the agent as a soft rising tone; narration line agent at 6.0s",
+      "audioRef": "agent",
+      "hero": false,
+      "endingHoldFrames": 0,
+      "references": [
+        "hall-plates",
+        "brand-tokens"
+      ]
+    },
+    {
+      "id": "reach",
+      "from": 330,
+      "len": 128,
+      "durationFrames": 128,
+      "durationSec": 4.267,
+      "purpose": "mechanism",
+      "ground": "hall",
+      "scale": "close",
+      "camera": {
+        "cadence": "locked",
+        "move": "the light accelerates to the rack, then everything stops"
+      },
+      "transition": {
+        "kind": "dissolve",
+        "frames": 8
+      },
+      "source": {
+        "kind": "plate",
+        "dir": "dashclaw/hall/reach/",
+        "frames": 120
+      },
+      "onScreenText": {
+        "maxChars": 16,
+        "minHoldFrames": 60
+      },
+      "readability": {
+        "safeArea": true,
+        "minContrast": 7
+      },
+      "copyOnScreen": "deploy --prod on the rack face, ink2; orange rule draws under it at the hold",
+      "audioBeat": "HOLD 1 at film frame 390: every sound but the room tone stops",
+      "audioRef": "reach",
+      "hero": false,
+      "endingHoldFrames": 0,
+      "references": [
+        "hall-plates",
+        "direction-night-shift"
+      ]
+    },
+    {
+      "id": "intercept",
+      "from": 450,
+      "len": 218,
+      "durationFrames": 218,
+      "durationSec": 7.267,
+      "purpose": "proof",
+      "ground": "ui",
+      "scale": "detail",
+      "camera": {
+        "cadence": "locked",
+        "move": "no camera; the card arrives and the cursor acts"
+      },
+      "transition": {
+        "kind": "dissolve",
+        "frames": 8
+      },
+      "source": {
+        "kind": "ui",
+        "route": "/approvals"
+      },
+      "onScreenText": {
+        "maxChars": 48,
+        "minHoldFrames": 60
+      },
+      "readability": {
+        "safeArea": true,
+        "minContrast": 7
+      },
+      "copyOnScreen": "HELD chip, deploy --prod, risk 0.82 (red band), bound command hash, waiting 00:00:04, Deny / Allow; chip flips to ALLOWED and a ledger row is born",
+      "audioBeat": "card whoosh at 458, the Allow click at 600; narration line intercept at 15.5s",
+      "audioRef": "intercept",
+      "hero": true,
+      "endingHoldFrames": 24,
+      "references": [
+        "approvals-surface",
+        "brand-tokens"
+      ]
+    },
+    {
+      "id": "release",
+      "from": 660,
+      "len": 158,
+      "durationFrames": 158,
+      "durationSec": 5.267,
+      "purpose": "benefit",
+      "ground": "hall",
+      "scale": "wide",
+      "camera": {
+        "cadence": "measured",
+        "move": "the camera rises up and back through the fog"
+      },
+      "transition": {
+        "kind": "dissolve",
+        "frames": 8
+      },
+      "source": {
+        "kind": "plate",
+        "dir": "dashclaw/hall/release/",
+        "frames": 150,
+        "note": "the first 8 handover frames re-serve reach frame 60, so the world resumes from the picture it froze on"
+      },
+      "onScreenText": {
+        "maxChars": 12,
+        "minHoldFrames": 90
+      },
+      "readability": {
+        "safeArea": true,
+        "minContrast": 4.5
+      },
+      "copyOnScreen": "the timestamp resumes from 03:12:14",
+      "audioBeat": "release at film frame 668: the fans come back; narration line release at 22.5s",
+      "audioRef": "release",
+      "hero": false,
+      "endingHoldFrames": 0,
+      "references": [
+        "hall-plates",
+        "direction-night-shift"
+      ]
+    },
+    {
+      "id": "ledger",
+      "from": 810,
+      "len": 158,
+      "durationFrames": 158,
+      "durationSec": 5.267,
+      "purpose": "detail",
+      "ground": "ui",
+      "scale": "medium",
+      "camera": {
+        "cadence": "locked",
+        "move": "no camera; three rows waterfall in"
+      },
+      "transition": {
+        "kind": "dissolve",
+        "frames": 8
+      },
+      "source": {
+        "kind": "ui",
+        "route": "/decisions"
+      },
+      "onScreenText": {
+        "maxChars": 44,
+        "minHoldFrames": 60
+      },
+      "readability": {
+        "safeArea": true,
+        "minContrast": 7
+      },
+      "copyOnScreen": "agent-7 deploy --prod · decision d-4f21 · verified tick (#22c55e) · spend and risk columns; caption \"chained to the decision that allowed it\"",
+      "audioBeat": "rows whoosh at 822; narration line ledger at 27.5s",
+      "audioRef": "ledger",
+      "hero": false,
+      "endingHoldFrames": 24,
+      "references": [
+        "decisions-surface",
+        "brand-tokens"
+      ]
+    },
+    {
+      "id": "wide",
+      "from": 960,
+      "len": 240,
+      "durationFrames": 240,
+      "durationSec": 8,
+      "purpose": "resolve",
+      "ground": "hall",
+      "scale": "wide",
+      "camera": {
+        "cadence": "measured",
+        "move": "high wide over the whole hall, the plate runs its full length"
+      },
+      "transition": {
+        "kind": "dissolve",
+        "frames": 8
+      },
+      "source": {
+        "kind": "plate",
+        "dir": "dashclaw/hall/wide/",
+        "frames": 240
+      },
+      "onScreenText": {
+        "maxChars": 48,
+        "minHoldFrames": 60
+      },
+      "readability": {
+        "safeArea": true,
+        "minContrast": 7
+      },
+      "copyOnScreen": "mark + wordmark, \"The approval layer for unattended agents.\" (ink), CTA dashclaw.io in #fb923c, over a flat dark block",
+      "audioBeat": "out-of-phase ticks at 996/1032/1071/1113; narration line wide at 35.0s",
+      "audioRef": "wide",
+      "hero": false,
+      "endingHoldFrames": 60,
+      "references": [
+        "hall-plates",
+        "brand-tokens",
+        "story-board"
+      ]
+    }
+  ]
+}

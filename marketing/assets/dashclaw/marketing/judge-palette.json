@@ -1,0 +1,65 @@
+{
+  "judge": "palette",
+  "brand": "dashclaw",
+  "generatedAt": "2026-09-06T17:20:08.156Z",
+  "verdict": "PASS",
+  "input": {
+    "path": "C:/Projects/DashClaw/marketing/assets/dashclaw/film/film-v5.mp4",
+    "type": "video",
+    "frames": 5,
+    "mask": null
+  },
+  "forbidden": {
+    "colors": [],
+    "hueRanges": []
+  },
+  "thresholds": {
+    "SAT_THRESHOLD": 0.35,
+    "MIN_VALUE": 0.15,
+    "DIST_THRESHOLD": 90,
+    "HIGH_FRAC": 0.25
+  },
+  "frames": [
+    {
+      "index": 0,
+      "timeMs": 4004,
+      "forbiddenFraction": 0,
+      "offending": null,
+      "confidence": null,
+      "level": "PASS"
+    },
+    {
+      "index": 1,
+      "timeMs": 12012,
+      "forbiddenFraction": 0,
+      "offending": null,
+      "confidence": null,
+      "level": "PASS"
+    },
+    {
+      "index": 2,
+      "timeMs": 20020,
+      "forbiddenFraction": 0,
+      "offending": null,
+      "confidence": null,
+      "level": "PASS"
+    },
+    {
+      "index": 3,
+      "timeMs": 28028,
+      "forbiddenFraction": 0,
+      "offending": null,
+      "confidence": null,
+      "level": "PASS"
+    },
+    {
+      "index": 4,
+      "timeMs": 36036,
+      "forbiddenFraction": 0,
+      "offending": null,
+      "confidence": null,
+      "level": "PASS"
+    }
+  ],
+  "findings": []
+}

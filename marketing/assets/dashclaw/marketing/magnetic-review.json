@@ -1,0 +1,47 @@
+{
+  "proposedAt": "2026-07-15T19:05:55.446Z",
+  "assets": [
+    {
+      "key": "logo-reveal",
+      "file": "out/dashclaw/logo-reveal.mp4",
+      "fileName": "logo-reveal.mp4",
+      "assetId": "3269cf68-dd00-4fac-bd81-212ab27c3b78"
+    },
+    {
+      "key": "product-demo",
+      "file": "out/dashclaw/demo.mp4",
+      "fileName": "demo.mp4",
+      "assetId": "d267c8f4-78c2-4eb1-83f3-e3e63cf0b43e"
+    },
+    {
+      "key": "launch-video",
+      "file": "out/dashclaw/launch.mp4",
+      "fileName": "launch.mp4",
+      "assetId": "a5e86ba5-866e-492c-a9fe-86f444e0d728"
+    },
+    {
+      "key": "audio-track",
+      "file": "out/dashclaw/launch-final.mp4",
+      "fileName": "launch-final.mp4",
+      "assetId": "d77f9e10-4792-4457-8682-d432b7825788"
+    },
+    {
+      "key": "social-clip-x",
+      "file": "out/dashclaw/social-x.mp4",
+      "fileName": "social-x.mp4",
+      "assetId": "bc3ca416-8d09-43d1-b95b-4df227d5ae0e"
+    },
+    {
+      "key": "social-clip-linkedin",
+      "file": "out/dashclaw/social-linkedin.mp4",
+      "fileName": "social-linkedin.mp4",
+      "assetId": "e232ee4d-e1a1-403d-aa90-97c49931f980"
+    },
+    {
+      "key": "social-clip-vertical",
+      "file": "out/dashclaw/social-vertical.mp4",
+      "fileName": "social-vertical.mp4",
+      "assetId": "32c99118-0183-4ef7-8577-6d173742babb"
+    }
+  ]
+}

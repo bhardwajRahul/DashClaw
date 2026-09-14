@@ -1,0 +1,64 @@
+{
+  "judge": "sound-design-machine",
+  "verdict": "PASS",
+  "generatedAt": "2026-09-05T23:58:27.139Z",
+  "input": {
+    "path": "marketing/assets/dashclaw/film/film-v3-agency-audio-proof.mp4",
+    "sha256": "54bd681d7db08bf684c3f0a340c097ffe673f39dd4f7b07c2daf6857641a6ad1",
+    "bytes": 21944985,
+    "durationSec": 40,
+    "audio": {
+      "codec": "aac",
+      "sampleRate": 48000,
+      "channels": 2
+    },
+    "processed": {
+      "voLines": 7,
+      "sfxCues": 9,
+      "musicMarkers": 0,
+      "beatWindows": 800,
+      "beatCandidates": 129
+    }
+  },
+  "findings": [
+    {
+      "level": "info",
+      "category": "rhythm",
+      "message": "Measured 109.1 BPM at confidence 0.367; detected 129 onset candidates"
+    },
+    {
+      "level": "info",
+      "category": "delivery",
+      "message": "Delivered I -13.7 LUFS, TP -2.2 dBTP, LRA 5.6 LU",
+      "evidence": {
+        "I": -13.7,
+        "TP": -2.2,
+        "LRA": 5.6
+      }
+    },
+    {
+      "level": "incomplete",
+      "category": "perceptual-review",
+      "message": "Machine measurements do not establish intelligibility, taste, sync feel, or whether the mix should ship."
+    }
+  ],
+  "film": "marketing/assets/dashclaw/film/film-v3.mp4",
+  "out": "marketing/assets/dashclaw/film/film-v3-agency-audio-proof.mp4",
+  "manifest": "marketing/assets/dashclaw/props/dashclaw-film-audio.json",
+  "voLines": 7,
+  "sfxCues": 9,
+  "musicOnly": false,
+  "measured": {
+    "I": -13.7,
+    "TP": -2.2,
+    "LRA": 5.6
+  },
+  "beatAnalysis": {
+    "estimatedBpm": 109.1,
+    "confidence": 0.367,
+    "candidates": 129,
+    "windows": 800
+  },
+  "musicMarkers": [],
+  "passes": 2
+}

@@ -1,0 +1,32 @@
+{
+  "judge": "motion",
+  "brand": "dashclaw",
+  "generatedAt": "2026-09-06T17:20:08.380Z",
+  "verdict": "PASS",
+  "input": {
+    "sourceFiles": 101,
+    "brands": [
+      "dashclaw"
+    ]
+  },
+  "bands": {
+    "EXUBERANCE_MAX": 0.85,
+    "TEMPO_MIN": 0.5,
+    "TEMPO_MAX": 2,
+    "ENTRY_SCALE": [
+      0.9,
+      0.97
+    ],
+    "STAGGER_MS": [
+      30,
+      80
+    ],
+    "GRAIN_CEILING": 0.4,
+    "HALATION_CEILING": 0.35,
+    "staggerProbe": {
+      "frames": 2,
+      "fps": 30
+    }
+  },
+  "findings": []
+}

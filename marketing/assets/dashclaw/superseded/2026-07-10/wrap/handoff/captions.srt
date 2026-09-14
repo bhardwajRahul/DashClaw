@@ -1,0 +1,63 @@
+1
+00:00:00,200 --> 00:00:01,690
+Catch the dangerous action
+
+2
+00:00:01,690 --> 00:00:03,330
+before it runs. Every action
+
+3
+00:00:03,330 --> 00:00:05,340
+your unattended agent tries is
+
+4
+00:00:05,340 --> 00:00:06,840
+intercepted and held here,
+
+5
+00:00:06,840 --> 00:00:08,850
+before it runs. Each one is risk
+
+6
+00:00:08,850 --> 00:00:10,680
+scored and bound to the exact
+
+7
+00:00:10,680 --> 00:00:12,700
+command. One click to allow or
+
+8
+00:00:12,700 --> 00:00:14,950
+deny, right in the inbox. Allow
+
+9
+00:00:14,950 --> 00:00:16,210
+it and the decision is
+
+10
+00:00:16,690 --> 00:00:19,530
+lands in one ledger, chained to
+
+11
+00:00:19,530 --> 00:00:20,980
+the decision that allowed it.
+
+12
+00:00:20,980 --> 00:00:22,910
+Outcomes verified, spend and
+
+13
+00:00:22,910 --> 00:00:23,740
+risk on the
+
+14
+00:00:26,450 --> 00:00:28,020
+every rule that governs your
+
+15
+00:00:28,020 --> 00:00:30,250
+agents. Govern your agents at
+
+16
+00:00:30,250 --> 00:00:31,460
+dashclaw.io.

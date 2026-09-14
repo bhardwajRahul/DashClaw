@@ -1,0 +1,161 @@
+{
+  "preset": "editorial",
+  "reason": "NIGHT SHIFT survived the three-direction cull on 2026-09-03: LEDGER OF LIGHT was a category template any audit tool could ship, GLASS CORRIDOR needed a photoreal interior and a MetaHuman that one RTX 3070 Ti cannot finish. NIGHT SHIFT puts the product where the argument is: the world stops until a person says yes.",
+  "thesis": "At 3am an agent walks a dark data hall alone; the film is the moment it reaches for something that cannot be undone and the world stops until a person says yes.",
+  "visualMetaphor": "A monochrome data hall at night with one orange point of light for the agent. The signature move is THE HOLD: the whole 3D world freezes mid-motion while the interface decides, and the freeze itself is the transition between the argument ground (the hall) and the evidence ground (the rebuilt DashClaw UI).",
+  "soundIntent": "Sound-design led, narration on top. Low room tone and rack fans; the agent is a soft rising tone; the hold is an abrupt full stop of every sound except the room; the release is the fans coming back; soft out-of-phase ticks under the wide finale. Narrated, sparse, about 85 words in 40 seconds.",
+  "dials": {
+    "energy": "contemplative, long holds",
+    "density": "one idea per frame",
+    "ground": "a live 3D field (Unreal data hall) for the argument, rebuilt UI for the evidence",
+    "depth": "deep 3D with real perspective",
+    "camera": "continuous slow moves, cuts only at ground flips",
+    "type": "mono (JetBrains Mono) that gets out of the way; the world carries the voice",
+    "texture": "grain and halation, fog in the hall",
+    "colour": "monochrome hall plus one signal, brand orange; green only as the product finished state",
+    "productLiteralness": "metaphor in the hall, literal rebuilt UI in the inbox and ledger",
+    "sound": "sound-design led, narration on top",
+    "voice": "narrated, sparse, about 85 words in 40 s"
+  },
+  "paletteNote": "Ground #0e1014 in both registers; hall surfaces are the surface tokens #15171c / #1d2026 with white slit lights. Accent #f97316 is the agent itself and the held state; #22c55e appears only as the ledger verified tick; CTA text is #fb923c. The accent never touches the hall lights, rack faces, fog, type, rules, the mark wash, or any background — a wash fails judge-palette by design.",
+  "signatureMove": {
+    "name": "THE HOLD",
+    "description": "Whenever the agent reaches for a dangerous action the whole 3D world freezes mid-motion (the light stops, the fog stops, the camera stops) while the interface decides. The freeze is the PLATE holding one frame; the UI on top never freezes.",
+    "filmFrames": {
+      "tease": 390,
+      "plateFreezeFrame": 60,
+      "release": 668,
+      "rhythm": "shot 7, dozens of agents freezing and releasing out of phase"
+    }
+  },
+  "riskGuard": "At 70% a 3D hall reads as a cheap game level. Guard: primitives only, no asset packs, fog and slit lights do the work, nothing photoreal is attempted, so nothing photoreal can fail.",
+  "wrongFor": "a consumer app, anything playful, anything that wants a face",
+  "references": [
+    {
+      "id": "hall-plates",
+      "pathOrUrl": "marketing/assets/dashclaw/public/dashclaw/hall/",
+      "intendedAttributes": [
+        "monochrome data hall, primitives only, no asset packs",
+        "white slit lights and ExponentialHeightFog carry the depth",
+        "reflective dark floor so the agent light has a second life"
+      ],
+      "provenance": {
+        "kind": "generated",
+        "source": "feeders/unreal/scenes/dashclaw_hall.py, UE 5.8 MRQ, one launch, 5 shot jobs",
+        "capturedAt": "2026-09-03"
+      }
+    },
+    {
+      "id": "story-board",
+      "pathOrUrl": "marketing/assets/dashclaw/marketing/story-board.png",
+      "intendedAttributes": [
+        "approved 7-tile board; tiles 1,2,3,5,7 are real Unreal look-test frames",
+        "tiles 4 and 6 blank by design: rebuilt UI, authored in Remotion after approval"
+      ],
+      "provenance": {
+        "kind": "generated",
+        "source": "marketing/assets/dashclaw/marketing/story-board.md (approved 2026-09-03)",
+        "capturedAt": "2026-09-03"
+      }
+    },
+    {
+      "id": "approvals-surface",
+      "pathOrUrl": "https://dashclaw.io/approvals",
+      "intendedAttributes": [
+        "the held-action card: HELD chip, the exact command, risk figure, bound hash, waiting timer",
+        "Deny is a line button and Allow is a surface button; the focused Allow takes the orange rule"
+      ],
+      "provenance": {
+        "kind": "product",
+        "source": "DashClaw /approvals, the hero surface named in CLAUDE.md and brief.features[0].sourceRoute",
+        "capturedAt": null
+      }
+    },
+    {
+      "id": "decisions-surface",
+      "pathOrUrl": "https://dashclaw.io/decisions",
+      "intendedAttributes": [
+        "the causal-chain ledger: one row per governed action, chained to the decision id",
+        "the verified tick is the only green in the film"
+      ],
+      "provenance": {
+        "kind": "product",
+        "source": "DashClaw /decisions, brief.features[1].sourceRoute",
+        "capturedAt": null
+      }
+    },
+    {
+      "id": "brand-tokens",
+      "pathOrUrl": "brands/dashclaw.json",
+      "intendedAttributes": [
+        "dark only: bg #0e1014, surfaces #15171c / #1d2026",
+        "orange #f97316 is a SIGNAL (agent light, HELD chip, focused Allow, rule) never a wash",
+        "green #22c55e only as the product verified state; CTA text #fb923c",
+        "JetBrains Mono 500 tabular for every on-screen word except the end wordmark"
+      ],
+      "provenance": {
+        "kind": "brand",
+        "source": "brands/dashclaw.json voice, engine repo",
+        "capturedAt": null
+      }
+    },
+    {
+      "id": "direction-night-shift",
+      "pathOrUrl": "marketing/assets/dashclaw/marketing/direction.md",
+      "intendedAttributes": [
+        "THE HOLD as the signature move and as the transition between grounds",
+        "contemplative energy, one idea per frame, cuts only at ground flips"
+      ],
+      "provenance": {
+        "kind": "reference",
+        "source": "direction.md, written against docs/templates/DIRECTION.md; two directions killed",
+        "capturedAt": "2026-09-03"
+      }
+    }
+  ],
+  "styleFrame": {
+    "artifact": "marketing/assets/dashclaw/marketing/stage/style-frame.png",
+    "review": "marketing/assets/dashclaw/marketing/stage/style-frame-review.json"
+  },
+  "animatic": {
+    "artifact": "marketing/assets/dashclaw/marketing/stage/animatic.mp4",
+    "review": "marketing/assets/dashclaw/marketing/stage/animatic-review.json"
+  },
+  "camera": {
+    "cadence": "measured",
+    "establishingScale": "wide",
+    "proofScale": "close",
+    "detailScale": "detail"
+  },
+  "motion": {
+    "energy": 0.25,
+    "travel": 0.6,
+    "stagger": 0.3,
+    "settle": 0.8
+  },
+  "typography": {
+    "composition": "instrument",
+    "align": "center",
+    "density": "airy",
+    "casing": "sentence"
+  },
+  "material": {
+    "treatment": "solid",
+    "edge": "rule",
+    "depth": 0.8
+  },
+  "edit": {
+    "rhythm": "measured",
+    "transition": "dissolve",
+    "transitionFrames": 8
+  },
+  "intro": {
+    "kind": "cold-open",
+    "holdFrames": 30
+  },
+  "outro": {
+    "kind": "lockup",
+    "holdFrames": 60
+  },
+  "overrides": {}
+}

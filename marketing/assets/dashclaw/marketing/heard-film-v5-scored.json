@@ -1,0 +1,444 @@
+{
+  "size": 22282457,
+  "mtimeMs": 1788715438526.908,
+  "model": "small",
+  "hint": "",
+  "data": {
+    "duration": 40,
+    "language": "en",
+    "segments": [
+      {
+        "start": 0.6000000000000008,
+        "end": 3.34,
+        "text": "At 3 in the morning, your agent is still working."
+      },
+      {
+        "start": 6,
+        "end": 9.8,
+        "text": "It reads. It writes. It deploys. Nobody is watching."
+      },
+      {
+        "start": 11.96,
+        "end": 14.52,
+        "text": "Until it reaches for something that cannot be undone."
+      },
+      {
+        "start": 15.420000000000002,
+        "end": 18.7,
+        "text": "Dashclaw holds it. Risk scored. Bound to the exact command."
+      },
+      {
+        "start": 19.18,
+        "end": 20.84,
+        "text": "Waiting for you. Wherever you are."
+      },
+      {
+        "start": 22.16,
+        "end": 25.52,
+        "text": "One click. It runs. And the decision is on the record."
+      },
+      {
+        "start": 27.1,
+        "end": 30.74,
+        "text": "Every governed action. Chained to the decision that allowed it."
+      },
+      {
+        "start": 31.08,
+        "end": 32.9,
+        "text": "Not a log after the fact."
+      },
+      {
+        "start": 34.64,
+        "end": 36.98,
+        "text": "Govern your agents at dashclaw.io"
+      }
+    ],
+    "words": [
+      {
+        "w": "At",
+        "start": 0.6000000000000008,
+        "end": 1.14
+      },
+      {
+        "w": "3",
+        "start": 1.14,
+        "end": 1.42
+      },
+      {
+        "w": "in",
+        "start": 1.42,
+        "end": 1.52
+      },
+      {
+        "w": "the",
+        "start": 1.52,
+        "end": 1.6
+      },
+      {
+        "w": "morning,",
+        "start": 1.6,
+        "end": 1.9
+      },
+      {
+        "w": "your",
+        "start": 2.1,
+        "end": 2.2
+      },
+      {
+        "w": "agent",
+        "start": 2.2,
+        "end": 2.56
+      },
+      {
+        "w": "is",
+        "start": 2.56,
+        "end": 2.76
+      },
+      {
+        "w": "still",
+        "start": 2.76,
+        "end": 3
+      },
+      {
+        "w": "working.",
+        "start": 3,
+        "end": 3.34
+      },
+      {
+        "w": "It",
+        "start": 6,
+        "end": 6.14
+      },
+      {
+        "w": "reads.",
+        "start": 6.14,
+        "end": 6.48
+      },
+      {
+        "w": "It",
+        "start": 7,
+        "end": 7.1
+      },
+      {
+        "w": "writes.",
+        "start": 7.1,
+        "end": 7.32
+      },
+      {
+        "w": "It",
+        "start": 7.84,
+        "end": 7.94
+      },
+      {
+        "w": "deploys.",
+        "start": 7.94,
+        "end": 8.3
+      },
+      {
+        "w": "Nobody",
+        "start": 8.98,
+        "end": 9.24
+      },
+      {
+        "w": "is",
+        "start": 9.24,
+        "end": 9.48
+      },
+      {
+        "w": "watching.",
+        "start": 9.48,
+        "end": 9.8
+      },
+      {
+        "w": "Until",
+        "start": 11.96,
+        "end": 12.22
+      },
+      {
+        "w": "it",
+        "start": 12.22,
+        "end": 12.44
+      },
+      {
+        "w": "reaches",
+        "start": 12.44,
+        "end": 12.7
+      },
+      {
+        "w": "for",
+        "start": 12.7,
+        "end": 12.92
+      },
+      {
+        "w": "something",
+        "start": 12.92,
+        "end": 13.2
+      },
+      {
+        "w": "that",
+        "start": 13.2,
+        "end": 13.42
+      },
+      {
+        "w": "cannot",
+        "start": 13.42,
+        "end": 13.8
+      },
+      {
+        "w": "be",
+        "start": 13.8,
+        "end": 14.08
+      },
+      {
+        "w": "undone.",
+        "start": 14.08,
+        "end": 14.52
+      },
+      {
+        "w": "Dashclaw",
+        "start": 15.420000000000002,
+        "end": 15.96
+      },
+      {
+        "w": "holds",
+        "start": 15.96,
+        "end": 16.26
+      },
+      {
+        "w": "it.",
+        "start": 16.26,
+        "end": 16.42
+      },
+      {
+        "w": "Risk",
+        "start": 16.7,
+        "end": 16.88
+      },
+      {
+        "w": "scored.",
+        "start": 16.88,
+        "end": 17.3
+      },
+      {
+        "w": "Bound",
+        "start": 17.6,
+        "end": 17.76
+      },
+      {
+        "w": "to",
+        "start": 17.76,
+        "end": 17.92
+      },
+      {
+        "w": "the",
+        "start": 17.92,
+        "end": 18
+      },
+      {
+        "w": "exact",
+        "start": 18,
+        "end": 18.34
+      },
+      {
+        "w": "command.",
+        "start": 18.34,
+        "end": 18.7
+      },
+      {
+        "w": "Waiting",
+        "start": 19.18,
+        "end": 19.44
+      },
+      {
+        "w": "for",
+        "start": 19.44,
+        "end": 19.66
+      },
+      {
+        "w": "you.",
+        "start": 19.66,
+        "end": 19.88
+      },
+      {
+        "w": "Wherever",
+        "start": 20.04,
+        "end": 20.3
+      },
+      {
+        "w": "you",
+        "start": 20.3,
+        "end": 20.62
+      },
+      {
+        "w": "are.",
+        "start": 20.62,
+        "end": 20.84
+      },
+      {
+        "w": "One",
+        "start": 22.16,
+        "end": 22.68
+      },
+      {
+        "w": "click.",
+        "start": 22.68,
+        "end": 22.9
+      },
+      {
+        "w": "It",
+        "start": 23.3,
+        "end": 23.44
+      },
+      {
+        "w": "runs.",
+        "start": 23.44,
+        "end": 23.76
+      },
+      {
+        "w": "And",
+        "start": 24.22,
+        "end": 24.32
+      },
+      {
+        "w": "the",
+        "start": 24.32,
+        "end": 24.42
+      },
+      {
+        "w": "decision",
+        "start": 24.42,
+        "end": 24.76
+      },
+      {
+        "w": "is",
+        "start": 24.76,
+        "end": 25.04
+      },
+      {
+        "w": "on",
+        "start": 25.04,
+        "end": 25.18
+      },
+      {
+        "w": "the",
+        "start": 25.18,
+        "end": 25.28
+      },
+      {
+        "w": "record.",
+        "start": 25.28,
+        "end": 25.52
+      },
+      {
+        "w": "Every",
+        "start": 27.1,
+        "end": 27.78
+      },
+      {
+        "w": "governed",
+        "start": 27.78,
+        "end": 28.14
+      },
+      {
+        "w": "action.",
+        "start": 28.14,
+        "end": 28.62
+      },
+      {
+        "w": "Chained",
+        "start": 29.16,
+        "end": 29.4
+      },
+      {
+        "w": "to",
+        "start": 29.4,
+        "end": 29.54
+      },
+      {
+        "w": "the",
+        "start": 29.54,
+        "end": 29.64
+      },
+      {
+        "w": "decision",
+        "start": 29.64,
+        "end": 30
+      },
+      {
+        "w": "that",
+        "start": 30,
+        "end": 30.2
+      },
+      {
+        "w": "allowed",
+        "start": 30.2,
+        "end": 30.44
+      },
+      {
+        "w": "it.",
+        "start": 30.44,
+        "end": 30.74
+      },
+      {
+        "w": "Not",
+        "start": 31.08,
+        "end": 31.34
+      },
+      {
+        "w": "a",
+        "start": 31.34,
+        "end": 31.56
+      },
+      {
+        "w": "log",
+        "start": 31.56,
+        "end": 31.94
+      },
+      {
+        "w": "after",
+        "start": 31.94,
+        "end": 32.38
+      },
+      {
+        "w": "the",
+        "start": 32.38,
+        "end": 32.58
+      },
+      {
+        "w": "fact.",
+        "start": 32.58,
+        "end": 32.9
+      },
+      {
+        "w": "Govern",
+        "start": 34.64,
+        "end": 35.32
+      },
+      {
+        "w": "your",
+        "start": 35.32,
+        "end": 35.4
+      },
+      {
+        "w": "agents",
+        "start": 35.4,
+        "end": 35.76
+      },
+      {
+        "w": "at",
+        "start": 35.76,
+        "end": 35.94
+      },
+      {
+        "w": "dashclaw",
+        "start": 35.94,
+        "end": 36.44
+      },
+      {
+        "w": ".io",
+        "start": 36.44,
+        "end": 36.98
+      }
+    ]
+  }
+}

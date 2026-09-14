@@ -1,0 +1,16 @@
+{
+  "brandId": "dashclaw",
+  "kicker": "dashclaw.io",
+  "headline": "The approval layer for unattended agents",
+  "lines": [
+    "Sensitive actions are held before they run",
+    "One click to allow or deny in the inbox"
+  ],
+  "screenshot": "dashclaw/social/vertical-fallback.png",
+  "cta": "Govern your agents at dashclaw.io",
+  "command": null,
+  "video": null,
+  "portraitScreenshot": "dashclaw/social/vertical-fallback.png",
+  "formatWidth": 1080,
+  "formatHeight": 1920
+}

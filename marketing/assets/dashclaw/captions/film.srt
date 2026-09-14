@@ -1,0 +1,27 @@
+1
+00:00:01,000 --> 00:00:03,833
+At three in the morning, your agent is still working.
+
+2
+00:00:06,000 --> 00:00:10,319
+It reads. It writes. It deploys. Nobody is watching.
+
+3
+00:00:12,000 --> 00:00:15,019
+Until it reaches for something that cannot be undone.
+
+4
+00:00:15,500 --> 00:00:21,212
+DashClaw holds it. Risk scored, bound to the exact command. Waiting for you, wherever you are.
+
+5
+00:00:22,500 --> 00:00:26,029
+One click. It runs. And the decision is on the record.
+
+6
+00:00:27,500 --> 00:00:33,398
+Every governed action, chained to the decision that allowed it. Not a log after the fact.
+
+7
+00:00:35,000 --> 00:00:37,508
+Govern your agents at dashclaw dot io.

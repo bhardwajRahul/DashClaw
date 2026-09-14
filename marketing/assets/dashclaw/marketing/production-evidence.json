@@ -1,0 +1,780 @@
+{
+  "version": 1,
+  "generatedAt": "2026-09-06T17:28:18.052Z",
+  "productionPlanPath": "marketing/assets/dashclaw/marketing/production-plan.json",
+  "planSha256": "42038829707bded790504ba074ff0dbc8c1356ccde9e20ca7ddd9250d9384b75",
+  "sourceBundleSha256": "bb7aaf39b2ab91561a263d385726ef3e543d8e6bd6008a0b52f6f0a8b46ca262",
+  "shotPlanPath": "marketing/assets/dashclaw/marketing/shot-plan.json",
+  "shotPlanSha256": "e7c56a99b4fce793cd66f861f4d9f37008129637bbc09e7a3ff985bd0ff987bc",
+  "renderPath": "marketing/assets/dashclaw/film/film-v5-scored.mp4",
+  "renderSha256": "f5b5cff40cac852f92f74adc345f5507708bcb7cc402df8af37ad31ebfce2e41",
+  "renderBytes": 22282457,
+  "fps": 30,
+  "shots": 7,
+  "sampleCount": 21,
+  "sheetPath": "marketing/assets/dashclaw/marketing/stills/Production-sheet.html",
+  "samples": [
+    {
+      "shotId": "hall",
+      "phase": "start",
+      "frame": 2,
+      "timeSec": 0.067,
+      "imagePath": "marketing/assets/dashclaw/marketing/stills/Production-hall-start.png",
+      "imageSha256": "e07e50eae5f9d91975ff856b6a71aa7c19fec7cc3881b3235ec65f82bfedfa31",
+      "annotations": {
+        "purpose": "establish",
+        "scale": "wide",
+        "camera": "measured",
+        "transition": "cut",
+        "transitionFrames": 0,
+        "maxChars": 12,
+        "minHoldFrames": 150,
+        "safeArea": true,
+        "minContrast": 4.5,
+        "hero": false,
+        "endingHoldFrames": 0,
+        "references": [
+          "hall-plates",
+          "direction-night-shift",
+          "brand-tokens"
+        ]
+      },
+      "metrics": {
+        "width": 1920,
+        "height": 1080,
+        "pixels": 2073600,
+        "meanLuma": 35.85,
+        "lumaStdDev": 42.442,
+        "contrastSpan": 127.731,
+        "blackFraction": 0.248806,
+        "edgeOccupancy": 0.016419,
+        "dominantColorFraction": 0.434593
+      }
+    },
+    {
+      "shotId": "hall",
+      "phase": "middle",
+      "frame": 79,
+      "timeSec": 2.633,
+      "imagePath": "marketing/assets/dashclaw/marketing/stills/Production-hall-middle.png",
+      "imageSha256": "21ef2fe63690fc29836c7f38274ecf6d802dcb136c0fc015c5665151290d6ba4",
+      "annotations": {
+        "purpose": "establish",
+        "scale": "wide",
+        "camera": "measured",
+        "transition": "cut",
+        "transitionFrames": 0,
+        "maxChars": 12,
+        "minHoldFrames": 150,
+        "safeArea": true,
+        "minContrast": 4.5,
+        "hero": false,
+        "endingHoldFrames": 0,
+        "references": [
+          "hall-plates",
+          "direction-night-shift",
+          "brand-tokens"
+        ]
+      },
+      "metrics": {
+        "width": 1920,
+        "height": 1080,
+        "pixels": 2073600,
+        "meanLuma": 34.547,
+        "lumaStdDev": 42.063,
+        "contrastSpan": 121.442,
+        "blackFraction": 0.258076,
+        "edgeOccupancy": 0.015871,
+        "dominantColorFraction": 0.470511
+      }
+    },
+    {
+      "shotId": "hall",
+      "phase": "end",
+      "frame": 155,
+      "timeSec": 5.167,
+      "imagePath": "marketing/assets/dashclaw/marketing/stills/Production-hall-end.png",
+      "imageSha256": "a8599d7bdda9c9ff12470e2e8314254b88df87c7063f27379867bc5c9183819b",
+      "annotations": {
+        "purpose": "establish",
+        "scale": "wide",
+        "camera": "measured",
+        "transition": "cut",
+        "transitionFrames": 0,
+        "maxChars": 12,
+        "minHoldFrames": 150,
+        "safeArea": true,
+        "minContrast": 4.5,
+        "hero": false,
+        "endingHoldFrames": 0,
+        "references": [
+          "hall-plates",
+          "direction-night-shift",
+          "brand-tokens"
+        ]
+      },
+      "metrics": {
+        "width": 1920,
+        "height": 1080,
+        "pixels": 2073600,
+        "meanLuma": 35.227,
+        "lumaStdDev": 42.292,
+        "contrastSpan": 124.505,
+        "blackFraction": 0.250741,
+        "edgeOccupancy": 0.014706,
+        "dominantColorFraction": 0.471181
+      }
+    },
+    {
+      "shotId": "agent",
+      "phase": "start",
+      "frame": 152,
+      "timeSec": 5.067,
+      "imagePath": "marketing/assets/dashclaw/marketing/stills/Production-agent-start.png",
+      "imageSha256": "af833c48be7a4deb76a0a484b075a4577e4c2f4a258f085abd1d91c0e6430a79",
+      "annotations": {
+        "purpose": "problem",
+        "scale": "medium",
+        "camera": "measured",
+        "transition": "dissolve",
+        "transitionFrames": 8,
+        "maxChars": 24,
+        "minHoldFrames": 90,
+        "safeArea": true,
+        "minContrast": 4.5,
+        "hero": false,
+        "endingHoldFrames": 0,
+        "references": [
+          "hall-plates",
+          "brand-tokens"
+        ]
+      },
+      "metrics": {
+        "width": 1920,
+        "height": 1080,
+        "pixels": 2073600,
+        "meanLuma": 33.415,
+        "lumaStdDev": 40.136,
+        "contrastSpan": 116.819,
+        "blackFraction": 0.249486,
+        "edgeOccupancy": 0.014353,
+        "dominantColorFraction": 0.460652
+      }
+    },
+    {
+      "shotId": "agent",
+      "phase": "middle",
+      "frame": 244,
+      "timeSec": 8.133,
+      "imagePath": "marketing/assets/dashclaw/marketing/stills/Production-agent-middle.png",
+      "imageSha256": "d3e553f116a6a96477b27ffc85b6cd016a8690edcbecab35af04b71a26f13504",
+      "annotations": {
+        "purpose": "problem",
+        "scale": "medium",
+        "camera": "measured",
+        "transition": "dissolve",
+        "transitionFrames": 8,
+        "maxChars": 24,
+        "minHoldFrames": 90,
+        "safeArea": true,
+        "minContrast": 4.5,
+        "hero": false,
+        "endingHoldFrames": 0,
+        "references": [
+          "hall-plates",
+          "brand-tokens"
+        ]
+      },
+      "metrics": {
+        "width": 1920,
+        "height": 1080,
+        "pixels": 2073600,
+        "meanLuma": 36.448,
+        "lumaStdDev": 42.923,
+        "contrastSpan": 126.442,
+        "blackFraction": 0.249208,
+        "edgeOccupancy": 0.015728,
+        "dominantColorFraction": 0.436426
+      }
+    },
+    {
+      "shotId": "agent",
+      "phase": "end",
+      "frame": 335,
+      "timeSec": 11.167,
+      "imagePath": "marketing/assets/dashclaw/marketing/stills/Production-agent-end.png",
+      "imageSha256": "5524b3fe39c13355843f62823b16462e3e4eb4297adc3c9f22850f166333bf82",
+      "annotations": {
+        "purpose": "problem",
+        "scale": "medium",
+        "camera": "measured",
+        "transition": "dissolve",
+        "transitionFrames": 8,
+        "maxChars": 24,
+        "minHoldFrames": 90,
+        "safeArea": true,
+        "minContrast": 4.5,
+        "hero": false,
+        "endingHoldFrames": 0,
+        "references": [
+          "hall-plates",
+          "brand-tokens"
+        ]
+      },
+      "metrics": {
+        "width": 1920,
+        "height": 1080,
+        "pixels": 2073600,
+        "meanLuma": 32.945,
+        "lumaStdDev": 37.28,
+        "contrastSpan": 104.147,
+        "blackFraction": 0.263676,
+        "edgeOccupancy": 0.008691,
+        "dominantColorFraction": 0.462293
+      }
+    },
+    {
+      "shotId": "reach",
+      "phase": "start",
+      "frame": 332,
+      "timeSec": 11.067,
+      "imagePath": "marketing/assets/dashclaw/marketing/stills/Production-reach-start.png",
+      "imageSha256": "1566ad397e7048e45898a5f0fb67d028da412a8fc9e4c4f6b060876978f27761",
+      "annotations": {
+        "purpose": "mechanism",
+        "scale": "close",
+        "camera": "locked",
+        "transition": "dissolve",
+        "transitionFrames": 8,
+        "maxChars": 16,
+        "minHoldFrames": 60,
+        "safeArea": true,
+        "minContrast": 7,
+        "hero": false,
+        "endingHoldFrames": 0,
+        "references": [
+          "hall-plates",
+          "direction-night-shift"
+        ]
+      },
+      "metrics": {
+        "width": 1920,
+        "height": 1080,
+        "pixels": 2073600,
+        "meanLuma": 31.352,
+        "lumaStdDev": 38.107,
+        "contrastSpan": 103.075,
+        "blackFraction": 0.27307,
+        "edgeOccupancy": 0.011168,
+        "dominantColorFraction": 0.482433
+      }
+    },
+    {
+      "shotId": "reach",
+      "phase": "middle",
+      "frame": 394,
+      "timeSec": 13.133,
+      "imagePath": "marketing/assets/dashclaw/marketing/stills/Production-reach-middle.png",
+      "imageSha256": "e29ff4cb6a12e1a10901497089815466c6b7b0030c0c5b656633e7e101eec5bb",
+      "annotations": {
+        "purpose": "mechanism",
+        "scale": "close",
+        "camera": "locked",
+        "transition": "dissolve",
+        "transitionFrames": 8,
+        "maxChars": 16,
+        "minHoldFrames": 60,
+        "safeArea": true,
+        "minContrast": 7,
+        "hero": false,
+        "endingHoldFrames": 0,
+        "references": [
+          "hall-plates",
+          "direction-night-shift"
+        ]
+      },
+      "metrics": {
+        "width": 1920,
+        "height": 1080,
+        "pixels": 2073600,
+        "meanLuma": 27.711,
+        "lumaStdDev": 36.644,
+        "contrastSpan": 68.944,
+        "blackFraction": 0.327532,
+        "edgeOccupancy": 0.006961,
+        "dominantColorFraction": 0.537738
+      }
+    },
+    {
+      "shotId": "reach",
+      "phase": "end",
+      "frame": 455,
+      "timeSec": 15.167,
+      "imagePath": "marketing/assets/dashclaw/marketing/stills/Production-reach-end.png",
+      "imageSha256": "892b7f470bb48599fa56cd610059d8724890d092462fa1ff937b1f8282da14bf",
+      "annotations": {
+        "purpose": "mechanism",
+        "scale": "close",
+        "camera": "locked",
+        "transition": "dissolve",
+        "transitionFrames": 8,
+        "maxChars": 16,
+        "minHoldFrames": 60,
+        "safeArea": true,
+        "minContrast": 7,
+        "hero": false,
+        "endingHoldFrames": 0,
+        "references": [
+          "hall-plates",
+          "direction-night-shift"
+        ]
+      },
+      "metrics": {
+        "width": 1920,
+        "height": 1080,
+        "pixels": 2073600,
+        "meanLuma": 18.742,
+        "lumaStdDev": 8.907,
+        "contrastSpan": 18.366,
+        "blackFraction": 0.000081,
+        "edgeOccupancy": 0.00118,
+        "dominantColorFraction": 0.832221
+      }
+    },
+    {
+      "shotId": "intercept",
+      "phase": "start",
+      "frame": 452,
+      "timeSec": 15.067,
+      "imagePath": "marketing/assets/dashclaw/marketing/stills/Production-intercept-start.png",
+      "imageSha256": "d65530dc1be4db441a9945d71466ba3e5a57c12028905a621c916a3a7e716783",
+      "annotations": {
+        "purpose": "proof",
+        "scale": "detail",
+        "camera": "locked",
+        "transition": "dissolve",
+        "transitionFrames": 8,
+        "maxChars": 48,
+        "minHoldFrames": 60,
+        "safeArea": true,
+        "minContrast": 7,
+        "hero": true,
+        "endingHoldFrames": 24,
+        "references": [
+          "approvals-surface",
+          "brand-tokens"
+        ]
+      },
+      "metrics": {
+        "width": 1920,
+        "height": 1080,
+        "pixels": 2073600,
+        "meanLuma": 26.951,
+        "lumaStdDev": 34.302,
+        "contrastSpan": 64.944,
+        "blackFraction": 0.320523,
+        "edgeOccupancy": 0.006548,
+        "dominantColorFraction": 0.5466
+      }
+    },
+    {
+      "shotId": "intercept",
+      "phase": "middle",
+      "frame": 559,
+      "timeSec": 18.633,
+      "imagePath": "marketing/assets/dashclaw/marketing/stills/Production-intercept-middle.png",
+      "imageSha256": "ef16498a840f92532195b18d414044c03f413ec868477b906b35bb15edb51035",
+      "annotations": {
+        "purpose": "proof",
+        "scale": "detail",
+        "camera": "locked",
+        "transition": "dissolve",
+        "transitionFrames": 8,
+        "maxChars": 48,
+        "minHoldFrames": 60,
+        "safeArea": true,
+        "minContrast": 7,
+        "hero": true,
+        "endingHoldFrames": 24,
+        "references": [
+          "approvals-surface",
+          "brand-tokens"
+        ]
+      },
+      "metrics": {
+        "width": 1920,
+        "height": 1080,
+        "pixels": 2073600,
+        "meanLuma": 19.722,
+        "lumaStdDev": 22.576,
+        "contrastSpan": 9.574,
+        "blackFraction": 0.000114,
+        "edgeOccupancy": 0.007575,
+        "dominantColorFraction": 0.961207
+      }
+    },
+    {
+      "shotId": "intercept",
+      "phase": "end",
+      "frame": 665,
+      "timeSec": 22.167,
+      "imagePath": "marketing/assets/dashclaw/marketing/stills/Production-intercept-end.png",
+      "imageSha256": "cca07f546225a2c8337eaea6dbc5d80543f603947902df41763d652b360ea205",
+      "annotations": {
+        "purpose": "proof",
+        "scale": "detail",
+        "camera": "locked",
+        "transition": "dissolve",
+        "transitionFrames": 8,
+        "maxChars": 48,
+        "minHoldFrames": 60,
+        "safeArea": true,
+        "minContrast": 7,
+        "hero": true,
+        "endingHoldFrames": 24,
+        "references": [
+          "approvals-surface",
+          "brand-tokens"
+        ]
+      },
+      "metrics": {
+        "width": 1920,
+        "height": 1080,
+        "pixels": 2073600,
+        "meanLuma": 25.831,
+        "lumaStdDev": 29.392,
+        "contrastSpan": 58.876,
+        "blackFraction": 0.279169,
+        "edgeOccupancy": 0.007006,
+        "dominantColorFraction": 0.55706
+      }
+    },
+    {
+      "shotId": "release",
+      "phase": "start",
+      "frame": 662,
+      "timeSec": 22.067,
+      "imagePath": "marketing/assets/dashclaw/marketing/stills/Production-release-start.png",
+      "imageSha256": "65a387d6c58dac6fb7947f661a44e0e6aaf19a87c2567321220a77b1431d7bc2",
+      "annotations": {
+        "purpose": "benefit",
+        "scale": "wide",
+        "camera": "measured",
+        "transition": "dissolve",
+        "transitionFrames": 8,
+        "maxChars": 12,
+        "minHoldFrames": 90,
+        "safeArea": true,
+        "minContrast": 4.5,
+        "hero": false,
+        "endingHoldFrames": 0,
+        "references": [
+          "hall-plates",
+          "direction-night-shift"
+        ]
+      },
+      "metrics": {
+        "width": 1920,
+        "height": 1080,
+        "pixels": 2073600,
+        "meanLuma": 19.868,
+        "lumaStdDev": 20.126,
+        "contrastSpan": 16,
+        "blackFraction": 0.000054,
+        "edgeOccupancy": 0.007071,
+        "dominantColorFraction": 0.924363
+      }
+    },
+    {
+      "shotId": "release",
+      "phase": "middle",
+      "frame": 739,
+      "timeSec": 24.633,
+      "imagePath": "marketing/assets/dashclaw/marketing/stills/Production-release-middle.png",
+      "imageSha256": "f56e6c594e7c5be67b38ba9e9440d3ad8505a6fda30faa8f85ebc1208857242f",
+      "annotations": {
+        "purpose": "benefit",
+        "scale": "wide",
+        "camera": "measured",
+        "transition": "dissolve",
+        "transitionFrames": 8,
+        "maxChars": 12,
+        "minHoldFrames": 90,
+        "safeArea": true,
+        "minContrast": 4.5,
+        "hero": false,
+        "endingHoldFrames": 0,
+        "references": [
+          "hall-plates",
+          "direction-night-shift"
+        ]
+      },
+      "metrics": {
+        "width": 1920,
+        "height": 1080,
+        "pixels": 2073600,
+        "meanLuma": 19.139,
+        "lumaStdDev": 39.036,
+        "contrastSpan": 77.458,
+        "blackFraction": 0.479233,
+        "edgeOccupancy": 0.007542,
+        "dominantColorFraction": 0.781301
+      }
+    },
+    {
+      "shotId": "release",
+      "phase": "end",
+      "frame": 815,
+      "timeSec": 27.167,
+      "imagePath": "marketing/assets/dashclaw/marketing/stills/Production-release-end.png",
+      "imageSha256": "c0de024ee17f0c31e3a2b9af558bafbc0c5915d70c9563a8e61a3d095e1d8054",
+      "annotations": {
+        "purpose": "benefit",
+        "scale": "wide",
+        "camera": "measured",
+        "transition": "dissolve",
+        "transitionFrames": 8,
+        "maxChars": 12,
+        "minHoldFrames": 90,
+        "safeArea": true,
+        "minContrast": 4.5,
+        "hero": false,
+        "endingHoldFrames": 0,
+        "references": [
+          "hall-plates",
+          "direction-night-shift"
+        ]
+      },
+      "metrics": {
+        "width": 1920,
+        "height": 1080,
+        "pixels": 2073600,
+        "meanLuma": 16.901,
+        "lumaStdDev": 10.43,
+        "contrastSpan": 22.932,
+        "blackFraction": 0.000023,
+        "edgeOccupancy": 0.001242,
+        "dominantColorFraction": 0.91459
+      }
+    },
+    {
+      "shotId": "ledger",
+      "phase": "start",
+      "frame": 812,
+      "timeSec": 27.067,
+      "imagePath": "marketing/assets/dashclaw/marketing/stills/Production-ledger-start.png",
+      "imageSha256": "a78668ea735a669899b7f6aebcbc9908c25ab6c155f53b6695961f22fe7d5ee0",
+      "annotations": {
+        "purpose": "detail",
+        "scale": "medium",
+        "camera": "locked",
+        "transition": "dissolve",
+        "transitionFrames": 8,
+        "maxChars": 44,
+        "minHoldFrames": 60,
+        "safeArea": true,
+        "minContrast": 7,
+        "hero": false,
+        "endingHoldFrames": 24,
+        "references": [
+          "decisions-surface",
+          "brand-tokens"
+        ]
+      },
+      "metrics": {
+        "width": 1920,
+        "height": 1080,
+        "pixels": 2073600,
+        "meanLuma": 22.696,
+        "lumaStdDev": 42.694,
+        "contrastSpan": 90.008,
+        "blackFraction": 0.299139,
+        "edgeOccupancy": 0.009874,
+        "dominantColorFraction": 0.790791
+      }
+    },
+    {
+      "shotId": "ledger",
+      "phase": "middle",
+      "frame": 889,
+      "timeSec": 29.633,
+      "imagePath": "marketing/assets/dashclaw/marketing/stills/Production-ledger-middle.png",
+      "imageSha256": "b51eee1dbc4b51c9d47de6707d51ea54652ec7364de73b6263c77348efdb4f06",
+      "annotations": {
+        "purpose": "detail",
+        "scale": "medium",
+        "camera": "locked",
+        "transition": "dissolve",
+        "transitionFrames": 8,
+        "maxChars": 44,
+        "minHoldFrames": 60,
+        "safeArea": true,
+        "minContrast": 7,
+        "hero": false,
+        "endingHoldFrames": 24,
+        "references": [
+          "decisions-surface",
+          "brand-tokens"
+        ]
+      },
+      "metrics": {
+        "width": 1920,
+        "height": 1080,
+        "pixels": 2073600,
+        "meanLuma": 16.224,
+        "lumaStdDev": 17.377,
+        "contrastSpan": 2,
+        "blackFraction": 0.000865,
+        "edgeOccupancy": 0.012022,
+        "dominantColorFraction": 0.980963
+      }
+    },
+    {
+      "shotId": "ledger",
+      "phase": "end",
+      "frame": 965,
+      "timeSec": 32.167,
+      "imagePath": "marketing/assets/dashclaw/marketing/stills/Production-ledger-end.png",
+      "imageSha256": "a9ff645c4c466800066b41881262c521cfa6e08e6b265a047511d8c7ee3e8f27",
+      "annotations": {
+        "purpose": "detail",
+        "scale": "medium",
+        "camera": "locked",
+        "transition": "dissolve",
+        "transitionFrames": 8,
+        "maxChars": 44,
+        "minHoldFrames": 60,
+        "safeArea": true,
+        "minContrast": 7,
+        "hero": false,
+        "endingHoldFrames": 24,
+        "references": [
+          "decisions-surface",
+          "brand-tokens"
+        ]
+      },
+      "metrics": {
+        "width": 1920,
+        "height": 1080,
+        "pixels": 2073600,
+        "meanLuma": 29.672,
+        "lumaStdDev": 40.112,
+        "contrastSpan": 106.076,
+        "blackFraction": 0.477115,
+        "edgeOccupancy": 0.015328,
+        "dominantColorFraction": 0.641661
+      }
+    },
+    {
+      "shotId": "wide",
+      "phase": "start",
+      "frame": 962,
+      "timeSec": 32.067,
+      "imagePath": "marketing/assets/dashclaw/marketing/stills/Production-wide-start.png",
+      "imageSha256": "4bb622f644b238b15fee767fc39e4471526db1399cbf69e98a8058e01368c45e",
+      "annotations": {
+        "purpose": "resolve",
+        "scale": "wide",
+        "camera": "measured",
+        "transition": "dissolve",
+        "transitionFrames": 8,
+        "maxChars": 48,
+        "minHoldFrames": 60,
+        "safeArea": true,
+        "minContrast": 7,
+        "hero": false,
+        "endingHoldFrames": 60,
+        "references": [
+          "hall-plates",
+          "brand-tokens",
+          "story-board"
+        ]
+      },
+      "metrics": {
+        "width": 1920,
+        "height": 1080,
+        "pixels": 2073600,
+        "meanLuma": 17.302,
+        "lumaStdDev": 17.086,
+        "contrastSpan": 11,
+        "blackFraction": 0.000643,
+        "edgeOccupancy": 0.012031,
+        "dominantColorFraction": 0.963601
+      }
+    },
+    {
+      "shotId": "wide",
+      "phase": "middle",
+      "frame": 1080,
+      "timeSec": 36,
+      "imagePath": "marketing/assets/dashclaw/marketing/stills/Production-wide-middle.png",
+      "imageSha256": "d58f82345edcb95beff5b1b4e5c812bc706578e64e2f5c2a50ea0294fb36257d",
+      "annotations": {
+        "purpose": "resolve",
+        "scale": "wide",
+        "camera": "measured",
+        "transition": "dissolve",
+        "transitionFrames": 8,
+        "maxChars": 48,
+        "minHoldFrames": 60,
+        "safeArea": true,
+        "minContrast": 7,
+        "hero": false,
+        "endingHoldFrames": 60,
+        "references": [
+          "hall-plates",
+          "brand-tokens",
+          "story-board"
+        ]
+      },
+      "metrics": {
+        "width": 1920,
+        "height": 1080,
+        "pixels": 2073600,
+        "meanLuma": 34.638,
+        "lumaStdDev": 49.05,
+        "contrastSpan": 133.684,
+        "blackFraction": 0.37859,
+        "edgeOccupancy": 0.016713,
+        "dominantColorFraction": 0.585331
+      }
+    },
+    {
+      "shotId": "wide",
+      "phase": "end",
+      "frame": 1197,
+      "timeSec": 39.9,
+      "imagePath": "marketing/assets/dashclaw/marketing/stills/Production-wide-end.png",
+      "imageSha256": "e27855101b0f8eb487c929d82ea091b13af61457c59ca08007a6c6b9e56ee6fd",
+      "annotations": {
+        "purpose": "resolve",
+        "scale": "wide",
+        "camera": "measured",
+        "transition": "dissolve",
+        "transitionFrames": 8,
+        "maxChars": 48,
+        "minHoldFrames": 60,
+        "safeArea": true,
+        "minContrast": 7,
+        "hero": false,
+        "endingHoldFrames": 60,
+        "references": [
+          "hall-plates",
+          "brand-tokens",
+          "story-board"
+        ]
+      },
+      "metrics": {
+        "width": 1920,
+        "height": 1080,
+        "pixels": 2073600,
+        "meanLuma": 42.753,
+        "lumaStdDev": 54.009,
+        "contrastSpan": 152.579,
+        "blackFraction": 0.305091,
+        "edgeOccupancy": 0.021166,
+        "dominantColorFraction": 0.513298
+      }
+    }
+  ]
+}

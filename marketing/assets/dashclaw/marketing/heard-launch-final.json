@@ -1,0 +1,473 @@
+{
+  "size": 17348936,
+  "mtimeMs": 1783739068096.3408,
+  "model": "small",
+  "data": {
+    "duration": 55.3386875,
+    "language": "en",
+    "segments": [
+      {
+        "start": 4.919999999999996,
+        "end": 7.36,
+        "text": "Catch the dangerous action before it runs."
+      },
+      {
+        "start": 11.18,
+        "end": 16.92,
+        "text": "Every action your unattended agent tries is intercepted and held here, risk-scored and"
+      },
+      {
+        "start": 16.92,
+        "end": 18.34,
+        "text": "bound to the exact command."
+      },
+      {
+        "start": 18.98,
+        "end": 24.36,
+        "text": "One click releases it, and the decision is recorded, chained to every governed action"
+      },
+      {
+        "start": 24.36,
+        "end": 24.92,
+        "text": "that follows."
+      },
+      {
+        "start": 25.720000000000002,
+        "end": 30.22,
+        "text": "One ledger, many lenses, every rule that governs your agents."
+      },
+      {
+        "start": 38.3,
+        "end": 42.42,
+        "text": "Held before they run, risk-scored, one click to allow or deny."
+      },
+      {
+        "start": 44.24,
+        "end": 48.96,
+        "text": "One ledger, chained to the decision, spend and risk-verified on the record."
+      },
+      {
+        "start": 50.02,
+        "end": 52.88,
+        "text": "Govern your agents at dashclaw.io"
+      }
+    ],
+    "words": [
+      {
+        "w": "Catch",
+        "start": 4.919999999999996,
+        "end": 5.6
+      },
+      {
+        "w": "the",
+        "start": 5.6,
+        "end": 5.84
+      },
+      {
+        "w": "dangerous",
+        "start": 5.84,
+        "end": 6.12
+      },
+      {
+        "w": "action",
+        "start": 6.12,
+        "end": 6.54
+      },
+      {
+        "w": "before",
+        "start": 6.54,
+        "end": 6.86
+      },
+      {
+        "w": "it",
+        "start": 6.86,
+        "end": 7.08
+      },
+      {
+        "w": "runs.",
+        "start": 7.08,
+        "end": 7.36
+      },
+      {
+        "w": "Every",
+        "start": 11.18,
+        "end": 11.86
+      },
+      {
+        "w": "action",
+        "start": 11.86,
+        "end": 12.26
+      },
+      {
+        "w": "your",
+        "start": 12.26,
+        "end": 12.46
+      },
+      {
+        "w": "unattended",
+        "start": 12.46,
+        "end": 12.92
+      },
+      {
+        "w": "agent",
+        "start": 12.92,
+        "end": 13.28
+      },
+      {
+        "w": "tries",
+        "start": 13.28,
+        "end": 13.68
+      },
+      {
+        "w": "is",
+        "start": 13.68,
+        "end": 13.92
+      },
+      {
+        "w": "intercepted",
+        "start": 13.92,
+        "end": 14.74
+      },
+      {
+        "w": "and",
+        "start": 14.74,
+        "end": 14.9
+      },
+      {
+        "w": "held",
+        "start": 14.9,
+        "end": 15.14
+      },
+      {
+        "w": "here,",
+        "start": 15.14,
+        "end": 15.5
+      },
+      {
+        "w": "risk",
+        "start": 15.9,
+        "end": 16.12
+      },
+      {
+        "w": "-scored",
+        "start": 16.12,
+        "end": 16.58
+      },
+      {
+        "w": "and",
+        "start": 16.58,
+        "end": 16.92
+      },
+      {
+        "w": "bound",
+        "start": 16.92,
+        "end": 17.2
+      },
+      {
+        "w": "to",
+        "start": 17.2,
+        "end": 17.4
+      },
+      {
+        "w": "the",
+        "start": 17.4,
+        "end": 17.5
+      },
+      {
+        "w": "exact",
+        "start": 17.5,
+        "end": 17.9
+      },
+      {
+        "w": "command.",
+        "start": 17.9,
+        "end": 18.34
+      },
+      {
+        "w": "One",
+        "start": 18.98,
+        "end": 19.44
+      },
+      {
+        "w": "click",
+        "start": 19.44,
+        "end": 19.7
+      },
+      {
+        "w": "releases",
+        "start": 19.7,
+        "end": 20.34
+      },
+      {
+        "w": "it,",
+        "start": 20.34,
+        "end": 20.68
+      },
+      {
+        "w": "and",
+        "start": 21.02,
+        "end": 21.28
+      },
+      {
+        "w": "the",
+        "start": 21.28,
+        "end": 21.36
+      },
+      {
+        "w": "decision",
+        "start": 21.36,
+        "end": 21.7
+      },
+      {
+        "w": "is",
+        "start": 21.7,
+        "end": 21.88
+      },
+      {
+        "w": "recorded,",
+        "start": 21.88,
+        "end": 22.28
+      },
+      {
+        "w": "chained",
+        "start": 22.78,
+        "end": 23.1
+      },
+      {
+        "w": "to",
+        "start": 23.1,
+        "end": 23.26
+      },
+      {
+        "w": "every",
+        "start": 23.26,
+        "end": 23.58
+      },
+      {
+        "w": "governed",
+        "start": 23.58,
+        "end": 23.94
+      },
+      {
+        "w": "action",
+        "start": 23.94,
+        "end": 24.36
+      },
+      {
+        "w": "that",
+        "start": 24.36,
+        "end": 24.56
+      },
+      {
+        "w": "follows.",
+        "start": 24.56,
+        "end": 24.92
+      },
+      {
+        "w": "One",
+        "start": 25.65,
+        "end": 25.98
+      },
+      {
+        "w": "ledger,",
+        "start": 25.98,
+        "end": 26.38
+      },
+      {
+        "w": "many",
+        "start": 26.92,
+        "end": 27.18
+      },
+      {
+        "w": "lenses,",
+        "start": 27.18,
+        "end": 27.6
+      },
+      {
+        "w": "every",
+        "start": 28.28,
+        "end": 28.66
+      },
+      {
+        "w": "rule",
+        "start": 28.66,
+        "end": 29
+      },
+      {
+        "w": "that",
+        "start": 29,
+        "end": 29.22
+      },
+      {
+        "w": "governs",
+        "start": 29.22,
+        "end": 29.66
+      },
+      {
+        "w": "your",
+        "start": 29.66,
+        "end": 29.74
+      },
+      {
+        "w": "agents.",
+        "start": 29.74,
+        "end": 30.22
+      },
+      {
+        "w": "Held",
+        "start": 38.3,
+        "end": 38.96
+      },
+      {
+        "w": "before",
+        "start": 38.96,
+        "end": 39.2
+      },
+      {
+        "w": "they",
+        "start": 39.2,
+        "end": 39.4
+      },
+      {
+        "w": "run,",
+        "start": 39.4,
+        "end": 39.64
+      },
+      {
+        "w": "risk",
+        "start": 40.04,
+        "end": 40.2
+      },
+      {
+        "w": "-scored,",
+        "start": 40.2,
+        "end": 40.6
+      },
+      {
+        "w": "one",
+        "start": 40.98,
+        "end": 41.16
+      },
+      {
+        "w": "click",
+        "start": 41.16,
+        "end": 41.38
+      },
+      {
+        "w": "to",
+        "start": 41.38,
+        "end": 41.58
+      },
+      {
+        "w": "allow",
+        "start": 41.58,
+        "end": 41.84
+      },
+      {
+        "w": "or",
+        "start": 41.84,
+        "end": 42.16
+      },
+      {
+        "w": "deny.",
+        "start": 42.16,
+        "end": 42.42
+      },
+      {
+        "w": "One",
+        "start": 44.24,
+        "end": 44.9
+      },
+      {
+        "w": "ledger,",
+        "start": 44.9,
+        "end": 45.26
+      },
+      {
+        "w": "chained",
+        "start": 45.62,
+        "end": 45.88
+      },
+      {
+        "w": "to",
+        "start": 45.88,
+        "end": 46.04
+      },
+      {
+        "w": "the",
+        "start": 46.04,
+        "end": 46.12
+      },
+      {
+        "w": "decision,",
+        "start": 46.12,
+        "end": 46.46
+      },
+      {
+        "w": "spend",
+        "start": 47.04,
+        "end": 47.24
+      },
+      {
+        "w": "and",
+        "start": 47.24,
+        "end": 47.52
+      },
+      {
+        "w": "risk",
+        "start": 47.52,
+        "end": 47.76
+      },
+      {
+        "w": "-verified",
+        "start": 47.76,
+        "end": 48.26
+      },
+      {
+        "w": "on",
+        "start": 48.26,
+        "end": 48.58
+      },
+      {
+        "w": "the",
+        "start": 48.58,
+        "end": 48.68
+      },
+      {
+        "w": "record.",
+        "start": 48.68,
+        "end": 48.96
+      },
+      {
+        "w": "Govern",
+        "start": 50.02,
+        "end": 50.96
+      },
+      {
+        "w": "your",
+        "start": 50.96,
+        "end": 51.18
+      },
+      {
+        "w": "agents",
+        "start": 51.18,
+        "end": 51.58
+      },
+      {
+        "w": "at",
+        "start": 51.58,
+        "end": 51.8
+      },
+      {
+        "w": "dashclaw",
+        "start": 51.8,
+        "end": 52.34
+      },
+      {
+        "w": ".io",
+        "start": 52.34,
+        "end": 52.88
+      }
+    ]
+  }
+}

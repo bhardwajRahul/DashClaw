@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "video": "video.mp4",
+  "captions": "captions.srt",
+  "fps": 25,
+  "exportedAt": "2026-07-13T13:36:26.261Z",
+  "segments": [
+    {
+      "id": "intercept-and-hold",
+      "title": "Intercept and hold",
+      "startSec": 0,
+      "endSec": 16.55
+    },
+    {
+      "id": "recorded-and-verified",
+      "title": "Recorded and verified",
+      "startSec": 16.55,
+      "endSec": 24
+    }
+  ]
+}

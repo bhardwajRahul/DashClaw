@@ -1,0 +1,61 @@
+{
+  "judge": "demo-pacing",
+  "brand": "dashclaw",
+  "generatedAt": "2026-09-06T17:55:56.594Z",
+  "verdict": "PASS",
+  "checks": {
+    "telemetry": true,
+    "frameDiff": false
+  },
+  "note": "studio/public/dashclaw/demo.webm absent — check A (telemetry) only.",
+  "summary": {
+    "durationMs": 25312,
+    "activityEvents": 6,
+    "holds": 0,
+    "dwellWarnings": 5,
+    "deadAirFails": 0
+  },
+  "holds": [],
+  "findings": [
+    {
+      "check": "dwell",
+      "level": "WARN",
+      "fromMs": 1675,
+      "toMs": 5488,
+      "gapMs": 3813,
+      "message": "No click/focus for 3813ms (1675ms -> 5488ms); confirm something moves on screen."
+    },
+    {
+      "check": "dwell",
+      "level": "WARN",
+      "fromMs": 5488,
+      "toMs": 9308,
+      "gapMs": 3820,
+      "message": "No click/focus for 3820ms (5488ms -> 9308ms); confirm something moves on screen."
+    },
+    {
+      "check": "dwell",
+      "level": "WARN",
+      "fromMs": 10930,
+      "toMs": 16406,
+      "gapMs": 5476,
+      "message": "No click/focus for 5476ms (10930ms -> 16406ms); confirm something moves on screen."
+    },
+    {
+      "check": "dwell",
+      "level": "WARN",
+      "fromMs": 16406,
+      "toMs": 21502,
+      "gapMs": 5096,
+      "message": "No click/focus for 5096ms (16406ms -> 21502ms); confirm something moves on screen."
+    },
+    {
+      "check": "dwell",
+      "level": "WARN",
+      "fromMs": 21502,
+      "toMs": 25312,
+      "gapMs": 3810,
+      "message": "No click/focus for 3810ms (21502ms -> 25312ms); confirm something moves on screen."
+    }
+  ]
+}

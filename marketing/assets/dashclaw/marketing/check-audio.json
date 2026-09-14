@@ -1,0 +1,39 @@
+{
+  "brand": "dashclaw",
+  "checked": 4,
+  "failed": 0,
+  "skipped": 9,
+  "targetI": -14,
+  "band": 2,
+  "files": [
+    {
+      "file": "social-linkedin-final.mp4",
+      "hasAudio": true,
+      "meanDb": -17,
+      "I": -15.6,
+      "verdict": "PASS",
+      "reason": ""
+    },
+    {
+      "file": "social-vertical-final.mp4",
+      "hasAudio": true,
+      "meanDb": -17,
+      "I": -15.6,
+      "verdict": "PASS",
+      "reason": ""
+    },
+    {
+      "file": "social-x-final.mp4",
+      "hasAudio": true,
+      "meanDb": -17.1,
+      "I": -15.5,
+      "verdict": "PASS",
+      "reason": ""
+    }
+  ],
+  "film": {
+    "version": 5,
+    "verdict": "PASS",
+    "reason": "7 VO lines"
+  }
+}
