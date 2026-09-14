@@ -104,12 +104,73 @@ instrument itself had a defect found during this read (below).
 
 **Dated obligations set by this decision:**
 
-- **R1 — durability re-read, due 2026-09-15.** Repeat the 7-day read on the
-  same org. Success: interruptions stay in the tens per week with zero
-  missed catastrophes and no owner disable event. An owner disable event or
-  a silent catastrophe is falsifier evidence against the Short List design,
-  to be treated the way the 2026-08-16 entry treated falsifier #4 — stop
-  defending the last decision first.
+- **R1 — durability re-read, due 2026-09-15. DISCHARGED 2026-09-14: PASS.**
+  Repeat the 7-day read on the same org. Success: interruptions stay in the
+  tens per week with zero missed catastrophes and no owner disable event. An
+  owner disable event or a silent catastrophe is falsifier evidence against
+  the Short List design, to be treated the way the 2026-08-16 entry treated
+  falsifier #4 — stop defending the last decision first.
+
+  **The read** (window 2026-09-08 → 2026-09-14, live org, read straight from
+  `guard_decisions` rather than through the retrospection tool, because the
+  connector's decision list is pinned to one agent while only its `stats`
+  block is org-wide):
+
+  | | this window | prior week | 2026-08-28 read | flood baseline (08-16) |
+  |---|---|---|---|---|
+  | decisions seen | **42,044** | 117,041 | not recorded | not recorded |
+  | require_approval | **66** | 117 | 22 | 1,759 |
+  | block | **15** | 0 | 0 | — |
+  | warn | **39** | 29,037 | 997 | — |
+
+  Interruptions = 81 of 42,044 decisions, **0.19%**. The count carries its
+  volume on purpose (L2): a low interruption count from an instrument that
+  saw nothing is indistinguishable from a calm week, and this week's traffic
+  is itself down 64% from the prior week's 117k.
+
+  **Criterion 1 — interruptions in the tens: PASS.** 81, of which 35 are the
+  catastrophe-floor probe's own daily holds (5 action types × 7 runs,
+  `agent_id` null). Real agent-facing interruptions: **31 approvals + 15
+  blocks**, across 21–26 distinct agents per day.
+
+  **Criterion 2 — zero missed catastrophes: PASS, and positively witnessed.**
+  The regression probe added 2026-09-08 fired every day 09-09 → 09-14 and the
+  floor held all five irreversible classes each time (`rm_rf` 95, `drop_table`
+  95, `force_push` 88, `delete_data` 90, `delete_branch` 85 — all ≥ the 85
+  floor). Nothing in the window shows an irreversible class reaching `allow`.
+  This is the first read where the catastrophe line is proven by a live daily
+  instrument rather than by the absence of complaints.
+
+  **Criterion 3 — no owner disable event: PASS.** Five policies changed in
+  the window; all five are new and active (four `sidelook-agent` policies,
+  plus Catastrophe Floor). 50 active policies org-wide. No hold was turned
+  off. R2 (below) remains off by the owner's earlier choice, unchanged.
+
+  **The two numbers that look alarming and are not.**
+
+  *Blocks 0 → 15.* All fifteen are one agent — `sidelook-agent`, a real
+  refund-handling agent on this org, not a test. Seven are `non_fabrication`
+  `missing_required` (a $9,999.00 refund email with no `customer_name`, no
+  `refund_amount`, no `refund_id`), one is source-of-truth missing (fail
+  closed), five are risk-100 ceiling hits that also touched the protected
+  path `https://api.stripe.com/v1`, and two are `engine_error` — the ReDoS
+  guard in `app/lib/integrity/pattern-safety.ts` rejecting a caller-supplied
+  pattern and failing closed, exactly as documented. The ruleset was
+  corrected within minutes (the later blocks on that agent are content
+  blocks, not engine errors). Blocks being non-zero here is the system
+  meeting its first genuinely adversarial outside workload, not a regression.
+
+  *Warns 29,037 → 39.* One policy produced 29,037 of the prior week's warns
+  (`gp_6f8edaeb…`, the rate-limit "Runaway Agents" line) and produced 36 this
+  week. That policy is still active and still matching; the per-policy **warn
+  cooldown** shipped 2026-09-08 (#235) deduplicates it to one warn per window
+  per agent. The underlying actions are still recorded as `allow` rows — this
+  is dedup of a repeated notice, not a loss of ledger evidence. Warn volume
+  drops to zero on 09-08, the exact day that shipped.
+
+  **Next re-read: 2026-10-15**, same instrument, same three criteria. The
+  standing risk this read cannot settle is that one org's traffic is still
+  the only evidence the Short List has.
 - **R2 — secret-file hold: propose, never re-arm.** The catastrophe pack's
   "Hold Secret-File Writes for Approval" line has been inactive on the live
   org since 2026-08-17; the org currently runs with no hold on writes to

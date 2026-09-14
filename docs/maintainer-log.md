@@ -14,6 +14,79 @@ Entries are newest-first.
 
 <!-- digest-posted: 2026-08-08 -->
 
+## 2026-09-14 — R1: the durability re-read, and the week the blocks were real
+
+**The obligation.** On 2026-08-28 I set three dated obligations against the
+calibration arc. R1 was due today: repeat the seven-day decision read on the
+live org and judge it against three criteria — interruptions in the tens,
+zero missed catastrophes, no owner disable event. The point of a dated
+obligation is that it fires whether or not the answer is convenient.
+
+**The verdict: PASS on all three.** 42,044 decisions in the window
+(2026-09-08 → 09-14): 41,924 allow, 66 require_approval, 39 warn, 15 block.
+Interruptions are 81 of 42,044 — **0.19%** — against a flood baseline of
+1,759 approval interruptions in seven days that once made the owner turn
+every policy off. Thirty-five of the 66 approvals are the catastrophe-floor
+probe holding its own five irreversible classes, so real agent-facing
+interruptions are 31 approvals and 15 blocks across 21–26 agents a day. Full
+numbers and reasoning are in the roadmap's R1 entry.
+
+**Criterion 2 is the one I care about, because for the first time it is
+witnessed rather than assumed.** "Zero missed catastrophes" used to mean
+nobody complained. Since 2026-09-08 a probe fires daily against the live
+floor, and this window shows it held `rm_rf` (95), `drop_table` (95),
+`force_push` (88), `delete_data` (90) and `delete_branch` (85) on every one
+of six consecutive days. A floor that is never tested is a claim; a floor
+tested daily is an instrument. The difference is the whole point of the
+claims-proven-live standard, and it took until now to apply it to the line
+that matters most.
+
+**Two numbers that look like regressions and are not.** Blocks went 0 → 15.
+Every one is a single agent — `sidelook-agent`, a refund-handling agent, not
+a test harness — trying to send a $9,999.00 refund email with no customer
+name, no refund amount and no refund id, and later touching
+`https://api.stripe.com/v1` at risk 100. Seven `missing_required`, one
+source-of-truth-missing fail-closed, five ceiling-plus-protected-path, and
+two `engine_error`: the ReDoS guard rejecting a caller-supplied pattern and
+failing closed, which is the documented behavior for an unsafe ruleset. The
+ruleset was corrected within minutes. This is not the calibration slipping;
+it is the first genuinely adversarial outside workload the guard has met,
+and it stopped it.
+
+Warns went 29,037 → 39, which on its face looks like the ledger going blind.
+One policy produced 29,037 of those (the rate-limit "Runaway Agents" line)
+and produced 36 this week. It is still active and still matching — the
+per-policy warn cooldown shipped on 2026-09-08 deduplicates a repeated
+notice to one per window per agent, and the underlying actions are still on
+the ledger as `allow` rows. Warn volume falls to zero on the exact day that
+shipped. Dedup, not silence. I checked this before writing the verdict
+precisely because the innocent explanation was the one I wanted to be true.
+
+**What went wrong: the product could not answer its own question.**
+`dashclaw_decisions_recent` — DashClaw's own retrospection tool, the
+instrument the 2026-08-28 read was taken with — returns a decision list
+pinned to the calling agent while its `stats` block is org-wide. For "what
+did I just do?" that scoping is right. For the steering read this project
+runs against itself, it means the tool hands you three aggregate numbers and
+no way to ask what any of them were. I went to SQL to find out that the 15
+blocks were one agent and one afternoon; through the product's own surface
+those 15 blocks are an unexplained integer. The maintainer's read should not
+require a database credential. Filed as the finding it is, not fixed today.
+
+**Also today:** the marketing-studio workspace and the 2026-09-06 launch
+copy landed as tracked text — 131 sidecar files, with the 3.9 GB of rendered
+media staying local behind new ignore rules. Records of how the assets were
+made are worth keeping; the assets themselves are not worth a git history.
+
+**Next:** this log is five weeks behind its own cadence — #233 through #238
+shipped without entries, and the last public digest went out 2026-08-08.
+That backlog is the next thing I owe, ahead of any new feature. R2 (the
+secret-file hold, off since 2026-08-17) stays a proposal awaiting the
+owner's click; R3, the funnel read, is due 2026-09-30.
+
+---
+
+
 ## 2026-09-06 - By what: the ledger learns which model and which harness acted
 
 **Shipped:** v5.36.0 — attestation. Every guard call from a hook-cooperating
