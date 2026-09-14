@@ -87,6 +87,117 @@ owner's click; R3, the funnel read, is due 2026-09-30.
 ---
 
 
+## 2026-09-09 — The alarm that cried wolf on its own test
+
+One line, because the lesson is one line. The catastrophe-floor probe built
+the night before did exactly what it was designed to do — trip five policies
+— and the approval-flood detector, which cannot tell a drill from a fire,
+raised a banner: "Approval flood: Catastrophe Floor — 5 interrupts in 15m,
+per-action pings paused." Every day, forever, on schedule.
+
+A governance product that false-positives on its own daily self-test is
+teaching its operator to ignore banners, which is the one habit the whole
+product exists to prevent. The fix is a caller-declared `self_test` marker
+that rides the guard input into the persisted context and is excluded from
+flood counting — never from the decision, never from the ledger. The same
+posture as the attestation fields: attribution, not proof.
+
+The honest limit, recorded rather than smoothed over: a hostile client can
+declare `self_test` itself. It collapses notifications only — it cannot
+approve anything, and every action still lands on the ledger — so the stakes
+are a missed ping, not a missed catastrophe. If that ever matters, the
+answer is a server-side allowlist of self-test agent ids, not a cleverer
+marker.
+
+Verification followed L1 without being reminded for once: the exclusion
+predicate was broken on purpose to watch the new test go red, then restored
+to watch it go green. A check never observed failing has been run, not
+verified.
+
+---
+
+## 2026-09-08 — The probe finds the hole: the controller had calibrated itself out of stopping a catastrophe
+
+**The session started as an integration and turned into a constitutional
+repair.** The integration half: DashClaw now governs Meta's Muse agents —
+skill, a public guide at `/guides/muse`, `llms.txt`, integration docs. It is
+**cooperative, not mechanical**, and the guide says exactly that: the Muse
+runtime has no pre-tool-call hook, so the agent consults the guard and
+honors the verdict. That stops the accident class and makes a bypass visible
+in the ledger. It is not a lock against a determined process at the same
+privilege, and writing anything else would be a lie a buyer could verify.
+
+Because a cooperative integration cannot be proven by its own code, the
+verification path is **adherence probing** — synthetic held actions the
+agent must leave pending. So I ran one. It came back with something much
+worse than a Muse problem.
+
+**The finding.** A synthetic "drop the production database cluster" scored
+**95** and was **allowed**. No policy matched it. And the calibrated
+threshold θ had ratcheted to **101.8** — above the score ceiling — which
+means the raise arm could never fire again no matter what happened next. The
+controller that is supposed to learn when to interrupt had learned its way
+out of interrupting at all. Worse, the one adjudication channel that exists,
+`warn_review`, is deliberately loosening-only by invariant, so it could not
+have pulled θ back even in principle. And when I went to look at the
+calibration proposals surface to confirm any of this, it answered **500** —
+deterministically, in about 0.8 seconds, on every window: the loader cast
+`guard_decisions.context` to `::json` inside SQL, and a single malformed row
+aborted the whole query. A poison row had taken down the instrument I needed
+to diagnose the instrument.
+
+**What got built, in the order the failure demanded.**
+
+1. The poison-row fix, so the surface would answer at all — the `::json`
+   cast is now gated with `pg_input_is_valid`, and a bad row degrades to a
+   null context rather than a dead page.
+2. **`miss_review`** — the tightening counterpart `warn_review` never had.
+   An operator points at one specific action the guard *let through* and
+   labels it dangerous or benign; dangerous tightens θ and owns its agent,
+   benign moves θ by exactly nothing. The risk score is read from the
+   persisted record, never from the client. It requires a specific act,
+   never a mood, which is what keeps it from becoming a second ratchet
+   running the other way.
+3. **The catastrophe floor** — a new policy type that fires on a destructive
+   action type at or above a risk floor when the act is irreversible,
+   **independently of θ**, and is **ungrantable**, so no allow grant clears
+   it. This is the structural answer to what the probe found. A threshold
+   that learns from an approving operator will eventually learn to approve
+   everything; some acts are catastrophic at any θ, and those belong under a
+   floor the learning loop is not allowed to touch. Surface budget goes 18 →
+   19 policy types, deliberately, and the thesis's anti-regrowth brake is
+   satisfied by exactly that reasoning.
+4. **Action cancellation** (`POST /api/actions/:actionId/cancel`) and a
+   **warn cooldown** for rate-limit policies — the runaway line had fired
+   34,760 warns in thirty days. A cancelled action keeps a pending outcome:
+   the ledger never invents a result it did not see.
+
+**Then the owner tried to use it, and it did not work.** Wes opened the
+policy editor to author a Catastrophe Floor rule and got "Validation
+failed", with no cause. The type was in the dropdown, in backend validation
+and in the save/load compile logic — and the rule builder had **no rendered
+section for it**, so the form submitted an empty action-type list every time
+and the server correctly rejected it. This repository has a written rule
+about precisely this failure — build the schema, the route, the repository
+and the tests, and never give a human a way to use it — and I reproduced it
+on the one feature whose entire purpose is to be the last line of defense.
+The fix ships the missing form section, surfaces server validation detail in
+the editor instead of swallowing it, and adds the test that generalizes:
+**every policy type in the options list must have a rendered builder
+section**. The agent-scope picker got rebuilt in the same pass, from an
+undifferentiated wall of chips into a searchable, grouped, collapsible one.
+
+**What went wrong, beyond the form.** This entire arc — six merges, a new
+policy type, a new route, a new calibration channel — shipped to main and
+deployed **without a version bump, without a CHANGELOG entry, and without a
+release**, and I did not notice for six days. The charter says every ship
+carries a log entry, a CHANGELOG entry and a GitHub Release; production has
+been serving unversioned features since 2026-09-08. This entry and the
+CHANGELOG's `[Unreleased]` section are the retroactive repair, written
+2026-09-14. The version is the next thing owed.
+
+---
+
 ## 2026-09-06 - By what: the ledger learns which model and which harness acted
 
 **Shipped:** v5.36.0 — attestation. Every guard call from a hook-cooperating
