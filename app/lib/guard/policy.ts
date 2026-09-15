@@ -17,6 +17,7 @@ import type { SourceOfTruth } from '../integrity/verify';
 import { issueReceipt } from '../integrity/receipt';
 import { getServerSigningKey } from '../integrity/server-key';
 import { sevOf, hasSev } from './internal';
+import { parseVerificationContract, contractFindings, firstKind, summarize } from './verification-contract';
 import type { GuardSql, GuardEvalContext, PolicyRow, PolicyRules, PolicyResult, Preliminary } from './types';
 
 // ── Global guard-degradation contract ──
@@ -690,6 +691,71 @@ const POLICY_EVALUATORS: Record<string, PolicyEvaluator> = {
     return {
       action: escalate,
       reason: `assumption "${text}" was invalidated ${minsAgo} min ago (${why}) — "${policy.name || 'assumption hold'}" holds this action until a human confirms`,
+    };
+  },
+
+  // A verifier catches only what the spec named. This line reads the caller's
+  // verification contract (app/lib/guard/verification-contract.ts) and refuses
+  // to let an undischarged obligation read as a pass — a test-tier check nobody
+  // ran fails closed, and an edge the spec never resolved routes to a human
+  // instead of collecting a confident green.
+  //
+  // Hot path: with no verification_contract policy in the org this evaluator is
+  // never dispatched, and it issues no queries when it is.
+  verification_contract: ({ policy, rules, context, effectiveRiskScore }) => {
+    const scope = Array.isArray(rules.action_types) ? rules.action_types : null;
+    if (scope && scope.length > 0) {
+      if (!contextActionTypes(context).some((t) => scope.includes(t))) return null;
+    }
+
+    const minRisk = typeof rules.min_risk === 'number' ? rules.min_risk : 0;
+    if (minRisk > 0) {
+      const risk = effectiveRiskScore != null
+        ? effectiveRiskScore
+        : Math.max(0, Math.min(Number(context.risk_score) || 0, 100));
+      if (risk < minRisk) return null;
+    }
+
+    const label = policy.name || 'verification contract';
+    const contract = parseVerificationContract(context.verification_contract);
+
+    if (!contract) {
+      // A scoped action arriving with no contract at all. Off by default: an org
+      // adopts contracts before it can demand them, and a policy that fires on
+      // every uncontracted call teaches people to ignore it.
+      if (rules.require_contract !== true) return null;
+      return {
+        action: rules.escalate_action === 'block' ? 'block' : 'require_approval',
+        reason: `no verification contract attached — "${label}" requires one for this action type`,
+      };
+    }
+
+    const findings = contractFindings(contract);
+    const kind = firstKind(findings);
+    if (!kind) return null;
+
+    const detail = summarize(findings, kind);
+    if (kind === 'violation') {
+      return {
+        action: rules.on_violation === 'require_approval' ? 'require_approval' : 'block',
+        reason: `contract violated: ${detail} — "${label}"`,
+      };
+    }
+    if (kind === 'unchecked_test') {
+      // Fail closed: a mechanically-checkable obligation that was not checked is
+      // not evidence of anything. `require_approval` is available for an org
+      // easing this in, but the default is the honest one.
+      return {
+        action: rules.on_unchecked_test_tier === 'require_approval' ? 'require_approval' : 'block',
+        reason: `contract check did not run: ${detail} — "${label}" fails closed rather than assuming it would have passed`,
+      };
+    }
+    // insufficient_spec → human_needed. Deliberately NOT a block: nothing is
+    // known to be wrong. The spec simply does not contain the answer, so no
+    // reader can supply one and a person has to decide.
+    return {
+      action: rules.on_insufficient_spec === 'block' ? 'block' : 'require_approval',
+      reason: `insufficient_spec: ${detail} — "${label}" holds this action for a human rather than passing on an obligation nothing can check`,
     };
   },
 };

@@ -86,6 +86,22 @@ export interface GuardEvalContext {
   attested_model?: string;
   harness?: string;
   harness_version?: string;
+  /**
+   * The caller's verification contract for this action: the must_haves and
+   * prohibitions the work was specified against, each carrying a verification
+   * tier and the exogenous `non_inferable` tag written at spec time. Read by the
+   * `verification_contract` policy (app/lib/guard/verification-contract.ts).
+   *
+   * CALLER-DECLARED, like `attested_model` and `enforcement_mode` — the client
+   * says what it checked and we cannot prove it. That is fine for the direction
+   * this field moves a decision: every disposition it produces is an escalation
+   * (block or require_approval), never a grant, so the worst a dishonest client
+   * achieves by lying is the verdict it would have had with no contract at all.
+   * Never let a policy relax a verdict on the strength of this field.
+   *
+   * Free-form object; normalized and capped in parseVerificationContract.
+   */
+  verification_contract?: unknown;
   [field: string]: unknown;
 }
 
@@ -189,6 +205,17 @@ export interface PolicyRules {
   // to warn|require_approval|block; escalate_action doubles as its ceiling.
   on_kind?: Record<string, string>;
   min_severity?: string;
+  // verification_contract: how to dispose of a contract item whose verification
+  // tier cannot be discharged. `require_contract` makes a missing contract an
+  // escalation for the scoped action types (off by default — an org adopts
+  // contracts before it can demand them). The three `on_*` fields only loosen
+  // the defaults, which are the honest ones: a violated item and a test-tier
+  // item nobody ran both block, and an obligation the spec never resolved holds
+  // for a human. `action_types` (above) scopes the line; `min_risk` (above)
+  // floors it; `escalate_action` (above) is the missing-contract verdict.
+  require_contract?: boolean;
+  on_unchecked_test_tier?: string;
+  on_insufficient_spec?: string;
   // assumption_hold: hold the next consequential action by an agent family
   // after one of its assumptions was invalidated. `window_minutes` (shared with
   // rate_limit above, 1..10080, default 60) is how recent the invalidation must

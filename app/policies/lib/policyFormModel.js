@@ -71,6 +71,16 @@ const DEFAULT_FORM_STATE = {
     goal_drift: 'ignore',
   },
   deviationMinSeverity: 'info',
+  // verification_contract — what to do with a contract item whose verification
+  // tier cannot be discharged. The defaults are the honest ones: a test-tier
+  // check nobody ran blocks (a check that did not run is not evidence), and an
+  // obligation the spec never resolved holds for a human rather than passing.
+  // requireContract stays off so an org can adopt contracts before demanding
+  // them; onViolation/actionTypes/floorMinRisk above are shared with the other
+  // types that use them.
+  requireContract: false,
+  onUncheckedTestTier: 'block',
+  onInsufficientSpec: 'require_approval',
   // catastrophe_floor — minimum risk floor for destructive action types;
   // require_irreversible defaults true so only irreversible acts trip it.
   floorMinRisk: 85,
@@ -103,6 +113,7 @@ export const POLICY_TYPE_OPTIONS = [
   { value: 'deviation_response', label: 'Deviation Response', desc: 'Consequence per plan-deviation kind — warn, require approval, or block when an agent departs from its approved plan' },
   { value: 'assumption_hold', label: 'Assumption Hold', desc: 'Hold the next consequential action after one of the agent’s assumptions is invalidated — until a human confirms' },
   { value: 'catastrophe_floor', label: 'Catastrophe Floor', desc: 'Hold or block irreversible destructive action types at or above a risk floor — the backstop when the calibrated controller cannot interrupt' },
+  { value: 'verification_contract', label: 'Verification Contract', desc: 'Refuse to let an unverified obligation read as a pass — block a failed or unrun check, and hold for a human when the spec never settled the question' },
 ];
 
 function cleanString(value) {
@@ -448,6 +459,30 @@ const POLICY_TYPE_HANDLERS = {
       return `${verb} ${irrev}${types} at risk ≥ ${risk} — catastrophe floor${scoped}.`;
     },
   },
+  // Verification contract: every field is ALWAYS emitted (like assumption_hold
+  // above) so a decompile round-trip is exact — this rule has no "unset" state
+  // that would read as "nothing configured" to the evaluator.
+  verification_contract: {
+    compile: (form) => ({
+      action_types: (Array.isArray(form.actionTypes) ? form.actionTypes : []).map((t) => String(t).trim()).filter(Boolean),
+      min_risk: Math.max(0, Math.min(100, Math.floor(Number(form.floorMinRisk) || 0))),
+      require_contract: form.requireContract === true,
+      on_violation: form.onViolation === 'require_approval' ? 'require_approval' : 'block',
+      on_unchecked_test_tier: form.onUncheckedTestTier === 'require_approval' ? 'require_approval' : 'block',
+      on_insufficient_spec: form.onInsufficientSpec === 'block' ? 'block' : 'require_approval',
+      escalate_action: form.escalateAction === 'block' ? 'block' : 'require_approval',
+    }),
+    summary: (form, scoped) => {
+      const types = (Array.isArray(form.actionTypes) ? form.actionTypes : []).join(', ') || 'every action type';
+      const violated = form.onViolation === 'require_approval' ? 'hold for approval' : 'block';
+      const unrun = form.onUncheckedTestTier === 'require_approval' ? 'hold for approval' : 'block';
+      const unsettled = form.onInsufficientSpec === 'block' ? 'block' : 'hold for a human';
+      const missing = form.requireContract === true
+        ? ` An action arriving with no contract at all is ${form.escalateAction === 'block' ? 'blocked' : 'held for approval'}.`
+        : '';
+      return `On ${types}: ${violated} a violated contract item, ${unrun} one whose check never ran, and ${unsettled} an obligation the spec never settled${scoped}.${missing}`;
+    },
+  },
 };
 
 // --- Form state -> stored policy payload (compile) ---
@@ -540,6 +575,9 @@ export function decompilePolicyForm(policy) {
       ...(rules.on_kind && typeof rules.on_kind === 'object' ? rules.on_kind : {}),
     },
     deviationMinSeverity: orVal(rules.min_severity, DEFAULT_FORM_STATE.deviationMinSeverity),
+    requireContract: rules.require_contract === true,
+    onUncheckedTestTier: orVal(rules.on_unchecked_test_tier, DEFAULT_FORM_STATE.onUncheckedTestTier),
+    onInsufficientSpec: orVal(rules.on_insufficient_spec, DEFAULT_FORM_STATE.onInsufficientSpec),
     shortList: rules.short_list === true,
     ungrantable: rules.ungrantable === true,
     tests: arrOr(rules.tests, []),

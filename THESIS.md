@@ -327,9 +327,9 @@ source of truth for the gate, live in `contracts/surface-budget.json`:
 | Node SDK methods | 41 | `sdk/dashclaw.js` (`scripts/count-sdk-methods.mjs`) |
 | Python SDK methods | 61 | `sdk-python/dashclaw/client.py` (`scripts/count-sdk-methods.mjs`) |
 | CLI commands | 15 | `cli/bin/dashclaw.js` (`COMMAND_HANDLERS`) |
-| Guard policy types | 17 | `app/lib/guard/policy.ts` (`KNOWN_POLICY_TYPES`) |
+| Guard policy types | 20 | `app/lib/guard/policy.ts` (`KNOWN_POLICY_TYPES`) |
 
-(This table mirrors `contracts/surface-budget.json` as of 2026-09-05; it had
+(This table mirrors `contracts/surface-budget.json` as of 2026-09-15; it had
 drifted from the JSON across several amendments — the JSON is the machine
 source of truth, the amendment log below is the history.)
 
@@ -338,6 +338,37 @@ Raising any ceiling requires amending this section **and**
 recorded, deliberate act that falsifier #3 (Regrowth) watches for.
 
 **Amendment log:**
+- **2026-09-15 — Guard policy types 19 → 20 (`verification_contract`).** An LLM
+  verifier catches only what the specification named. Where an obligation was
+  never written down and no convention settles it, the verifier is not failing
+  to reason — it is reasoning correctly over an input that does not contain the
+  answer, and it reports the same confidence it uses when it is right. The
+  measurement this type responds to (Sienkowski, *Verifier Reach Is Spec Reach*,
+  2026): a confident false pass on 100% of runs with the edge omitted [94–100],
+  converting to a 98% catch [91–100] once the same edge is written into the
+  spec; model-invariant, and a ~30x spend increase recovers none of it. So the
+  caller attaches the contract its work was specified against, each obligation
+  carrying a verification tier, and this type disposes of the ones that cannot
+  be discharged: a violated item blocks, a test-tier check nobody ran blocks
+  (fail closed — an unrun check is not evidence), and an obligation the spec
+  never settled routes to a human as `insufficient_spec` rather than collecting
+  a confident green.
+  It does not fold into an existing type. `require_evidence` escalates when an
+  act arrived without its evidence — a property of the act, not of the spec the
+  act was judged against. `non_fabrication` compares outbound content to a
+  source of truth — fidelity, not obligation coverage. `green_contract` reads an
+  observed build level and has no per-obligation tier and no third state. The
+  distinct thing here is that third state: every other type answers pass or
+  fail, and this one can answer "the artifact does not contain the answer,"
+  which is the only honest verdict on a blind spot and the one the measurement
+  shows a verifier will otherwise never give. Escalation-only by construction —
+  the validator refuses any disposition other than `require_approval` or
+  `block`, so a contract can add a gate and never remove one, and a dishonest
+  client gains at most the verdict it would have had with no contract at all.
+  Off by default: no default pack ships it, and `require_contract` is false, so
+  an existing install is unchanged until an operator creates the policy.
+  Zero new API routes, zero new pages, zero new tables, zero new migrations,
+  zero new MCP tools, zero new SDK methods, zero new CLI commands.
 - **2026-09-08 — API routes 135 → 136 (`POST /api/actions/[actionId]/cancel`).**
   The cancellation seam for actions that were approved but should not run. A
   running or pending action that is unclaimed and unexecuted can be cancelled

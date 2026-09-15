@@ -366,6 +366,14 @@ const GUARD_INPUT_SCHEMA = {
   // counting in getRecentApprovalCountsByPolicy; never gates a decision —
   // same posture as the attestation fields above.
   self_test:      { type: 'boolean' },
+  // Verification contract (2026-09-15): the must_haves and prohibitions this
+  // action was specified against, each with a verification tier and the
+  // spec-time `non_inferable` tag. Read by the verification_contract policy.
+  // Without this entry validate() strips it and that policy silently no-ops —
+  // the same failure the intel/tool entries above were added to fix. Free-form
+  // object; parseVerificationContract normalizes and caps it (200 items).
+  // Caller-declared and escalation-only: it can add a gate, never remove one.
+  verification_contract: { type: 'object' },
 };
 
 // Evidence-first `act` payload — deep validation (caps + per-kind family).
@@ -437,7 +445,7 @@ function validateClientCapabilities(context, addError) {
   }
 }
 
-const POLICY_TYPES = ['risk_threshold', 'require_approval', 'block_action_type', 'warn_action_type', 'allow_grant', 'rate_limit', 'webhook_check', 'permission_escalation', 'green_contract', 'branch_freshness', 'non_fabrication', 'protected_path', 'agent_allowlist', 'require_evidence', 'delegation_constraint', 'role_constraint', 'deviation_response', 'assumption_hold', 'catastrophe_floor'];
+const POLICY_TYPES = ['risk_threshold', 'require_approval', 'block_action_type', 'warn_action_type', 'allow_grant', 'rate_limit', 'webhook_check', 'permission_escalation', 'green_contract', 'branch_freshness', 'non_fabrication', 'protected_path', 'agent_allowlist', 'require_evidence', 'delegation_constraint', 'role_constraint', 'deviation_response', 'assumption_hold', 'catastrophe_floor', 'verification_contract'];
 const GUARD_ACTIONS = ['allow', 'warn', 'block', 'require_approval'];
 
 const POLICY_SCHEMA = {
@@ -866,6 +874,30 @@ const POLICY_TYPE_VALIDATORS = {
     }
     if (rules.escalate_action !== undefined && !['require_approval', 'block'].includes(rules.escalate_action)) {
       addError('assumption_hold rules.escalate_action must be require_approval or block (an assumption hold only tightens)');
+    }
+  },
+  verification_contract: (rules, addError) => {
+    // Disposes of contract items whose verification tier cannot be discharged
+    // (app/lib/guard/verification-contract.ts). Every field optional; the
+    // evaluator's defaults are the strict ones — a violated item and an unrun
+    // test-tier check both block, an unsettled obligation holds for a human.
+    if (rules.action_types !== undefined && !Array.isArray(rules.action_types)) {
+      addError('verification_contract rules.action_types must be an array (omit it to cover every action type)');
+    }
+    if (rules.min_risk !== undefined
+      && (typeof rules.min_risk !== 'number' || rules.min_risk < 0 || rules.min_risk > 100)) {
+      addError('verification_contract rules.min_risk must be a number 0-100');
+    }
+    if (rules.require_contract !== undefined && typeof rules.require_contract !== 'boolean') {
+      addError('verification_contract rules.require_contract must be a boolean');
+    }
+    // Every disposition is an escalation. None of these may be set to 'allow':
+    // a contract can add a gate, never remove one, so no value here can turn an
+    // undischarged obligation into a pass.
+    for (const field of ['on_violation', 'on_unchecked_test_tier', 'on_insufficient_spec', 'escalate_action']) {
+      if (rules[field] !== undefined && !['require_approval', 'block'].includes(rules[field])) {
+        addError(`verification_contract rules.${field} must be require_approval or block (a contract only tightens)`);
+      }
     }
   },
 };

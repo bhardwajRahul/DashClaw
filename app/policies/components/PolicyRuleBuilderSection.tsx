@@ -677,6 +677,108 @@ function CatastropheFloorFields({
   );
 }
 
+// A verifier only catches what the spec named, so this rule does not ask an
+// agent to look harder — it reads the contract the work was specified against
+// and refuses to let an undischarged obligation read as a pass.
+function VerificationContractFields({
+  form,
+  actionOptions,
+  onChange,
+}: DelegationConstraintFieldsProps & { actionOptions: string[] }) {
+  const options = Array.isArray(actionOptions) ? actionOptions : [];
+  return (
+    <div className="space-y-4">
+      <p className="text-xs text-tertiary">
+        The agent attaches the contract its work was specified against — each obligation carrying a
+        verification tier, and the edges the spec could not settle tagged at spec time. This rule
+        decides what happens when one of those cannot be discharged. Leave the action types empty to
+        cover every action.
+      </p>
+      <ActionTypePicker
+        label="Action Types (optional)"
+        options={options}
+        selected={form.actionTypes}
+        onChange={(next) => onChange('actionTypes', next)}
+        hint="Scope the rule to specific action types, or leave empty to cover all of them."
+      />
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div>
+          <label className="block text-xs text-secondary mb-1">A violated obligation</label>
+          <select
+            aria-label="Verification contract on violation"
+            value={form.onViolation}
+            onChange={(event) => onChange('onViolation', event.target.value)}
+            className={selectClass}
+          >
+            <option value="block">Block</option>
+            <option value="require_approval">Require Approval</option>
+          </select>
+          <p className="mt-1 text-[11px] text-tertiary">A check ran and the code failed it.</p>
+        </div>
+        <div>
+          <label className="block text-xs text-secondary mb-1">A check that never ran</label>
+          <select
+            aria-label="Verification contract on unchecked test tier"
+            value={form.onUncheckedTestTier}
+            onChange={(event) => onChange('onUncheckedTestTier', event.target.value)}
+            className={selectClass}
+          >
+            <option value="block">Block</option>
+            <option value="require_approval">Require Approval</option>
+          </select>
+          <p className="mt-1 text-[11px] text-tertiary">
+            A check nobody ran tells you as much about the code as one that failed.
+          </p>
+        </div>
+        <div>
+          <label className="block text-xs text-secondary mb-1">An obligation nothing can settle</label>
+          <select
+            aria-label="Verification contract on insufficient spec"
+            value={form.onInsufficientSpec}
+            onChange={(event) => onChange('onInsufficientSpec', event.target.value)}
+            className={selectClass}
+          >
+            <option value="require_approval">Require Approval</option>
+            <option value="block">Block</option>
+          </select>
+          <p className="mt-1 text-[11px] text-tertiary">
+            Nothing is known to be wrong — the spec just never answered. Approval is the honest default.
+          </p>
+        </div>
+      </div>
+      <div className="space-y-2">
+        <label className="flex items-start gap-2 text-xs text-secondary">
+          <input
+            type="checkbox"
+            checked={form.requireContract === true}
+            onChange={(event) => onChange('requireContract', event.target.checked)}
+            className="mt-0.5"
+          />
+          <span>
+            <span className="block text-primary">Require a contract</span>
+            Escalate a matching action that arrives with no contract at all. Leave this off until your
+            agents actually attach one, or every call lands in the queue.
+          </span>
+        </label>
+      </div>
+      {form.requireContract === true && (
+        <div className="sm:max-w-xs">
+          <label className="block text-xs text-secondary mb-1">When no contract is attached</label>
+          <select
+            aria-label="Verification contract missing contract action"
+            value={form.escalateAction}
+            onChange={(event) => onChange('escalateAction', event.target.value)}
+            className={selectClass}
+          >
+            <option value="require_approval">Require Approval</option>
+            <option value="block">Block</option>
+          </select>
+        </div>
+      )}
+    </div>
+  );
+}
+
 interface PolicyRuleBuilderSectionProps {
   form: any;
   actionOptions: string[];
@@ -1176,6 +1278,10 @@ export default function PolicyRuleBuilderSection({
 
       {form.type === 'catastrophe_floor' && (
         <CatastropheFloorFields form={form} actionOptions={actionOptions} onChange={onChange} />
+      )}
+
+      {form.type === 'verification_contract' && (
+        <VerificationContractFields form={form} actionOptions={actionOptions} onChange={onChange} />
       )}
 
     </>
