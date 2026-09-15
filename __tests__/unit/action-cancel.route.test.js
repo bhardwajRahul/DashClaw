@@ -119,6 +119,27 @@ describe('POST /api/actions/[actionId]/cancel', () => {
     expect(res.status).toBe(200);
   });
 
+  it('lets the recording API key cancel the action it abandoned', async () => {
+    // The governed hook's x-user-id is its API key id, never the agent_id —
+    // the same principal claimActionExecution binds a claim to. Without this
+    // the pretool hook could not close the row it just gave up on, and the
+    // action aged into a false lost_confirmation (2026-09-14).
+    mockGetOrgRole.mockReturnValue('member');
+    mockGetUserId.mockReturnValue('key_abc');
+    mockGetActionCancelFacts.mockResolvedValue({
+      action_id: 'act_1',
+      agent_id: 'agent_1',
+      created_by: 'key_abc',
+      status: 'running',
+      outcome_status: 'pending',
+      claimed: false,
+    });
+
+    const res = await POST(req({ reason: 'execution claim unresolved' }), routeCtx);
+
+    expect(res.status).toBe(200);
+  });
+
   it('rejects a non-owner non-admin with 403', async () => {
     mockGetOrgRole.mockReturnValue('member');
     mockGetUserId.mockReturnValue('agent_other');

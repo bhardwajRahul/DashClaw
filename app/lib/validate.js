@@ -3,6 +3,8 @@
  * No external dependencies - matches existing project style.
  */
 
+import { stripUnstorableChars } from './pg-text.js';
+
 const ACTION_TYPES = [
   'build', 'deploy', 'post', 'apply', 'security', 'message', 'api',
   'calendar', 'research', 'review', 'fix', 'refactor', 'test', 'config',
@@ -214,9 +216,18 @@ function validate(body, schema) {
     } else if (value != null) {
       // Normalize datetime strings to ISO (e.g. a client sending
       // Date.toString() output like "Thu Jun 11 2026 ... GMT-0400 (...)").
-      data[key] = (rule.format === 'datetime' && typeof value === 'string' && value.length > 0)
-        ? new Date(value).toISOString()
-        : value;
+      // stripUnstorableChars is the last thing between a client payload and
+      // Postgres: a NUL or an unpaired surrogate anywhere in an act, a
+      // context or an outcome summary makes the whole INSERT fail (22021 on a
+      // text parameter, 22P05 once the stored JSON is cast to jsonb). See
+      // app/lib/pg-text.js for the 2026-09-14 incident that motivated it.
+      // Every write path funnels through validate(), so one call covers the
+      // guard context, the action record and the outcome fields alike.
+      data[key] = stripUnstorableChars(
+        (rule.format === 'datetime' && typeof value === 'string' && value.length > 0)
+          ? new Date(value).toISOString()
+          : value,
+      );
     }
   }
 

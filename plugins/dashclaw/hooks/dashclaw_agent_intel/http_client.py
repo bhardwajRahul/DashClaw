@@ -14,6 +14,7 @@ and backoff per tool call).
 Stdlib only. No third party dependencies.
 """
 
+import json
 import os
 import time
 import urllib.error
@@ -66,3 +67,64 @@ def request_with_retry(req, timeout, retries=2):
     if last_exc is not None:
         raise last_exc
     return b""
+
+
+# ---------------------------------------------------------------------------
+# Payload sanitation
+# ---------------------------------------------------------------------------
+
+# Depth beyond which a payload is left alone. Hook payloads nest a handful of
+# levels; anything deeper is not evidence worth rewriting.
+_MAX_SANITIZE_DEPTH = 16
+
+
+def _is_unstorable(ch):
+    code = ord(ch)
+    # NUL, and any UTF-16 surrogate code point. A Python str stores astral
+    # characters as one code point, so a surrogate here is always an unpaired
+    # half that survived a lenient decode.
+    return code == 0 or (0xD800 <= code <= 0xDFFF)
+
+
+def strip_unstorable(value, depth=0):
+    """Drop characters Postgres cannot store from a JSON-shaped payload.
+
+    A NUL or an unpaired surrogate anywhere in an act, a guard context or an
+    outcome summary makes the server's whole INSERT fail: 22021 "invalid byte
+    sequence for encoding UTF8: 0x00" on a text parameter, and 22P05
+    "unsupported Unicode escape sequence" once the stored JSON is cast to
+    jsonb. On 2026-09-14 one NUL inside a source file a governed session was
+    editing blocked five tool calls (the execution claim 500'd, so the hook
+    reported an ambiguous claim) and left five action rows stuck in 'running'
+    (the outcome PATCH 500'd).
+
+    The server strips the same characters in app/lib/validate.js; this is the
+    client half, so an older server is protected too and the round trip is
+    never spent on a payload that cannot be stored.
+
+    A clean string is returned unchanged; containers are rebuilt.
+    """
+    if isinstance(value, str):
+        if not any(_is_unstorable(ch) for ch in value):
+            return value
+        return "".join(ch for ch in value if not _is_unstorable(ch))
+    if depth >= _MAX_SANITIZE_DEPTH:
+        return value
+    if isinstance(value, dict):
+        return {strip_unstorable(k, depth + 1): strip_unstorable(v, depth + 1)
+                for k, v in value.items()}
+    if isinstance(value, (list, tuple)):
+        cleaned = [strip_unstorable(item, depth + 1) for item in value]
+        return cleaned if isinstance(value, list) else tuple(cleaned)
+    return value
+
+
+def encode_json_body(body):
+    """JSON-encode a request body after stripping unstorable characters.
+
+    Every hook that POSTs or PATCHes governance state goes through this, so
+    the sanitation cannot be forgotten on a new call site.
+    """
+    if body is None:
+        return None
+    return json.dumps(strip_unstorable(body)).encode("utf-8")

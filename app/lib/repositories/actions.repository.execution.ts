@@ -113,6 +113,10 @@ export async function getExecutionCandidate(sql: SqlTag, input: {
 export interface ActionCancelFacts {
   action_id: string;
   agent_id: string | null;
+  /** Middleware-attributed principal of the request that CREATED the row —
+   * the API key id for a hook or SDK caller. The cancel route authorizes on
+   * it, because an agent key's x-user-id is its key id, never the agent_id. */
+  created_by: string | null;
   status: string | null;
   outcome_status: string | null;
   claimed: boolean;
@@ -125,7 +129,7 @@ export async function getActionCancelFacts(
   actionId: string,
 ): Promise<ActionCancelFacts | null> {
   const rows = await sql.query(
-    `SELECT action_id, agent_id, status, outcome_status,
+    `SELECT action_id, agent_id, created_by, status, outcome_status,
             (execution_claimed_at IS NOT NULL) AS claimed
      FROM action_records
      WHERE org_id = $1 AND action_id = $2

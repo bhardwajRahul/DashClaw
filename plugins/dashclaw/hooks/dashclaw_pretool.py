@@ -125,7 +125,7 @@ from dashclaw_agent_intel.written_paths_ledger import (
 )
 from dashclaw_agent_intel.file_scanner import is_placeholder_path
 from dashclaw_agent_intel.tool_recognizer import ungoverned_default_categories
-from dashclaw_agent_intel.http_client import request_with_retry, env_retries
+from dashclaw_agent_intel.http_client import request_with_retry, env_retries, encode_json_body
 
 # Database containment (basis db_branch, RFC 2026-09-04). Optional import: an
 # installation whose hook files predate this module (a partial copy, an older
@@ -257,6 +257,14 @@ def log(msg):
 # "guard unreachable" — a 401 IS a response, not a connectivity failure.
 AUTH_FAILED = object()
 
+# Sentinel returned by api_request(distinguish_transient=True) when the server
+# never produced an authoritative answer: a 5xx/408/429, or no HTTP status at
+# all (DNS, refused, reset, timeout). Distinct from None, which now means "the
+# host answered and refused". The execution claim needs the difference: a
+# refusal must block the tool call, a transient failure is worth one more
+# attempt (the database, not the hook, is what makes a claim one-shot).
+TRANSIENT_FAILED = object()
+
 
 def derive_idempotency_key(parts):
     """Derive a stable idempotency key from the intent of an action.
@@ -277,7 +285,7 @@ def derive_idempotency_key(parts):
 
 
 def api_request(method, path, body=None, timeout=None, retries=2, distinguish_auth=False,
-                read_error_body=False):
+                read_error_body=False, distinguish_transient=False):
     """Make an HTTP request to the DashClaw API. Returns parsed JSON or None.
 
     By default retries up to three times total with 0.4s then 0.8s backoff
@@ -297,7 +305,7 @@ def api_request(method, path, body=None, timeout=None, retries=2, distinguish_au
     if timeout is None:
         timeout = GUARD_TIMEOUT
     url = BASE_URL + path
-    data = json.dumps(body).encode("utf-8") if body else None
+    data = encode_json_body(body) if body else None
     req = urllib.request.Request(
         url,
         data=data,
@@ -316,6 +324,8 @@ def api_request(method, path, body=None, timeout=None, retries=2, distinguish_au
         # collapses to None as before.
         if distinguish_auth and exc.code in (401, 403):
             return AUTH_FAILED
+        if distinguish_transient and (exc.code >= 500 or exc.code in (408, 429)):
+            return TRANSIENT_FAILED
         if read_error_body:
             try:
                 return json.loads(exc.read().decode("utf-8"))
@@ -323,6 +333,10 @@ def api_request(method, path, body=None, timeout=None, retries=2, distinguish_au
                 return None
         return None
     except Exception:
+        # No HTTP status at all: DNS, connect refused, reset, timeout, or a
+        # body that would not parse. The server never gave a verdict.
+        if distinguish_transient:
+            return TRANSIENT_FAILED
         return None
 
 
@@ -436,9 +450,7 @@ def _folded_claim_outcome(guard_resp, action_id, context):
     return False
 
 
-def _claim_execution(action_id, context):
-    """Claim one action attempt exactly once. Never retry an ambiguous PATCH."""
-    attempt_id = str(uuid.uuid4())
+def _claim_body(context, attempt_id):
     # The claim must carry the identity the action was recorded under. With
     # DASHCLAW_SUBAGENT_IDENTITY=distinct a sub-agent leaf call is recorded as
     # "<parent>:<agent_type>" (see _apply_distinct_subagent_id); claiming it
@@ -451,18 +463,65 @@ def _claim_execution(action_id, context):
     }
     if "act" in context:
         body["act"] = context["act"]
-    response = api_request(
-        "PATCH",
-        "/api/actions/" + action_id,
-        body=body,
-        retries=0,
-    )
-    return bool(
-        isinstance(response, dict)
-        and response.get("claimed") is True
-        and response.get("action_id") == action_id
-        and response.get("attempt_id") == attempt_id
-    )
+    return body
+
+
+def _claim_is_already_ours(action_id, attempt_ids):
+    """True when the row already carries a claim this hook made.
+
+    Only reached after a transient failure lost a response. Reading the row
+    back is the difference between "someone else holds the attempt" (block)
+    and "our own claim landed and the answer never arrived" (proceed): the
+    claim on record has to be stamped with one of OUR attempt ids, so a claim
+    by any other caller still blocks.
+    """
+    if not attempt_ids:
+        return False
+    payload = get_action(action_id)
+    action = (payload or {}).get("action") if isinstance(payload, dict) else None
+    if not isinstance(action, dict) or not action.get("execution_claimed_at"):
+        return False
+    return action.get("execution_attempt_id") in attempt_ids
+
+
+def _claim_execution(action_id, context):
+    """Claim one action attempt. Retry a transient failure, never a refusal.
+
+    One attempt is guaranteed by the DATABASE, not by this function: the
+    claim UPDATE gates on `execution_claimed_at IS NULL`, so a second PATCH
+    can never grant a second execution — it answers 409. That makes retrying
+    a transient failure (a 5xx, or no answer at all) safe, and it is the fix
+    for the 2026-09-14 incident where a server 500 on one tool call was
+    reported as an ambiguous claim and blocked it. A refusal the server
+    actually issued still blocks on the first answer, as before.
+
+    Each attempt carries a fresh nonce. If an attempt was lost in flight and
+    the server did claim it, the following attempt's 409 sends us to
+    _claim_is_already_ours, which accepts only a claim stamped with one of
+    ours.
+    """
+    transient_ids = []
+    for _ in range(2):
+        attempt_id = str(uuid.uuid4())
+        response = api_request(
+            "PATCH",
+            "/api/actions/" + action_id,
+            body=_claim_body(context, attempt_id),
+            retries=0,
+            distinguish_transient=True,
+        )
+        if response is TRANSIENT_FAILED:
+            transient_ids.append(attempt_id)
+            continue
+        if (isinstance(response, dict)
+                and response.get("claimed") is True
+                and response.get("action_id") == action_id
+                and response.get("attempt_id") == attempt_id):
+            return True
+        # An answer we can trust: the server refused. Unless an earlier
+        # attempt vanished in flight, that refusal is final.
+        return _claim_is_already_ours(action_id, transient_ids)
+    return _claim_is_already_ours(action_id, transient_ids)
 
 
 # ---------------------------------------------------------------------------
@@ -1414,6 +1473,31 @@ def _persist_guard_recorded_action(guard_resp, tool_use_id, persist=True):
     return action_id
 
 
+def _abandon_unclaimed_action(action_id, reason):
+    """Close the record this hook is about to abandon.
+
+    An unclaimed action left at 'running' is not neutral. The server's outcome
+    sweep eventually closes it as `lost_confirmation` and raises a warning
+    signal, which reads as "the agent executed something and never reported
+    it" — the exact opposite of what happened: the tool call was blocked and
+    nothing ran. POST /api/actions/<id>/cancel is the server's own word for
+    "recorded, deliberately never executed", and it refuses any row that was
+    already claimed, so this can never erase a real attempt.
+
+    Best effort: a failure here is logged, never fatal — the tool call is
+    being blocked either way.
+    """
+    response = api_request(
+        "POST",
+        "/api/actions/" + action_id + "/cancel",
+        body={"reason": reason},
+        retries=1,
+    )
+    if not (isinstance(response, dict) and response.get("ok") is True):
+        _log_hook_error("execution_claim_failed: cancel of unclaimed action "
+                        + action_id + " failed; row may age into lost_confirmation")
+
+
 def _authorize_execution(action_id, context, tool_use_id, guard_resp, persist=True):
     """Claim the action, then expose it to PostToolUse/token attribution."""
     if not action_id:
@@ -1425,6 +1509,13 @@ def _authorize_execution(action_id, context, tool_use_id, guard_resp, persist=Tr
     if guard_resp.get("execution_claim_required") is True:
         folded = _folded_claim_outcome(guard_resp, action_id, context)
         if folded is False or (folded is None and not _claim_execution(action_id, context)):
+            source = "folded claim refused" if folded is False else "claim PATCH unresolved"
+            # This failure used to leave no trace anywhere but the agent's
+            # stderr, so five blocked tool calls on 2026-09-14 could only be
+            # reconstructed from the server's logs. Log it where the other
+            # governance-runtime faults are logged.
+            _log_hook_error("execution_claim_failed: action_id=" + action_id + " (" + source + ")")
+            _abandon_unclaimed_action(action_id, "execution claim unresolved (" + source + ")")
             log("[DashClaw] Blocked: execution claim failed or returned an ambiguous response.")
             log("Action ID: " + action_id + ". Do not retry automatically; reconcile this attempt first.")
             sys.exit(2)

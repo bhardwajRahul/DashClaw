@@ -36,7 +36,7 @@ import urllib.error
 
 # Import the shared HTTP retry helper from the sibling intel package.
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from dashclaw_agent_intel.http_client import request_with_retry
+from dashclaw_agent_intel.http_client import request_with_retry, encode_json_body
 from dashclaw_agent_intel.stop_state import (
     log_hook_error as _log_hook_error,
     read_cursor as _read_cursor,
@@ -204,7 +204,7 @@ def _build_action_request(url, body, method):
     """Build a JSON urllib request with the standard DashClaw auth headers."""
     return urllib.request.Request(
         url,
-        data=json.dumps(body).encode("utf-8"),
+        data=encode_json_body(body),
         headers={
             "Content-Type": "application/json",
             "x-api-key": API_KEY,

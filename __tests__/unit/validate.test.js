@@ -248,3 +248,47 @@ describe('isValidWebhookUrl', () => {
     expect(isValidWebhookUrl('https://test.onion')).toContain('invalid domains');
   });
 });
+
+describe('validators strip characters Postgres cannot store', () => {
+  // 2026-09-14: one NUL inside a source file a governed session was editing
+  // made three writes fail — the guard's folded claim and the claim PATCH with
+  // 22P05 once the stored context was cast to jsonb, and the outcome PATCH
+  // with 22021 on a text parameter. Five tool calls blocked, five rows stuck
+  // in 'running'. validate() is the funnel every write path shares.
+  const NUL = String.fromCharCode(0);
+  const LONE_HIGH = String.fromCharCode(0xd800);
+  const EMOJI = String.fromCharCode(0xd83d, 0xde00);
+
+  it('strips a NUL from an action record act payload', () => {
+    const result = validateActionRecord({
+      agent_id: 'agent_1',
+      action_type: 'apply',
+      declared_goal: `write${NUL} the file`,
+      act: { kind: 'file', file: { path: 'src/x.ts', content_excerpt: `const sep = ${NUL};` } },
+    });
+    expect(result.valid).toBe(true);
+    expect(result.data.declared_goal).toBe('write the file');
+    expect(result.data.act.file.content_excerpt).toBe('const sep = ;');
+    expect(JSON.stringify(result.data)).not.toContain(JSON.stringify(NUL).slice(1, -1));
+  });
+
+  it('strips an unpaired surrogate from a guard context but keeps emoji', () => {
+    const result = validateGuardInput({
+      agent_id: 'agent_1',
+      action_type: 'post',
+      declared_goal: `ship it ${EMOJI}${LONE_HIGH}`,
+    });
+    expect(result.valid).toBe(true);
+    expect(result.data.declared_goal).toBe(`ship it ${EMOJI}`);
+  });
+
+  it('leaves the literal escape text alone - only a real NUL is a problem', () => {
+    const literalEscape = String.fromCharCode(92) + 'u0000';
+    const result = validateActionRecord({
+      agent_id: 'agent_1',
+      action_type: 'apply',
+      declared_goal: `document the ${literalEscape} separator`,
+    });
+    expect(result.data.declared_goal).toBe(`document the ${literalEscape} separator`);
+  });
+});

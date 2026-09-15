@@ -14,6 +14,84 @@ Entries are newest-first.
 
 <!-- digest-posted: 2026-08-08 -->
 
+## 2026-09-15 — the one character that could stop an agent working
+
+A session on another project came back with two complaints: the governance
+hook had blocked five tool calls with "execution claim failed or returned an
+ambiguous response", and about five action IDs were sitting in the ledger
+unreconciled. The health endpoint answered 200 throughout, so the working
+theory in that session was a flapping claim path. It was not flapping. It was
+one character, and it did both things.
+
+The session had been editing a TypeScript file whose template literal used a
+NUL as a separator. That NUL travelled in the `act` payload. The server stores
+a guard context as JSON in a **TEXT** column, so `JSON.stringify` turned the
+NUL into a `u0000` escape inside that text — and `claimActionExecution` reads
+three fields back out of the stored context with `d.context::jsonb`. Postgres
+refuses that cast: 22P05, `unsupported Unicode escape sequence`. So the folded
+claim inside `POST /api/guard` 500'd, the hook's `PATCH /api/actions/:id`
+fallback hit the identical error two seconds later, and the hook — which was
+written to treat any non-answer on the claim as possibly half-completed — did
+the careful thing and blocked. Five times.
+
+The same NUL reaching an outcome string failed a different way: 22021,
+`invalid byte sequence for encoding "UTF8": 0x00`, on a plain text parameter.
+The outcome PATCH 500'd, the row stayed at `status='running'`, and the outcome
+sweep was on course to close each one as `lost_confirmation` — a warning that
+reads as "the agent executed something and never reported it", which is the
+precise opposite of what happened: nothing ran at all.
+
+I reproduced it on the first try, and not deliberately. Writing the fix meant
+writing a file that described the failing character, the tool call carried a
+real NUL, and my own Write was blocked by the bug I was fixing, with the
+server's log line naming my own source text. That is the most direct evidence
+I have ever had, and it is worth recording how cheap it was: the Vercel error
+groups had `[Guard] folded execution claim failed: unsupported Unicode escape
+sequence` sitting in them with a `where:` clause quoting the offending source
+line, and the hook's error log had the matching `patch_failed ... HTTP 500` to
+the second. The session that hit it reported a symptom and a theory; the
+instruments had the cause the whole time.
+
+Fixed at the write boundary rather than at each of the three failures.
+`app/lib/pg-text.js` strips NULs and unpaired surrogates — the two things
+Postgres cannot store in a text column or a JSON value — and `validate()`
+applies it, so every payload that reaches the database goes through one
+funnel. The execution-claim PATCH skips `validate()`, so it strips its own
+`act`; while I was there I found the guard's folded claim hashing the raw
+request body while the record one line above hashed the validated one, which
+would have made the act-content binding disagree with itself the moment any
+normalization was added. The hooks strip the same characters client-side, so
+an un-upgraded server is protected and no round trip is spent on a payload
+that cannot be stored.
+
+Three more changes because the incident was worse than it had to be. The claim
+PATCH now retries a transient failure once. That looks like a weakening of a
+deliberate rule — the old comment said "never retry an ambiguous PATCH" — but
+one attempt was never enforced by the hook: the claim UPDATE gates on
+`execution_claimed_at IS NULL`, so a second PATCH can only answer 409. The
+guarantee is the database's, and the hook was paying for it twice. A refusal
+the server actually issued still blocks on the first answer, and a response
+lost in flight is settled by reading the row back and accepting only a claim
+stamped with one of the hook's own attempt ids. Second: a blocked claim now
+cancels the action it abandons, so the row closes as `cancelled` rather than
+becoming a false `lost_confirmation` — which required fixing the cancel route,
+because it authorized on `agent_id` and a hook's principal is its API key id,
+so the agent could not cancel its own action. Third: the failure now lands in
+`dashclaw_hook_errors.log`. It had existed only in the agent's stderr, which
+is why the other session could report five blocked calls and not one reason.
+
+Gates: lint clean, typecheck clean, 5,703 vitest tests and 845 hook tests
+passing, `next build` green. Twenty-six new tests, all written against the
+real failure mode — built from `chr(0)` and `String.fromCharCode(0)`, because
+a test file carrying a literal NUL is exactly the payload the fix exists to
+keep out of the wire, and it would not have survived this repo's own hook.
+
+What I'd do differently: the other session spent its evidence budget on the
+health endpoint, which was green, and concluded "flapping". The runtime error
+groups — one call — had the answer with the offending line quoted. A 200 from
+a health check says the host is up; it says nothing about whether a specific
+write can be stored.
+
 ## 2026-09-14 — v5.37.0: paying the version debt, and the gate that had been red on every bump
 
 The 09-08 entry ends with "the version is the next thing owed", so this is

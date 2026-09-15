@@ -254,7 +254,12 @@ export async function POST(request: Request) {
       const attemptId = requestedAttemptId(body);
       if (attemptId) {
         const claimStart = Date.now();
-        await attachExecutionClaim(sql, orgId, { attemptId, principalId: getUserId(request) || '', act: body?.act }, data, mutable);
+        // data.act, not body.act: the running record one line above hashed the
+        // VALIDATED act, and the claim's act-content binding has to digest the
+        // same bytes. The raw body also still carries any character Postgres
+        // cannot store (validate() strips those), which is what made this
+        // claim 500 on 2026-09-14 — see app/lib/pg-text.js.
+        await attachExecutionClaim(sql, orgId, { attemptId, principalId: getUserId(request) || '', act: data?.act }, data, mutable);
         stageTimings.claim = Date.now() - claimStart;
       }
     }

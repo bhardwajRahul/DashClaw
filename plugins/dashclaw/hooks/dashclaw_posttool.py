@@ -26,7 +26,7 @@ from datetime import datetime, timezone
 
 # Import the shared HTTP retry helper from the sibling intel package.
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from dashclaw_agent_intel.http_client import request_with_retry
+from dashclaw_agent_intel.http_client import request_with_retry, encode_json_body
 from dashclaw_agent_intel.stop_state import contained_turn_path as _contained_turn_path
 from dashclaw_agent_intel.command_parser import parse_command as _parse_command
 from dashclaw_agent_intel.written_paths_ledger import record_written_paths as _ledger_record
@@ -361,7 +361,7 @@ def _patch_action(action_id, body):
     a silently dropped outcome is an audit-trail gap, not a breadcrumb.
     """
     url = BASE_URL + "/api/actions/" + action_id
-    data = json.dumps(body).encode("utf-8")
+    data = encode_json_body(body)
     req = urllib.request.Request(
         url,
         data=data,
@@ -390,7 +390,7 @@ def _post_artifact(body):
     this return value instead of assuming the fail-silent logging means the
     post succeeded."""
     url = BASE_URL + "/api/artifacts"
-    data = json.dumps(body).encode("utf-8")
+    data = encode_json_body(body)
     req = urllib.request.Request(
         url,
         data=data,

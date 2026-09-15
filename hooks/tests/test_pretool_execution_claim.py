@@ -118,6 +118,101 @@ class PretoolExecutionClaimTests(unittest.TestCase):
                     self.assertFalse(self.hook._claim_execution("act_1", {}))
                 self.assertEqual(request.call_count, 1)
 
+    # --- transient-failure handling (2026-09-15) ---------------------------------
+    #
+    # A server 500 is not a refusal. On 2026-09-14 a Postgres 22P05 on the
+    # claim path (one NUL in a payload, see app/lib/pg-text.js) made every
+    # claim answer 500, and the hook reported an ambiguous claim and blocked
+    # five tool calls. The database makes a claim one-shot on its own, so a
+    # transient failure is worth a second attempt.
+
+    def test_transient_failure_is_retried_and_can_still_claim(self):
+        seen = []
+
+        def response(method, path, body=None, **kwargs):
+            self.assertTrue(kwargs.get("distinguish_transient"))
+            seen.append(body["attempt_id"])
+            if len(seen) == 1:
+                return self.hook.TRANSIENT_FAILED
+            return {"claimed": True, "action_id": "act_1", "attempt_id": body["attempt_id"]}
+
+        with mock.patch.object(self.hook, "api_request", side_effect=response) as request:
+            self.assertTrue(self.hook._claim_execution("act_1", {}))
+        self.assertEqual(request.call_count, 2)
+        # Each attempt carries its own nonce; the server binds the claim to one.
+        self.assertEqual(len(set(seen)), 2)
+
+    def test_a_refusal_blocks_on_the_first_answer_without_a_readback(self):
+        with mock.patch.object(self.hook, "api_request", return_value=None) as request,                 mock.patch.object(self.hook, "get_action") as get_action:
+            self.assertFalse(self.hook._claim_execution("act_1", {}))
+        self.assertEqual(request.call_count, 1)
+        self.assertEqual(get_action.call_count, 0)
+
+    def test_lost_response_is_reconciled_by_reading_our_own_attempt_back(self):
+        seen = []
+
+        def response(method, path, body=None, **kwargs):
+            seen.append(body["attempt_id"])
+            return self.hook.TRANSIENT_FAILED if len(seen) == 1 else None
+
+        with mock.patch.object(self.hook, "api_request", side_effect=response),                 mock.patch.object(self.hook, "get_action") as get_action:
+            get_action.side_effect = lambda action_id: {"action": {
+                "execution_claimed_at": "2026-09-15T00:00:00Z",
+                "execution_attempt_id": seen[0],
+            }}
+            self.assertTrue(self.hook._claim_execution("act_1", {}))
+        self.assertEqual(get_action.call_count, 1)
+
+    def test_a_claim_held_by_someone_else_is_never_accepted_as_ours(self):
+        def response(method, path, body=None, **kwargs):
+            return self.hook.TRANSIENT_FAILED
+
+        with mock.patch.object(self.hook, "api_request", side_effect=response) as request,                 mock.patch.object(self.hook, "get_action", return_value={"action": {
+                    "execution_claimed_at": "2026-09-15T00:00:00Z",
+                    "execution_attempt_id": "some-other-agents-attempt",
+                }}):
+            self.assertFalse(self.hook._claim_execution("act_1", {}))
+        self.assertEqual(request.call_count, 2)
+
+    def test_an_unclaimed_row_after_two_transient_failures_still_blocks(self):
+        with mock.patch.object(self.hook, "api_request", return_value=self.hook.TRANSIENT_FAILED),                 mock.patch.object(self.hook, "get_action", return_value={"action": {
+                    "execution_claimed_at": None, "execution_attempt_id": None,
+                }}):
+            self.assertFalse(self.hook._claim_execution("act_1", {}))
+
+    # --- abandoning a blocked claim (2026-09-15) ---------------------------------
+
+    def test_a_blocked_claim_cancels_the_action_it_abandons(self):
+        calls = []
+
+        def response(method, path, body=None, **kwargs):
+            calls.append((method, path, body))
+            if path.endswith("/cancel"):
+                return {"ok": True, "action_id": "act_1", "status": "cancelled"}
+            return None
+
+        with (
+            mock.patch.object(self.hook, "write_action_id"),
+            mock.patch.object(self.hook, "append_turn_action"),
+            mock.patch.object(self.hook, "_log_hook_error") as logged,
+            mock.patch.object(self.hook, "api_request", side_effect=response),
+            self.assertRaises(SystemExit) as raised,
+        ):
+            self.hook._authorize_execution("act_1", {}, "tool_1", {
+                "execution_claim_required": True, "claim_protocol": 1,
+                "claimed": False, "attempt_id": "attempt-1234567890",
+                "claim_error": "EXECUTION_CLAIM_CONFLICT",
+            })
+        self.assertEqual(raised.exception.code, 2)
+        self.assertIn(("POST", "/api/actions/act_1/cancel", {"reason": mock.ANY}), calls)
+        # The failure leaves a forensic trail, not just agent stderr.
+        self.assertTrue(any("execution_claim_failed" in str(c.args[0]) for c in logged.call_args_list))
+
+    def test_a_failed_cancel_is_logged_and_never_raises(self):
+        with mock.patch.object(self.hook, "api_request", return_value=None),                 mock.patch.object(self.hook, "_log_hook_error") as logged:
+            self.hook._abandon_unclaimed_action("act_1", "execution claim unresolved")
+        self.assertEqual(logged.call_count, 1)
+
     # --- folded claim (5.35): the guard call carries the claim, no PATCH ---------
 
     def test_guard_context_asks_for_a_folded_claim(self):
@@ -173,7 +268,10 @@ class PretoolExecutionClaimTests(unittest.TestCase):
                 "claimed": False, "attempt_id": "attempt-1234567890", "claim_error": "EXECUTION_CLAIM_CONFLICT",
             })
         self.assertEqual(raised.exception.code, 2)
-        self.assertEqual(request.call_count, 0)
+        # A refused claim is never retried as a PATCH. The one request the
+        # block path does make is the cancel that closes the abandoned row.
+        self.assertEqual([(c.args[0], c.args[1]) for c in request.call_args_list],
+                         [("POST", "/api/actions/act_1/cancel")])
 
     def test_legacy_server_without_folded_claim_still_patches(self):
         context = {"attempt_id": "attempt-1234567890"}

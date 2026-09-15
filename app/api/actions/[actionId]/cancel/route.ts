@@ -50,7 +50,13 @@ export async function POST(request: Request, { params }: { params: Promise<{ act
     const role = getOrgRole(request);
     const userId = getUserId(request);
     const isAdmin = role === 'admin';
-    const isOwner = !!userId && !!facts.agent_id && userId === facts.agent_id;
+    // Two ways to own the row. `agent_id` covers a caller whose principal IS
+    // the agent (session auth); `created_by` covers the governed hook and the
+    // SDKs, whose x-user-id is the API key id that recorded the action — the
+    // same principal claimActionExecution binds a claim to. Without the second
+    // check the pretool hook could not cancel the action it just abandoned,
+    // and the row aged into a false `lost_confirmation` (2026-09-14).
+    const isOwner = !!userId && (userId === facts.agent_id || userId === facts.created_by);
     if (!isAdmin && !isOwner) {
       return NextResponse.json({ error: 'Not authorized to cancel this action' }, { status: 403 });
     }
