@@ -32,7 +32,7 @@ vi.mock('@/lib/validate', () => ({
   enforcementModeField: (v) => (typeof v === 'string' && ['enforce', 'observe', 'warn', 'off'].includes(v.trim().toLowerCase()) ? v.trim().toLowerCase() : null),
 }));
 vi.mock('@/lib/guard', () => ({ evaluateGuard: mockEvaluateGuard, getOrgHaltState: mockGetOrgHalt }));
-vi.mock('@/lib/guard/execution', () => ({ authorizeActionExecution: mockAuthorize }));
+vi.mock('@/lib/guard/execution', () => ({ authorizeActionExecutionDetailed: mockAuthorize }));
 vi.mock('@/lib/repositories/guard.repository.js', () => ({
   listGuardDecisions: vi.fn(),
   getGuardDecisionByIdempotencyKey: mockGetPriorDecision,
@@ -78,7 +78,7 @@ describe('/api/guard?record=true — folded execution claim', () => {
     mockGetOrgHalt.mockResolvedValue(null);
     mockCreateActionRecord.mockResolvedValue({ action_id: 'act_new1' });
     mockEvaluateGuard.mockResolvedValue({ decision: 'allow', reasons: [], warnings: [], matched_policies: [], risk_score: 10 });
-    mockAuthorize.mockResolvedValue({ execution_claimed_at: '2026-09-06T00:00:00.000Z' });
+    mockAuthorize.mockResolvedValue({ claim: { execution_claimed_at: '2026-09-06T00:00:00.000Z' }, reason: null });
   });
 
   it('claims the recorded action in the same request and echoes the claim', async () => {
@@ -110,13 +110,27 @@ describe('/api/guard?record=true — folded execution claim', () => {
     expect(mockAuthorize).toHaveBeenCalledTimes(1);
   });
 
-  it('answers claimed:false with the PATCH conflict code when the claim is refused', async () => {
-    mockAuthorize.mockResolvedValue(null);
+  it('answers claimed:false with the PATCH conflict code when another attempt holds the slot', async () => {
+    mockAuthorize.mockResolvedValue({ claim: null, reason: 'claim_conflict' });
     const body = await (await post({ ...baseAction, claim_execution: true, attempt_id: ATTEMPT })).json();
     expect(body.recorded).toBe(true);
     expect(body.claimed).toBe(false);
     expect(body.claim_error).toBe('EXECUTION_CLAIM_CONFLICT');
+    expect(body.claim_reason).toBe('claim_conflict');
     expect(body.attempt_id).toBe(ATTEMPT);
+  });
+
+  // Only a lost race for the one execution slot is a conflict. Reporting the
+  // other refusals as one told the hook to block tool calls that nothing was
+  // competing for (2026-09-15).
+  it('names a refusal that is not a conflict as unavailable, not a conflict', async () => {
+    for (const reason of ['no_candidate', 'degraded_decision', 'no_decision_id', 'identity_unverified']) {
+      mockAuthorize.mockResolvedValue({ claim: null, reason });
+      const body = await (await post({ ...baseAction, claim_execution: true, attempt_id: ATTEMPT })).json();
+      expect(body.claimed).toBe(false);
+      expect(body.claim_error).toBe('EXECUTION_CLAIM_UNAVAILABLE');
+      expect(body.claim_reason).toBe(reason);
+    }
   });
 
   it('leaves the response byte-compatible when the body does not ask for a claim', async () => {

@@ -14,25 +14,69 @@ import type { GuardEvalContext } from './types';
  * stays the only execution permission either way. */
 export type FreshDecision = { decision: string; decision_id?: string; degraded?: boolean; containment?: { ref?: string } | null };
 
+/** Why a claim did not happen. Exactly one of these — `claim_conflict` — means
+ * another attempt already holds this action's one execution slot; that is the
+ * only outcome where letting the tool call proceed could double-execute.
+ * Every other reason is the governance runtime failing to stamp a verdict it
+ * already rendered, which is a ledger fault, not a policy hold. The folded
+ * claim reports the distinction so a caller can tell the two apart instead of
+ * treating every refusal as a conflict (2026-09-15: five blocked tool calls
+ * across a day, all reported as EXECUTION_CLAIM_CONFLICT, none of them one). */
+export type ClaimRefusalReason =
+  | 'missing_principal'
+  | 'no_candidate'
+  | 'identity_unverified'
+  | 'no_decision'
+  | 'degraded_decision'
+  | 'decision_not_permissive'
+  | 'containment_mismatch'
+  | 'no_decision_id'
+  | 'claim_conflict';
+
+export type ClaimOutcome =
+  | { claim: Awaited<ReturnType<typeof claimActionExecution>>; reason: null }
+  | { claim: null; reason: ClaimRefusalReason };
+
+export async function authorizeActionExecutionDetailed(sql: SqlTag, input: {
+  orgId: string; actionId: string; principalId: string; attemptId: string; act: unknown;
+  identity: { agent_id: string | null; verified: boolean; verification_status: string };
+  freshDecision?: FreshDecision;
+}): Promise<ClaimOutcome> {
+  if (!input.principalId || !input.identity.agent_id) return { claim: null, reason: 'missing_principal' };
+  const binding = { orgId: input.orgId, actionId: input.actionId, principalId: input.principalId,
+    agentId: input.identity.agent_id, actHash: computeActContentHash(input.act) };
+  const candidate = await getExecutionCandidate(sql, binding);
+  if (!candidate) return { claim: null, reason: 'no_candidate' };
+  if (candidate.identity_verified === true && !input.identity.verified) {
+    return { claim: null, reason: 'identity_unverified' };
+  }
+  const decision = input.freshDecision ?? await reevaluateForClaim(sql, input, candidate);
+  if (!decision) return { claim: null, reason: 'no_decision' };
+  if (decision.degraded) return { claim: null, reason: 'degraded_decision' };
+  if (!['allow', 'warn', 'allow_contained'].includes(decision.decision)) {
+    return { claim: null, reason: 'decision_not_permissive' };
+  }
+  if (decision.decision === 'allow_contained' && (candidate.containment_status !== 'contained'
+    || !decision.containment?.ref || candidate.containment_ref !== decision.containment.ref)) {
+    return { claim: null, reason: 'containment_mismatch' };
+  }
+  // A claim is bound to the decision that authorized it; no id, no claim.
+  if (typeof decision.decision_id !== 'string' || !decision.decision_id) {
+    return { claim: null, reason: 'no_decision_id' };
+  }
+  const claim = await claimActionExecution(sql, { ...binding, attemptId: input.attemptId,
+    decisionId: decision.decision_id, identityVerified: input.identity.verified });
+  // The claim UPDATE gates on execution_claimed_at IS NULL, so a null here is
+  // the one genuine lost race.
+  return claim ? { claim, reason: null } : { claim: null, reason: 'claim_conflict' };
+}
+
 export async function authorizeActionExecution(sql: SqlTag, input: {
   orgId: string; actionId: string; principalId: string; attemptId: string; act: unknown;
   identity: { agent_id: string | null; verified: boolean; verification_status: string };
   freshDecision?: FreshDecision;
 }) {
-  if (!input.principalId || !input.identity.agent_id) return null;
-  const binding = { orgId: input.orgId, actionId: input.actionId, principalId: input.principalId,
-    agentId: input.identity.agent_id, actHash: computeActContentHash(input.act) };
-  const candidate = await getExecutionCandidate(sql, binding);
-  if (!candidate || (candidate.identity_verified === true && !input.identity.verified)) return null;
-  const decision = input.freshDecision ?? await reevaluateForClaim(sql, input, candidate);
-  if (!decision) return null;
-  if (decision.degraded || !['allow', 'warn', 'allow_contained'].includes(decision.decision)) return null;
-  if (decision.decision === 'allow_contained' && (candidate.containment_status !== 'contained'
-    || !decision.containment?.ref || candidate.containment_ref !== decision.containment.ref)) return null;
-  // A claim is bound to the decision that authorized it; no id, no claim.
-  if (typeof decision.decision_id !== 'string' || !decision.decision_id) return null;
-  return claimActionExecution(sql, { ...binding, attemptId: input.attemptId, decisionId: decision.decision_id,
-    identityVerified: input.identity.verified });
+  return (await authorizeActionExecutionDetailed(sql, input)).claim;
 }
 
 /** The PATCH path: a claim may arrive long after the guard verdict, so it is

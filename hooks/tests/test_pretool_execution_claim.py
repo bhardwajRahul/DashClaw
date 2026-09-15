@@ -180,9 +180,17 @@ class PretoolExecutionClaimTests(unittest.TestCase):
                 }}):
             self.assertFalse(self.hook._claim_execution("act_1", {}))
 
-    # --- abandoning a blocked claim (2026-09-15) ---------------------------------
+    # --- an unresolved claim is not a conflict (2026-09-15) ----------------------
+    #
+    # The guard has already allowed the call by this point; the claim is the
+    # ledger's exactly-once stamp, not the authorization. Only a claim held by
+    # ANOTHER attempt may take the tool call away. Before this, every refusal
+    # blocked, and a day of Bash and Edit calls died on my-dashclaw labelled
+    # EXECUTION_CLAIM_CONFLICT without one competing executor among them.
 
-    def test_a_blocked_claim_cancels_the_action_it_abandons(self):
+    def _authorize_unresolved(self, row, guard_extra=None, policy="proceed"):
+        """Drive _authorize_execution through a refused folded claim, with
+        `row` as what GET /api/actions/<id> reports. Returns (calls, logged)."""
         calls = []
 
         def response(method, path, body=None, **kwargs):
@@ -191,22 +199,70 @@ class PretoolExecutionClaimTests(unittest.TestCase):
                 return {"ok": True, "action_id": "act_1", "status": "cancelled"}
             return None
 
+        guard_resp = {
+            "execution_claim_required": True, "claim_protocol": 1,
+            "claimed": False, "attempt_id": "attempt-1234567890",
+            "claim_error": "EXECUTION_CLAIM_CONFLICT",
+        }
+        guard_resp.update(guard_extra or {})
         with (
             mock.patch.object(self.hook, "write_action_id"),
             mock.patch.object(self.hook, "append_turn_action"),
+            mock.patch.object(self.hook, "EXECUTION_CLAIM_POLICY", policy),
             mock.patch.object(self.hook, "_log_hook_error") as logged,
+            mock.patch.object(self.hook, "get_action", return_value=row) as get_action,
             mock.patch.object(self.hook, "api_request", side_effect=response),
-            self.assertRaises(SystemExit) as raised,
         ):
-            self.hook._authorize_execution("act_1", {}, "tool_1", {
-                "execution_claim_required": True, "claim_protocol": 1,
-                "claimed": False, "attempt_id": "attempt-1234567890",
-                "claim_error": "EXECUTION_CLAIM_CONFLICT",
-            })
-        self.assertEqual(raised.exception.code, 2)
+            raised = None
+            try:
+                self.hook._authorize_execution(
+                    "act_1", {"attempt_id": "attempt-1234567890"}, "tool_1", guard_resp)
+            except SystemExit as exc:
+                raised = exc
+        return calls, logged, get_action, raised
+
+    def test_a_claim_held_by_another_attempt_blocks_and_cancels_the_row(self):
+        calls, logged, _, raised = self._authorize_unresolved({"action": {
+            "execution_claimed_at": "2026-09-15T00:00:00Z",
+            "execution_attempt_id": "some-other-agents-attempt",
+        }})
+        self.assertIsNotNone(raised)
+        self.assertEqual(raised.code, 2)
         self.assertIn(("POST", "/api/actions/act_1/cancel", {"reason": mock.ANY}), calls)
-        # The failure leaves a forensic trail, not just agent stderr.
-        self.assertTrue(any("execution_claim_failed" in str(c.args[0]) for c in logged.call_args_list))
+        self.assertTrue(any("execution_claim_conflict" in str(c.args[0]) for c in logged.call_args_list))
+
+    def test_a_refused_claim_with_no_competing_attempt_proceeds(self):
+        calls, logged, _, raised = self._authorize_unresolved({"action": {
+            "execution_claimed_at": None, "execution_attempt_id": None,
+        }})
+        self.assertIsNone(raised)
+        # Nothing is abandoned: the row stays open for the outcome patch, and
+        # a refused claim is still never retried as a PATCH.
+        self.assertEqual(calls, [])
+        self.assertTrue(any("execution_claim_unresolved" in str(c.args[0]) for c in logged.call_args_list))
+
+    def test_an_unreadable_row_is_not_evidence_of_a_second_executor(self):
+        # Failing to READ the row is the same class of fault as failing to
+        # claim it. Neither proves a competing attempt, so neither may block.
+        calls, _, _, raised = self._authorize_unresolved(None)
+        self.assertIsNone(raised)
+        self.assertEqual(calls, [])
+
+    def test_a_server_named_unavailable_claim_skips_the_readback(self):
+        calls, _, get_action, raised = self._authorize_unresolved(
+            {"action": {"execution_claimed_at": None}},
+            guard_extra={"claim_error": "EXECUTION_CLAIM_UNAVAILABLE", "claim_reason": "no_candidate"})
+        self.assertIsNone(raised)
+        self.assertEqual(get_action.call_count, 0)
+        self.assertEqual(calls, [])
+
+    def test_strict_policy_restores_the_old_block(self):
+        calls, logged, _, raised = self._authorize_unresolved({"action": {
+            "execution_claimed_at": None, "execution_attempt_id": None,
+        }}, policy="block")
+        self.assertIsNotNone(raised)
+        self.assertEqual(raised.code, 2)
+        self.assertIn(("POST", "/api/actions/act_1/cancel", {"reason": mock.ANY}), calls)
 
     def test_a_failed_cancel_is_logged_and_never_raises(self):
         with mock.patch.object(self.hook, "api_request", return_value=None),                 mock.patch.object(self.hook, "_log_hook_error") as logged:
@@ -255,23 +311,21 @@ class PretoolExecutionClaimTests(unittest.TestCase):
         }, context)
         self.assertEqual(request.call_count, 0)
 
-    def test_refused_folded_claim_blocks_without_a_patch(self):
+    def test_refused_folded_claim_is_never_retried_as_a_patch(self):
         context = {"attempt_id": "attempt-1234567890"}
         with (
             mock.patch.object(self.hook, "write_action_id"),
             mock.patch.object(self.hook, "append_turn_action"),
+            mock.patch.object(self.hook, "get_action", return_value={"action": {
+                "execution_claimed_at": None, "execution_attempt_id": None}}),
             mock.patch.object(self.hook, "api_request") as request,
-            self.assertRaises(SystemExit) as raised,
         ):
             self.hook._authorize_execution("act_1", context, "tool_1", {
                 "execution_claim_required": True, "claim_protocol": 1,
                 "claimed": False, "attempt_id": "attempt-1234567890", "claim_error": "EXECUTION_CLAIM_CONFLICT",
             })
-        self.assertEqual(raised.exception.code, 2)
-        # A refused claim is never retried as a PATCH. The one request the
-        # block path does make is the cancel that closes the abandoned row.
-        self.assertEqual([(c.args[0], c.args[1]) for c in request.call_args_list],
-                         [("POST", "/api/actions/act_1/cancel")])
+        # No PATCH retry of a refusal, and no cancel: nothing was abandoned.
+        self.assertEqual(request.call_args_list, [])
 
     def test_legacy_server_without_folded_claim_still_patches(self):
         context = {"attempt_id": "attempt-1234567890"}

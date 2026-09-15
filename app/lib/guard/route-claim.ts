@@ -16,7 +16,7 @@
 // require_approval decision is claimed by the hook after the approval, a block
 // is never claimed, and allow_contained keeps the PATCH because the hook sets
 // up the containment worktree between the guard verdict and the claim.
-import { authorizeActionExecution } from './execution';
+import { authorizeActionExecutionDetailed } from './execution';
 import type { GuardData, GuardSql } from './route-record';
 
 // Same shape PATCH /api/actions/[actionId] enforces for a claim.
@@ -49,7 +49,7 @@ export async function attachExecutionClaim(
   if (!agentId || !input.principalId) return;
   const verificationStatus = typeof data.verification_status === 'string' ? data.verification_status : 'unverified';
   try {
-    const claimed = await authorizeActionExecution(sql, {
+    const { claim: claimed, reason } = await authorizeActionExecutionDetailed(sql, {
       orgId,
       actionId: result.action_id,
       principalId: input.principalId,
@@ -71,10 +71,15 @@ export async function attachExecutionClaim(
       result.claimed = true;
       result.claimed_at = (claimed as { execution_claimed_at?: unknown }).execution_claimed_at ?? null;
     } else {
-      // Same verdict PATCH answers with 409 EXECUTION_CLAIM_CONFLICT; the hook
-      // treats it as a failed claim and does not retry.
+      // Only a lost race for the one execution slot is a conflict. Every other
+      // reason is the runtime failing to stamp a verdict it already rendered —
+      // reporting those as EXECUTION_CLAIM_CONFLICT told the hook to block a
+      // tool call that nothing was competing for.
       result.claimed = false;
-      result.claim_error = 'EXECUTION_CLAIM_CONFLICT';
+      result.claim_error = reason === 'claim_conflict'
+        ? 'EXECUTION_CLAIM_CONFLICT'
+        : 'EXECUTION_CLAIM_UNAVAILABLE';
+      result.claim_reason = reason;
     }
   } catch (err) {
     console.error('[Guard] folded execution claim failed:', (err as Error).message);

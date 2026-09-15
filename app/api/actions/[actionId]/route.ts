@@ -8,7 +8,7 @@ import { validateActionOutcome } from '../../../lib/validate.js';
 import { stripUnstorableChars } from '../../../lib/pg-text.js';
 import { getOrgId, getUserId } from '../../../lib/org';
 import { resolveAgentIdentity } from '../../../lib/identity-resolution';
-import { authorizeActionExecution } from '../../../lib/guard/execution';
+import { authorizeActionExecutionDetailed } from '../../../lib/guard/execution';
 import { EVENTS, publishOrgEvent } from '../../../lib/events';
 import { redactAny } from '../../../lib/security';
 import { estimateCost } from '../../../lib/billing';
@@ -112,7 +112,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ ac
       if (!identity.agent_id) {
         return NextResponse.json({ error: 'Execution claim requires agent identity', code: 'AGENT_IDENTITY_REQUIRED' }, { status: 403 });
       }
-      const claimed = await authorizeActionExecution(sql, {
+      const { claim: claimed, reason } = await authorizeActionExecutionDetailed(sql, {
         orgId, actionId, identity, principalId: getUserId(request) || '', attemptId: body.attempt_id,
         // The claim body skips validateActionRecord, so it strips here instead:
         // the act-content hash must digest the same bytes the record stored,
@@ -120,8 +120,17 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ ac
         act: stripUnstorableChars(body.act),
       });
       if (!claimed) {
-        return NextResponse.json({ error: 'Action is not eligible for a new execution attempt. Reconcile its state before retrying.',
-          code: 'EXECUTION_CLAIM_CONFLICT', action_id: actionId }, { status: 409 });
+        // 409 is reserved for the one genuine race: another attempt already
+        // holds this action's execution slot, so a caller that proceeds could
+        // double-execute. Anything else is the runtime unable to stamp a
+        // verdict it already rendered — a 422 the caller can distinguish
+        // instead of reading every refusal as a competing executor.
+        if (reason === 'claim_conflict') {
+          return NextResponse.json({ error: 'Action is not eligible for a new execution attempt. Reconcile its state before retrying.',
+            code: 'EXECUTION_CLAIM_CONFLICT', action_id: actionId }, { status: 409 });
+        }
+        return NextResponse.json({ error: 'Execution claim could not be resolved; no competing attempt holds this action.',
+          code: 'EXECUTION_CLAIM_UNAVAILABLE', claim_reason: reason, action_id: actionId }, { status: 422 });
       }
       return NextResponse.json({ claimed: true, action_id: actionId, attempt_id: body.attempt_id,
         claimed_at: claimed.execution_claimed_at }, { headers: { 'Cache-Control': 'no-store' } });

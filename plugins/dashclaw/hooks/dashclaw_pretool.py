@@ -187,6 +187,14 @@ GUARD_RETRIES = env_retries("DASHCLAW_GUARD_RETRIES", 0)
 GUARD_CONNECT_TIMEOUT = float(os.environ.get("DASHCLAW_GUARD_CONNECT_TIMEOUT") or "2")
 APPROVAL_TIMEOUT = float(os.environ.get("DASHCLAW_APPROVAL_TIMEOUT") or "30")
 GUARD_UNAVAILABLE_POLICY = (os.environ.get("DASHCLAW_GUARD_UNAVAILABLE_POLICY") or "block").lower()
+# What an UNRESOLVED execution claim means for the tool call. The guard has
+# already rendered a permissive verdict by this point; the claim is the
+# ledger's exactly-once stamp on it, not the authorization. proceed (default):
+# run the call and record the action unclaimed. block: refuse it, the pre-2026-09-15
+# behavior, for an operator who wants the exactly-once guarantee enforced even
+# when the ledger cannot answer. A claim genuinely held by ANOTHER attempt
+# blocks under either setting.
+EXECUTION_CLAIM_POLICY = (os.environ.get("DASHCLAW_EXECUTION_CLAIM_POLICY") or "proceed").lower()
 # distinct (default since roadmap v2.2): emit a composed agent_id
 # (<parent>:<agent_type>) so sub-agents are distinct fleet identities (the
 # server falls back to the parent's pairing/permissions, so composed ids
@@ -484,7 +492,7 @@ def _claim_is_already_ours(action_id, attempt_ids):
     return action.get("execution_attempt_id") in attempt_ids
 
 
-def _claim_execution(action_id, context):
+def _claim_execution(action_id, context, attempt_ids=None):
     """Claim one action attempt. Retry a transient failure, never a refusal.
 
     One attempt is guaranteed by the DATABASE, not by this function: the
@@ -498,11 +506,14 @@ def _claim_execution(action_id, context):
     Each attempt carries a fresh nonce. If an attempt was lost in flight and
     the server did claim it, the following attempt's 409 sends us to
     _claim_is_already_ours, which accepts only a claim stamped with one of
-    ours.
+    ours. `attempt_ids`, when given, collects every nonce this call issued so
+    the caller can tell a claim of ours apart from someone else's.
     """
     transient_ids = []
     for _ in range(2):
         attempt_id = str(uuid.uuid4())
+        if attempt_ids is not None:
+            attempt_ids.append(attempt_id)
         response = api_request(
             "PATCH",
             "/api/actions/" + action_id,
@@ -1498,6 +1509,67 @@ def _abandon_unclaimed_action(action_id, reason):
                         + action_id + " failed; row may age into lost_confirmation")
 
 
+def _claim_held_by_other(action_id, attempt_ids):
+    """True only when the row carries an execution claim that is not ours.
+
+    An unreadable row is deliberately NOT a conflict. Failing to read the row
+    is the same class of fault as failing to claim it, and neither is evidence
+    that a second executor exists -- so neither may block a call the guard has
+    already allowed.
+    """
+    ours = [a for a in (attempt_ids or []) if a]
+    payload = get_action(action_id)
+    action = (payload or {}).get("action") if isinstance(payload, dict) else None
+    if not isinstance(action, dict) or not action.get("execution_claimed_at"):
+        return False
+    return action.get("execution_attempt_id") not in ours
+
+
+def _resolve_unclaimed_execution(action_id, guard_resp, attempt_ids, source):
+    """Decide what an unresolved execution claim means for THIS tool call.
+
+    The guard rendered a permissive verdict before this point; the claim is
+    the ledger's exactly-once stamp on that verdict, not the authorization for
+    it. So exactly one outcome justifies taking the operator's tool call away:
+    another attempt already holds this action's execution slot, where
+    proceeding could double-execute. Every other refusal is the runtime
+    failing to stamp a verdict it had already granted -- blocking there buys
+    no safety at all, it only costs the call and strands the row.
+
+    Until 2026-09-15 every refusal blocked. A full day of Bash and Edit calls
+    died that way against my-dashclaw, each logged as EXECUTION_CLAIM_CONFLICT
+    and not one of them a conflict: a server answers `claimed:false` just as
+    readily for a candidate row it could not match, a degraded verdict, or a
+    missing decision id.
+
+    A server new enough to name the reason (EXECUTION_CLAIM_UNAVAILABLE) is
+    believed. An older one only ever says "conflict", so the row is read back
+    and a conflict is believed only when the claim on record belongs to
+    someone else.
+    """
+    named_unavailable = str(guard_resp.get("claim_error") or "") == "EXECUTION_CLAIM_UNAVAILABLE"
+    conflict = (not named_unavailable) and _claim_held_by_other(action_id, attempt_ids)
+
+    if conflict:
+        _log_hook_error("execution_claim_conflict: action_id=" + action_id + " (" + source + ")")
+        _abandon_unclaimed_action(action_id, "execution claim held by another attempt (" + source + ")")
+        log("[DashClaw] Blocked: another execution attempt already holds this action.")
+        log("Action ID: " + action_id + ". Do not retry automatically; reconcile this attempt first.")
+        sys.exit(2)
+
+    reason = guard_resp.get("claim_reason") or "unknown"
+    _log_hook_error("execution_claim_unresolved: action_id=" + action_id + " (" + source
+                    + "; reason=" + str(reason) + "); no competing attempt")
+    if EXECUTION_CLAIM_POLICY == "block":
+        _abandon_unclaimed_action(action_id, "execution claim unresolved (" + source + ")")
+        log("[DashClaw] Blocked: execution claim unresolved (DASHCLAW_EXECUTION_CLAIM_POLICY=block).")
+        log("Action ID: " + action_id + ". Nothing else holds this action; unset that variable "
+            "or set it to =proceed to let an allowed call through.")
+        sys.exit(2)
+    log("[DashClaw] ⚠ Execution claim unresolved (" + source + "); the guard already allowed "
+        "this call, so it proceeds and the action is recorded unclaimed.")
+    log("Action ID: " + action_id + ".")
+
 def _authorize_execution(action_id, context, tool_use_id, guard_resp, persist=True):
     """Claim the action, then expose it to PostToolUse/token attribution."""
     if not action_id:
@@ -1508,17 +1580,13 @@ def _authorize_execution(action_id, context, tool_use_id, guard_resp, persist=Tr
     # production entry point.
     if guard_resp.get("execution_claim_required") is True:
         folded = _folded_claim_outcome(guard_resp, action_id, context)
-        if folded is False or (folded is None and not _claim_execution(action_id, context)):
+        attempt_ids = [context.get("attempt_id") or ""]
+        claimed = folded
+        if folded is None:
+            claimed = _claim_execution(action_id, context, attempt_ids=attempt_ids)
+        if claimed is not True:
             source = "folded claim refused" if folded is False else "claim PATCH unresolved"
-            # This failure used to leave no trace anywhere but the agent's
-            # stderr, so five blocked tool calls on 2026-09-14 could only be
-            # reconstructed from the server's logs. Log it where the other
-            # governance-runtime faults are logged.
-            _log_hook_error("execution_claim_failed: action_id=" + action_id + " (" + source + ")")
-            _abandon_unclaimed_action(action_id, "execution claim unresolved (" + source + ")")
-            log("[DashClaw] Blocked: execution claim failed or returned an ambiguous response.")
-            log("Action ID: " + action_id + ". Do not retry automatically; reconcile this attempt first.")
-            sys.exit(2)
+            _resolve_unclaimed_execution(action_id, guard_resp, attempt_ids, source)
     if persist:
         write_action_id(tool_use_id, action_id)
     append_turn_action(_SESSION_ID, action_id)
