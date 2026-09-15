@@ -248,13 +248,19 @@ class PretoolExecutionClaimTests(unittest.TestCase):
         self.assertIsNone(raised)
         self.assertEqual(calls, [])
 
-    def test_a_server_named_unavailable_claim_skips_the_readback(self):
+    def test_the_row_decides_a_conflict_not_the_servers_label(self):
+        # The first cut of the server-side reason codes called a genuine second
+        # claim "unavailable" (the candidate query skips already-claimed rows,
+        # so a real conflict arrives as "no candidate"). The hook reads the row
+        # either way, so a wrong label cannot let a second executor through.
         calls, _, get_action, raised = self._authorize_unresolved(
-            {"action": {"execution_claimed_at": None}},
+            {"action": {"execution_claimed_at": "2026-09-15T00:00:00Z",
+                        "execution_attempt_id": "someone-elses-attempt"}},
             guard_extra={"claim_error": "EXECUTION_CLAIM_UNAVAILABLE", "claim_reason": "no_candidate"})
-        self.assertIsNone(raised)
-        self.assertEqual(get_action.call_count, 0)
-        self.assertEqual(calls, [])
+        self.assertEqual(get_action.call_count, 1)
+        self.assertIsNotNone(raised)
+        self.assertEqual(raised.code, 2)
+        self.assertIn(("POST", "/api/actions/act_1/cancel", {"reason": mock.ANY}), calls)
 
     def test_strict_policy_restores_the_old_block(self):
         calls, logged, _, raised = self._authorize_unresolved({"action": {

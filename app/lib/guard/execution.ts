@@ -1,5 +1,5 @@
 import { computeActContentHash } from '../act-content-hash';
-import { claimActionExecution, getExecutionCandidate } from '../repositories/actions.repository.execution';
+import { claimActionExecution, getActionCancelFacts, getExecutionCandidate } from '../repositories/actions.repository.execution';
 import type { SqlTag } from '../types/db';
 import { evaluateGuard } from './evaluate';
 import { invalidateGuardPolicyCache, invalidateGuardSettingsCache, invalidateGuardRiskTemplateCache } from './caches';
@@ -46,7 +46,15 @@ export async function authorizeActionExecutionDetailed(sql: SqlTag, input: {
   const binding = { orgId: input.orgId, actionId: input.actionId, principalId: input.principalId,
     agentId: input.identity.agent_id, actHash: computeActContentHash(input.act) };
   const candidate = await getExecutionCandidate(sql, binding);
-  if (!candidate) return { claim: null, reason: 'no_candidate' };
+  if (!candidate) {
+    // getExecutionCandidate already filters on execution_claimed_at IS NULL,
+    // so a genuine second claim arrives here as "no candidate" and never
+    // reaches claimActionExecution. Reading the row's claim state back is
+    // what keeps that case a conflict; without it a real double-claim would
+    // be reported as a runtime fault and let a second executor through.
+    const facts = await getActionCancelFacts(sql, input.orgId, input.actionId);
+    return { claim: null, reason: facts?.claimed === true ? 'claim_conflict' : 'no_candidate' };
+  }
   if (candidate.identity_verified === true && !input.identity.verified) {
     return { claim: null, reason: 'identity_unverified' };
   }

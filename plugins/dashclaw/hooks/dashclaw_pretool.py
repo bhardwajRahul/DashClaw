@@ -1542,13 +1542,15 @@ def _resolve_unclaimed_execution(action_id, guard_resp, attempt_ids, source):
     readily for a candidate row it could not match, a degraded verdict, or a
     missing decision id.
 
-    A server new enough to name the reason (EXECUTION_CLAIM_UNAVAILABLE) is
-    believed. An older one only ever says "conflict", so the row is read back
-    and a conflict is believed only when the claim on record belongs to
-    someone else.
+    Whatever the server calls the refusal, the row itself decides. The label
+    was tried as a shortcut and withdrawn the same day: the first cut of the
+    server-side reason codes reported a genuine second claim as "unavailable",
+    because the candidate query filters out already-claimed rows and a real
+    conflict therefore arrives as "no candidate". A word from the server is
+    not worth trusting for the one decision that could double-execute, and the
+    readback costs a single GET on a path that has already failed.
     """
-    named_unavailable = str(guard_resp.get("claim_error") or "") == "EXECUTION_CLAIM_UNAVAILABLE"
-    conflict = (not named_unavailable) and _claim_held_by_other(action_id, attempt_ids)
+    conflict = _claim_held_by_other(action_id, attempt_ids)
 
     if conflict:
         _log_hook_error("execution_claim_conflict: action_id=" + action_id + " (" + source + ")")
