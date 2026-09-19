@@ -128,6 +128,7 @@ const navItems = [
   { href: '#mcp-tools', label: 'Tools (17)', indent: true },
   { href: '#mcp-resources', label: 'Resources (3)', indent: true },
   { href: '#mcp-config', label: 'Configuration', indent: true },
+  { href: '#muse-connector', label: 'Meta Muse connector', indent: true },
   { href: '#cli-and-doctor', label: 'CLI & Doctor' },
   { href: '#dashclaw-doctor', label: 'dashclaw doctor', indent: true },
   { href: '#live-host-canary', label: 'Live host canary', indent: true },
@@ -488,6 +489,16 @@ claw.update_outcome(created["action_id"], status="completed")`}
 
 Connect → log in to DashClaw → Authorize. No API key in the UI: the
 instance runs its own OAuth (DCR + PKCE). Guide: docs/CLAUDE-DESKTOP-PLUGIN.md`}</CodeBlock>
+                <div id="muse-connector" className="scroll-mt-20" />
+                <CodeBlock title="Custom connector: Meta Muse (muse.ai), OAuth or API key">{`Ask Muse: "Build a custom integration to DashClaw. Its MCP server URL is
+  https://your-instance.vercel.app/api/mcp"
+
+Muse asks two questions: does it run at a URL (yes) and does it need
+credentials. Pick OAuth (log in to DashClaw → Authorize) or paste an
+oc_live_... API key into Muse's Secure Credentials Store. Muse tests each
+tool, then saves the connection as a skill. Every guard decision lands in
+the ledger under agent id "muse". hosted.dashclaw.io is submitted to the
+Muse connector directory; a self-hosted instance works the same with its URL.`}</CodeBlock>
                 <p className="text-xs text-text-tertiary leading-relaxed">
                   In chat clients the connector governs <span className="text-text-secondary">cooperatively</span>: the agent, guided by the governance skill, calls <code className="font-mono text-text-secondary">dashclaw_guard</code> / <code className="font-mono text-text-secondary">dashclaw_invoke</code> and records its decisions; it is not a kernel-level block, so a non-compliant model could still call a native tool without consulting guard. Hard <code className="font-mono text-text-secondary">PreToolUse</code> blocking (fail-closed deny) is a property of the CLI hook path (Claude Code / Codex / Hermes); Cowork hard-gating is not yet verified.
                 </p>

@@ -121,6 +121,17 @@ policies:
     },
     {
       number: 2,
+      title: 'Connect through the Muse connector: no key handling',
+      summary:
+        'Muse builds custom integrations from an MCP URL. Give it your instance’s hosted MCP endpoint and pick OAuth: Muse opens the DashClaw consent screen, you log in and authorize, and every decision lands in the ledger under agent id muse. An API key in Muse’s Secure Credentials Store works too. Done this way, skip Step 3.',
+      codeTitle: 'Say to Muse',
+      codeBody: `Build a custom integration to DashClaw. Its MCP server URL is
+${baseUrl}/api/mcp
+Use OAuth.`,
+      note: 'The hosted instance (hosted.dashclaw.io) is submitted to the Muse connector directory; once listed it is one tap in Muse, no URL to paste.',
+    },
+    {
+      number: 3,
       title: 'Store the credential where the agent can reach it — securely',
       summary:
         'The agent needs your instance URL, an API key, and an agent id (e.g. muse-main). The key belongs in the agent runtime\u2019s secure credential store or an env file the agent reads — never in chat, never in a file it might quote back.',
@@ -133,7 +144,7 @@ DASHCLAW_AGENT_ID=muse-main`,
       note: 'If the key is ever rejected, check that the request actually carried the credential before assuming the key is wrong.',
     },
     {
-      number: 3,
+      number: 4,
       title: 'Install the muse-governance skill',
       summary:
         'The skill teaches the agent the protocol: session init, the guard/record/wait/act/outcome loop, how to read allow/warn/block/require_approval, plan-first execution, and honest risk and confidence reporting.',
@@ -144,7 +155,7 @@ DASHCLAW_AGENT_ID=muse-main`,
       note: 'The skill also ships as muse-governance in the dashclaw-skills repo for npx skills add.',
     },
     {
-      number: 4,
+      number: 5,
       title: 'Run the governance loop: guard, record, wait, act, outcome',
       summary:
         'Every risky act goes through the loop. Guard first ("may I?"), record ("I am doing this"), wait only when the verdict is require_approval, act with your own tools, then record the outcome. A block is absolute — never route around it.',
@@ -153,7 +164,7 @@ DASHCLAW_AGENT_ID=muse-main`,
       note: 'Confidence is scored against the real outcome on /decisions, so overconfidence shows up as a number. Never lowball risk to dodge a guard.',
     },
     {
-      number: 5,
+      number: 6,
       title: 'Use plan-first execution for long runs',
       summary:
         'Per-action approvals do not scale to unattended runs. Submit the whole task list as a plan; the operator reviews one card, and each approved step becomes a single-use, act-bound grant. Attest at every run start and every resume — authority is re-verified, never cached.',
@@ -162,13 +173,13 @@ DASHCLAW_AGENT_ID=muse-main`,
       note: 'A step that departs from the plan is recorded as a plan deviation. Declare deviation_note honestly instead of stretching a step to cover new work.',
     },
     {
-      number: 6,
+      number: 7,
       title: 'See the result in DashClaw',
       summary: 'Open your DashClaw dashboard to confirm the action was recorded.',
       note: "Go to /decisions: you should see your action in the ledger with your agent id, action type, and status 'completed'. Held work appears in /approvals for one-click review.",
     },
     {
-      number: 7,
+      number: 8,
       title: 'Know the enforcement boundary',
       summary:
         'The Muse runtime has no pre-tool-call hook yet, so this integration is cooperative: the agent consults the guard and honors the verdict. It stops the accident class and makes bypass visible in the ledger; it is not a lock against a determined process at the same privilege. Adherence probing — synthetic held actions the agent must leave pending — is how an operator verifies cooperation.',

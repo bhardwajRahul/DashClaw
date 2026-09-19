@@ -7,6 +7,7 @@ import { TOOL_DEFINITIONS, createToolHandlers } from '../../../mcp-server/lib/to
 import { RESOURCE_DEFINITIONS, createResourceHandlers } from '../../../mcp-server/lib/resources.js';
 // Single source of truth for the MCP server version — never hardcode here.
 import mcpServerPkg from '../../../mcp-server/package.json' with { type: 'json' };
+import { DEFAULT_CONNECTOR_AGENT_ID } from '../../lib/oauth/connectorIdentity';
 
 const SERVER_INFO = {
   name: '@dashclaw/mcp-server',
@@ -59,12 +60,15 @@ function instanceOrigin(request: Request) {
  * Resolve config from request headers.
  * The x-api-key header (or Bearer Authorization) is already validated by middleware.
  *
- * Agent identity: OAuth Bearer callers are the Claude consumer-app custom
- * connector (the only client of the built-in OAuth AS), so they get the
- * documented `claude-desktop` server-level identity — identity is a governance
- * primitive, and without a server-level default the write-identity fallback in
- * createToolHandlers lets the LLM pick its own agent_id per call. x-api-key
- * callers (Managed Agents, remote MCP hosts) keep their existing behavior.
+ * Agent identity: OAuth Bearer callers are connector clients of the built-in
+ * OAuth AS (the Claude consumer app, Meta Muse), so they get a pinned
+ * server-level identity — identity is a governance primitive, and without a
+ * server-level default the write-identity fallback in createToolHandlers lets
+ * the LLM pick its own agent_id per call. The middleware forwards the identity
+ * the consent flow bound to the token as x-oauth-agent-id (`muse` for a Muse
+ * client, `claude-desktop` otherwise); the default covers tokens minted before
+ * that header existed. x-api-key callers (Managed Agents, remote MCP hosts)
+ * keep their existing behavior.
  */
 function resolveConfig(request: Request) {
   const apiKey = request.headers.get('x-api-key') || '';
@@ -76,7 +80,9 @@ function resolveConfig(request: Request) {
     url: instanceOrigin(request),
     apiKey,
     authHeader,
-    ...(isOAuthBearer ? { agentId: 'claude-desktop' } : {}),
+    ...(isOAuthBearer
+      ? { agentId: request.headers.get('x-oauth-agent-id') || DEFAULT_CONNECTOR_AGENT_ID }
+      : {}),
   };
 }
 

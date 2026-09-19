@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server';
 import { getToken } from 'next-auth/jwt';
 import { getSql } from '../../../lib/db';
 import { getClient, insertAuthCode } from '../../../lib/repositories/oauth.repository';
+import { connectorAgentId } from '../../../lib/oauth/connectorIdentity';
 import { newOpaqueToken, hashToken } from '../../../lib/oauth/crypto';
 import {
   normalizeOAuthScope,
@@ -140,7 +141,7 @@ export async function POST(request: Request) {
     codeChallenge: v.q!.codeChallenge as string,
     codeChallengeMethod: 'S256',
     scope: v.q!.scope,
-    agentId: 'claude-desktop',
+    agentId: connectorAgentId(v.client!.clientName),
     expiresAt: new Date(Date.now() + CODE_TTL_MS).toISOString(),
   });
 

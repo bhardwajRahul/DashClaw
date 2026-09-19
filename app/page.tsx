@@ -32,7 +32,7 @@ import JsonLd from './components/JsonLd';
 export const metadata: Metadata = marketingPageMetadata({
   title: 'DashClaw, the approval layer for unattended AI agents',
   description:
-    'Stop risky agent actions before they run and approve them from your phone. Works with OpenClaw, Hermes, Claude Code, Codex and MCP. Every decision lands in a signed ledger.',
+    'Stop risky agent actions before they run and approve them from your phone. Works with OpenClaw, Hermes, Claude Code, Codex, Meta Muse and MCP. Every decision lands in a signed ledger.',
   path: '/',
 });
 
@@ -142,7 +142,7 @@ export default function LandingPage() {
               '@type': 'SoftwareApplication',
               name: 'DashClaw',
               description:
-                'An approval layer for unattended AI agents. Supported hooks and gateways (OpenClaw, Hermes, Claude Code, Codex, MCP) halt risky actions for human approval before execution, and every decision is recorded in a signed ledger.',
+                'An approval layer for unattended AI agents. Supported hooks and gateways (OpenClaw, Hermes, Claude Code, Codex, Meta Muse, MCP) halt risky actions for human approval before execution, and every decision is recorded in a signed ledger.',
               url: 'https://www.dashclaw.io',
               applicationCategory: 'DeveloperApplication',
               operatingSystem: 'Any',

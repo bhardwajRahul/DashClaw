@@ -381,6 +381,12 @@ recorded, deliberate act that falsifier #3 (Regrowth) watches for.
   ungoverned path the brake exists to close. Requires a trimmed, redacted,
   capped reason. Zero new policy types, zero new tables, zero new pages, zero
   new SDK methods, zero new MCP tools.
+- **2026-09-19 — App pages 54 → 55 (`/terms`).** A Terms of Service page.
+  The Meta Muse connector directory (muse.ai/platform) requires a terms URL on
+  every submission, and the hosted trial had none: `/privacy` says what we
+  store, not what a user agrees to by signing in or authorizing a connector.
+  A legal page, not an agent surface. Zero new API routes, zero new policy
+  types, zero new SDK methods, zero new MCP tools.
 - **2026-09-08 — App pages 53 → 54 (`/guides/muse`).** The Muse (Meta) agent
   integration guide. Each supported runtime gets its own guide page (precedent:
   crewai, hermes, langgraph, openclaw); the Muse content cannot fold into an

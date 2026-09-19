@@ -69,6 +69,19 @@ describe('POST /api/oauth/authorize', () => {
     expect(mockInsertCode).toHaveBeenCalledOnce();
   });
 
+  it('binds the claude-desktop identity to the code for an unnamed client', async () => {
+    mockGetToken.mockResolvedValue({ orgId: 'org_1', userId: 'usr_1' });
+    await POST(makeRequest(`https://x/api/oauth/authorize?${VALID_QS}`, { headers: { host: 'x', origin: 'https://x' } }));
+    expect(mockInsertCode.mock.calls[0][1]).toMatchObject({ agentId: 'claude-desktop' });
+  });
+
+  it('binds the muse identity to the code when the DCR client is Meta Muse', async () => {
+    mockGetToken.mockResolvedValue({ orgId: 'org_1', userId: 'usr_1' });
+    mockGetClient.mockResolvedValue({ clientId: 'ocl_1', clientName: 'Meta Muse', redirectUris: ['https://claude.ai/api/mcp/auth_callback'] });
+    await POST(makeRequest(`https://x/api/oauth/authorize?${VALID_QS}`, { headers: { host: 'x', origin: 'https://x' } }));
+    expect(mockInsertCode.mock.calls[0][1]).toMatchObject({ agentId: 'muse' });
+  });
+
   it('rejects a cross-origin consent POST with 403 (CSRF defense)', async () => {
     mockGetToken.mockResolvedValue({ orgId: 'org_1', userId: 'usr_1' });
     const res = await POST(makeRequest(`https://x/api/oauth/authorize?${VALID_QS}`, { headers: { host: 'x', origin: 'https://evil.example' } }));

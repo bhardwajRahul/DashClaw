@@ -231,6 +231,15 @@ describe('POST /api/mcp', () => {
     );
   });
 
+  it('pins the identity the middleware forwarded for the token (Meta Muse connector = muse)', async () => {
+    const request = makeRequest('https://my-dashclaw.vercel.app/api/mcp', {
+      headers: { host: 'my-dashclaw.vercel.app', authorization: 'Bearer oat_x', 'x-oauth-agent-id': 'muse' },
+      body: { jsonrpc: '2.0', id: 1, method: 'ping', params: {} },
+    });
+    await POST(request);
+    expect(DashClawClient).toHaveBeenCalledWith(expect.objectContaining({ agentId: 'muse' }));
+  });
+
   it('does NOT inject an agent identity for x-api-key callers (Managed Agents keep their behavior)', async () => {
     const request = makeRequest('https://my-dashclaw.vercel.app/api/mcp', {
       headers: { host: 'my-dashclaw.vercel.app', 'x-api-key': 'oc_live_test' },

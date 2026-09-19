@@ -56,6 +56,9 @@ export default function PublicFooter() {
           <Link href="/privacy" className="hover:text-text-primary transition-colors">
             Privacy
           </Link>
+          <Link href="/terms" className="hover:text-text-primary transition-colors">
+            Terms
+          </Link>
         </div>
       </div>
     </footer>

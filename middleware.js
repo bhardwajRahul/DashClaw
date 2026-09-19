@@ -827,6 +827,7 @@ function buildPageOrgHeaders(request, session, authKind) {
   requestHeaders.delete('x-user-id');
   requestHeaders.delete('x-auth-kind');
   requestHeaders.delete('x-oauth-scope');
+  requestHeaders.delete('x-oauth-agent-id');
   return setSessionPrincipalHeaders(requestHeaders, session, authKind) ? requestHeaders : null;
 }
 
@@ -971,6 +972,7 @@ function stripUntrustedApiHeaders(request) {
   h.delete('x-user-id');
   h.delete('x-auth-kind');
   h.delete('x-oauth-scope');
+  h.delete('x-oauth-agent-id');
   h.delete('x-client-ip');
   return h;
 }
@@ -1056,6 +1058,9 @@ async function handleBearerAuth(request, pathname, requestHeaders) {
     requestHeaders.set('x-user-id', oauth.principalId);
     requestHeaders.set('x-auth-kind', 'oauth');
     requestHeaders.set('x-oauth-scope', authorization.scope);
+    // The identity the consent flow bound to this token (connectorAgentId):
+    // /api/mcp pins it as the server-level agent id for the call.
+    if (oauth.agentId) requestHeaders.set('x-oauth-agent-id', oauth.agentId);
     // Authorization passes through (not stripped) so the /api/mcp proxy can
     // forward it to its own internal callbacks.
     return forwardWithHeaders(request, requestHeaders);
