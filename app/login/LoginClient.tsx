@@ -8,6 +8,7 @@ import DashClawLogo from '../components/DashClawLogo';
 import GithubIcon from '../components/GithubIcon';
 import LocalPasswordForm from './LocalPasswordForm';
 import { useEffectiveRole } from '../hooks/useEffectiveRole';
+import { postLoginPath } from './callbackUrl';
 
 interface LoginClientProps {
   localAuthEnabled?: boolean;
@@ -30,7 +31,7 @@ export default function LoginClient({ localAuthEnabled }: LoginClientProps) {
 
   useEffect(() => {
     if (sessionSettled && authenticated) {
-      router.replace('/approvals');
+      router.replace(postLoginPath(window.location.search, window.location.origin));
     }
   }, [sessionSettled, authenticated, router]);
 
@@ -125,7 +126,7 @@ export default function LoginClient({ localAuthEnabled }: LoginClientProps) {
           {providers.map((provider) => (
             <button
               key={provider.id}
-              onClick={() => signIn(provider.id, { callbackUrl: '/approvals' })}
+              onClick={() => signIn(provider.id, { callbackUrl: postLoginPath(window.location.search, window.location.origin) })}
               className={`flex w-full items-center justify-center gap-2.5 rounded-lg px-4 py-2.5 text-sm font-medium transition-colors ${
                 provider.id === 'github'
                   ? 'bg-white text-black hover:bg-zinc-200'

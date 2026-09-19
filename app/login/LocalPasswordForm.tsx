@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { postLoginPath } from './callbackUrl';
 
 export default function LocalPasswordForm() {
   const [password, setPassword] = useState('');
@@ -23,7 +24,7 @@ export default function LocalPasswordForm() {
 
       if (res.ok) {
         // Hard redirect so the browser includes the fresh session cookie on /approvals — router.push keeps the existing nav context and the cookie is not re-sent. Contributed by Lief (RyanTJoy).
-        window.location.href = '/approvals';
+        window.location.href = postLoginPath(window.location.search, window.location.origin);
       } else {
         const data = await res.json();
         setError(data.error || 'Login failed.');
