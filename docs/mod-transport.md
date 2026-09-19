@@ -11,7 +11,7 @@ Claude Code.
 DashClaw policy core (server: evaluateGuard, evaluators, ledger, approvals inbox, receipts)
         ▲ HTTP, guard_decisions vocabulary, client_capabilities
         │
-  transport adapters:  Python PreToolUse hook (today, authoritative)  |  Function-Hooks Mod (prototype: claude-mods-rnd/prototypes/prodguard)
+  transport adapters:  Python PreToolUse hook (today, authoritative)  |  Function-Hooks Mod (prototype: agnostic-ai labs/claude-mods/prototypes/prodguard)
 ```
 
 The pure subset already exists inside the app (`app/lib/guard/evidence.ts` 858 lines zero imports,
