@@ -385,7 +385,13 @@ def guard_check(context):
     if mode is None or mode == "unreachable":
         if not _can_connect(BASE_URL, GUARD_CONNECT_TIMEOUT):
             return None
-    return api_request("POST", "/api/guard?record=true", body=context, retries=GUARD_RETRIES, distinguish_auth=True)
+    # read_error_body keeps the guard's own refusal body (HTTP 400, e.g. the
+    # prompt-injection rejection) instead of collapsing it to None, where it
+    # would be indistinguishable from a dead host. distinguish_transient does
+    # the same for 408/429/5xx: answered, but no verdict given.
+    return api_request("POST", "/api/guard?record=true", body=context,
+                       retries=GUARD_RETRIES, distinguish_auth=True,
+                       distinguish_transient=True, read_error_body=True)
 
 
 def create_action(context, status="running"):
@@ -1950,20 +1956,54 @@ def _exit_ungovernable(headline, remedy):
     sys.exit(2)
 
 
-def handle_guard_unavailable(context, tool_use_id, reason="unreachable"):
+def _rejection_detail(body):
+    """One-line human summary of a guard refusal body.
+
+    Keeps the server's own message — a prompt-injection rejection arrives as
+    {"error": "Input rejected: prompt injection pattern detected",
+     "risk_level": "critical", "categories": ["role_override"]}."""
+    detail = str(body.get("error") or "the guard rejected this action").strip()
+    level = body.get("risk_level")
+    categories = body.get("categories")
+    if isinstance(categories, list):
+        categories = ",".join(str(c) for c in categories)
+    trailers = []
+    if level:
+        trailers.append("risk_level=" + str(level))
+    if categories:
+        trailers.append("categories=" + str(categories))
+    if trailers:
+        detail += " (" + "; ".join(trailers) + ")"
+    return detail[:400]
+
+
+def handle_guard_unavailable(context, tool_use_id, reason="unreachable", detail=None):
     """Guard call did not yield a decision. Behavior governed by
     DASHCLAW_GUARD_UNAVAILABLE_POLICY.
 
     reason="unreachable" — host did not answer (connection failure/timeout).
     reason="unauthorized" — host answered HTTP 401/403: the API key is bad or
     missing. Same policy applies, but the message names the real cause instead
-    of misreporting an auth failure as "unreachable"."""
+    of misreporting an auth failure as "unreachable".
+    reason="transient" — host answered HTTP 408/429/5xx: a response, but no
+    verdict. Same policy applies.
+    reason="rejected" — host answered and REFUSED the action (HTTP 400, e.g.
+    the prompt-injection rejection). This is a verdict, not an outage, so it is
+    never downgraded by DASHCLAW_GUARD_UNAVAILABLE_POLICY: an outage policy
+    must not turn a refusal into a pass."""
     policy = GUARD_UNAVAILABLE_POLICY
     mode = HOOK_MODE
 
     if reason == "unauthorized":
         state = "unauthorized - invalid or missing API key (HTTP 401); check DASHCLAW_API_KEY"
         orphan_reason = "guard_unauthorized"
+    elif reason == "rejected":
+        state = "rejected this action" + ((" - " + detail) if detail else "")
+        orphan_reason = "guard_rejected"
+        policy = "block"
+    elif reason == "transient":
+        state = "answered without a verdict (HTTP 408/429/5xx)"
+        orphan_reason = "guard_transient"
     else:
         state = "unreachable"
         orphan_reason = "guard_unreachable"
@@ -1982,33 +2022,40 @@ def handle_guard_unavailable(context, tool_use_id, reason="unreachable"):
             "hook_mode": mode,
             "policy": policy,
         }
+        if detail:
+            record["detail"] = detail
         with open(orphan_path, "a", encoding="utf-8") as f:
             f.write(json.dumps(record) + "\n")
     except Exception as e:
         _log_hook_error("handle_guard_unavailable: orphan log write failed: " + type(e).__name__ + ": " + str(e))
 
     attempts = "%d attempt(s)" % (GUARD_RETRIES + 1)
+    # A refusal has no retry history to report: the host answered first time.
+    suffix = "" if reason == "rejected" else " after " + attempts
 
     # Observe mode always proceeds (by definition — observe is "warn loudly, don't block")
     if mode == "observe":
-        log("[DashClaw] [observe] Guard " + state + " at " + BASE_URL + " after " + attempts + ". Action logged to ~/.dashclaw/orphan-actions.jsonl for backfill.")
+        log("[DashClaw] [observe] Guard " + state + " at " + BASE_URL + suffix + ". Action logged to ~/.dashclaw/orphan-actions.jsonl for backfill.")
         log("Action: " + context.get("declared_goal", "unknown"))
         sys.exit(0)
 
     # Enforce mode: behavior governed by DASHCLAW_GUARD_UNAVAILABLE_POLICY
     if policy == "allow":
-        log("[DashClaw] Guard " + state + " at " + BASE_URL + " after " + attempts + "; proceeding (DASHCLAW_GUARD_UNAVAILABLE_POLICY=allow).")
+        log("[DashClaw] Guard " + state + " at " + BASE_URL + suffix + "; proceeding (DASHCLAW_GUARD_UNAVAILABLE_POLICY=allow).")
         log("Action logged to ~/.dashclaw/orphan-actions.jsonl for backfill.")
         sys.exit(0)
 
     if policy == "warn":
-        log("[DashClaw] \u26a0 Guard " + state + " at " + BASE_URL + " after " + attempts + "; proceeding anyway (DASHCLAW_GUARD_UNAVAILABLE_POLICY=warn).")
+        log("[DashClaw] \u26a0 Guard " + state + " at " + BASE_URL + suffix + "; proceeding anyway (DASHCLAW_GUARD_UNAVAILABLE_POLICY=warn).")
         log("Action logged to ~/.dashclaw/orphan-actions.jsonl for backfill.")
         log("Set DASHCLAW_GUARD_UNAVAILABLE_POLICY=block to fail closed instead.")
         sys.exit(0)
 
     # Default: block (fail closed)
-    log("[DashClaw] Blocked: guard at " + BASE_URL + " is " + state + " after " + attempts + ".")
+    if reason == "rejected":
+        log("[DashClaw] Blocked: the guard rejected this action - " + (detail or "no reason given") + " (" + BASE_URL + " answered; this is a verdict, not an outage).")
+    else:
+        log("[DashClaw] Blocked: guard at " + BASE_URL + " is " + state + suffix + ".")
     log("Action: " + context.get("declared_goal", "unknown"))
     log("This is by design — destructive actions must not proceed without governance.")
     log("To change: set DASHCLAW_GUARD_UNAVAILABLE_POLICY=warn or =allow (not recommended).")
@@ -2607,6 +2654,15 @@ def main():
     guard_resp = guard_check(context)
     if guard_resp is AUTH_FAILED:
         handle_guard_unavailable(context, tool_use_id, reason="unauthorized")
+    if guard_resp is TRANSIENT_FAILED:
+        handle_guard_unavailable(context, tool_use_id, reason="transient")
+    # The guard ANSWERED and refused (e.g. HTTP 400 "Input rejected: prompt
+    # injection pattern detected"). A refusal is a verdict, not an outage: keep
+    # the server's own wording so the block reason names the real cause.
+    if (isinstance(guard_resp, dict) and guard_resp.get("error")
+            and not guard_resp.get("decision")):
+        handle_guard_unavailable(context, tool_use_id, reason="rejected",
+                                 detail=_rejection_detail(guard_resp))
     if guard_resp is None:
         handle_guard_unavailable(context, tool_use_id)
 
