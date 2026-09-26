@@ -300,6 +300,20 @@ describe('POST /api/policies — types with no Watch tier', () => {
     expect(insertedValues()).toBeUndefined();
   });
 
+  it('refuses a catastrophe_floor written off the Short List instead of storing action "warn"', async () => {
+    const res = await POST(makeRequest('http://localhost/api/policies', {
+      headers: ADMIN,
+      body: {
+        name: 'Catastrophe floor',
+        policy_type: 'catastrophe_floor',
+        rules: JSON.stringify({ action_types: ['delete'], min_risk: 85 }),
+      },
+    }));
+    expect(res.status).toBe(409);
+    expect((await res.json()).code).toBe('NO_WATCH_TIER');
+    expect(insertedValues()).toBeUndefined();
+  });
+
   it('the same rule installs when the operator opts it onto the Short List', async () => {
     const res = await POST(makeRequest('http://localhost/api/policies', {
       headers: ADMIN,

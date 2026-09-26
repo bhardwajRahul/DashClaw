@@ -234,6 +234,45 @@ describe('countShortListLines', () => {
   });
 });
 
+describe('catastrophe_floor and verification_contract have no Watch tier', () => {
+  // Both evaluators can only hold or block (app/lib/guard/policy.ts). A
+  // demotion written to rules.action is a key they ignore: the rule would keep
+  // interrupting while the Short List reported it as WATCH, outside the cap.
+  it('reports no Watch tier, so a write must opt onto the Short List', () => {
+    expect(hasWatchTier('catastrophe_floor')).toBe(false);
+    expect(hasWatchTier('verification_contract')).toBe(false);
+  });
+
+  it('never writes a demotion flag into their rules', () => {
+    const floor = { action_types: ['delete'], min_risk: 85 };
+    expect(toWatchTier(floor, 'catastrophe_floor')).toEqual(floor);
+    expect(toWatchTier({}, 'verification_contract')).toEqual({});
+  });
+
+  it('reads catastrophe_floor the way its evaluator does: block only when asked', () => {
+    expect(effectiveAction('catastrophe_floor', { action_types: ['delete'] })).toBe('require_approval');
+    expect(effectiveAction('catastrophe_floor', { action: 'block' })).toBe('block');
+    // A row demoted before this fix still holds, so it still takes a slot.
+    expect(effectiveAction('catastrophe_floor', { action: 'warn' })).toBe('require_approval');
+    expect(isShortListLine('catastrophe_floor', { action: 'warn' })).toBe(true);
+  });
+
+  it('reads verification_contract as its worst disposition and ignores rules.action', () => {
+    expect(effectiveAction('verification_contract', {})).toBe('block');
+    expect(effectiveAction('verification_contract', { action: 'warn' })).toBe('block');
+    expect(effectiveAction('verification_contract', {
+      on_violation: 'require_approval',
+      on_unchecked_test_tier: 'require_approval',
+    })).toBe('require_approval');
+    expect(effectiveAction('verification_contract', {
+      on_violation: 'require_approval',
+      on_unchecked_test_tier: 'require_approval',
+      on_insufficient_spec: 'block',
+    })).toBe('block');
+    expect(shortListTier('verification_contract', { action: 'warn' })).toBe('BLOCK');
+  });
+});
+
 describe('SHORT_LIST_CAP / ShortListFullError', () => {
   it('caps at ten', () => {
     expect(SHORT_LIST_CAP).toBe(10);

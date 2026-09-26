@@ -28,7 +28,9 @@ export type GuardPolicyType =
   | 'delegation_constraint'
   | 'role_constraint'
   | 'deviation_response'
-  | 'assumption_hold';
+  | 'assumption_hold'
+  | 'catastrophe_floor'
+  | 'verification_contract';
 
 export type GreenLevel = 'targeted' | 'package' | 'workspace' | 'merge_ready';
 

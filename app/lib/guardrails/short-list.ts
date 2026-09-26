@@ -16,7 +16,7 @@ import { nominalDecision } from '../policy-modes/compile';
 // from demoMiddleware, which compiles into the EDGE middleware bundle, and
 // guard/policy drags the whole guard engine (webhooks, undici, node:net,
 // node:dns, crypto) in with it. validate.js is a leaf with zero imports and
-// carries the SAME 18 types the validator accepts.
+// carries the SAME 20 types the validator accepts.
 import { POLICY_TYPES } from '../validate.js';
 import type { GuardPolicyType } from '../types';
 
@@ -48,6 +48,8 @@ const ESCALATE_ACTION_TYPES = new Set([
  *   delegation_constraint  escalate_action   require_approval | block (validate.js:718)
  *   role_constraint        escalate_action   require_approval | block (validate.js:748)
  *   assumption_hold        escalate_action   require_approval | block (validate.js:810)
+ *   catastrophe_floor      action            require_approval | block (validate.js:609)
+ *   verification_contract  on_* dispositions require_approval | block (validate.js:897)
  *   webhook_check          —                 evaluator returns null (policy.ts:381);
  *                                            the endpoint decides, so nothing local to demote
  * deviation_response is NOT here: validate.js:776 accepts `warn` and the
@@ -61,6 +63,8 @@ const NO_WATCH_TIER_TYPES = new Set([
   'delegation_constraint',
   'role_constraint',
   'assumption_hold',
+  'catastrophe_floor',
+  'verification_contract',
   'webhook_check',
 ]);
 

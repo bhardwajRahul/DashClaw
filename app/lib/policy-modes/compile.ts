@@ -334,6 +334,17 @@ export function nominalDecision(policy: CompiledModePolicy): DecisionType {
       return (r.action as DecisionType) ?? 'require_approval';
     case 'require_evidence':
       return (r.enforcement as DecisionType) ?? 'require_approval';
+    case 'catastrophe_floor':
+      return r.action === 'block' ? 'block' : 'require_approval';
+    case 'verification_contract':
+      // Never reads rules.action: the worst of its dispositions, at the
+      // evaluator's defaults (app/lib/guard/policy.ts).
+      return r.on_violation === 'require_approval'
+        && r.on_unchecked_test_tier === 'require_approval'
+        && r.on_insufficient_spec !== 'block'
+        && !(r.require_contract === true && r.escalate_action === 'block')
+        ? 'require_approval'
+        : 'block';
     default:
       return (r.action as DecisionType) ?? 'block';
   }
