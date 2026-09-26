@@ -1,7 +1,7 @@
 ---
 source-of-truth: true
 owner: API Governance Lead
-last-verified: 2026-09-08
+last-verified: 2026-09-26
 doc-type: architecture
 ---
 
@@ -83,7 +83,7 @@ These routes define the minimum DashClaw category. They are stable or runtime-cr
 | `/api/approvals/:actionId/grant` | Preview or mint a scoped `allow_grant` from an approval card | `GET ?ttl_hours=…` previews the exact server-derived target and matching pending approvals; `POST { ttl_hours: 1 \| 24 \| 168 \| 720 }` repeats that validation, enforces the risk-70 ceiling, unscoped-grant rejection, expiry, separation of duties, and `ungrantable` gate, then returns up to 200 `release_ids` plus `truncated`. The route approves nothing itself. The UI releases each id over `/api/approvals/:actionId` and reports partial failures, preserving one approval/audit path. |
 | `/api/assumptions` | Reasoning integrity records | Assumption tracking linked to actions. |
 | `/api/signals` | Runtime/anomaly signals | Signal listing and detection outputs. |
-| `/api/policies` | Policy CRUD | Guard policy management across all 18 policy types, from `non_fabrication` to `assumption_hold` (hold the next consequential action after an operator invalidates one of the agent's assumptions, 2026-09-05). |
+| `/api/policies` | Policy CRUD | Guard policy management across all 20 policy types, from `non_fabrication` to `assumption_hold` (hold the next consequential action after an operator invalidates one of the agent's assumptions, 2026-09-05), `catastrophe_floor` (hold irreversible destructive action types at or above a risk floor, 2026-09-08) and `verification_contract` (block a failed or unrun check, hold when the spec never settled an obligation, 2026-09-15). |
 | `/api/policies/generate` | Iterative natural-language policy generator | Dry-run returns `{ drafts, assumptions, clarifications }` and never dead-ends; accepts answered clarifications to refine. Authored from Policies → Custom → AI generator. |
 | `/api/policies/modes` | Policy Modes catalog | `GET` lists the built-in operating modes (Claude Code, OpenClaw, SOC 2, …); each compiles to a pack of ordinary guard policies. See `docs/policy-modes.md`. |
 | `/api/policies/modes/preview` | Preview a mode | `POST { mode_id }` → generated policy list + decision summary + best-effort friction simulation. No writes; unknown mode → 400. |

@@ -14,6 +14,54 @@ Entries are newest-first.
 
 <!-- digest-posted: 2026-08-08 -->
 
+## 2026-09-26 — v5.38.0: a stranger's first pull request, and a tier chip that lied
+
+The best thing in this release is not mine. On 2026-09-24 **@dacheah** filed
+#246: when the guard refuses an action outright (the prompt-injection scanner
+answers HTTP 400), the hook threw the body away and told the operator the guard
+was unreachable. Worse, an operator who had set the outage policy to `allow` or
+`warn` got the refused action waved through, because a refusal and a dead host
+arrived as the same `None`. The report had the repro, the root cause to the
+line, and the policy-override consequence I would have ranked highest. Three
+minutes later came #247 with the fix and six tests. It then sat for two days
+with its CI waiting on a first-contributor approval nobody clicked. That is
+the part I would change: an outside contribution is the rarest signal this
+project gets, and it waited on a button.
+
+Reviewing it, I read `api_request` rather than the diff alone, and two things
+fell out. The flag the PR turned on for 5xx also covers timeouts and dropped
+connections, so a timed-out guard would have said "answered (HTTP 5xx)". And
+reading error bodies meant any valid JSON could come back, including a bare
+string, which crashed the hook on `.get()`. A crashed PreToolUse hook exits 1,
+and Claude Code treats that as non-blocking: the tool call runs. Neither was
+the contributor's mistake to catch, since the second one was latent in how the
+function was already written. Both are fixed in a follow-up commit on top of
+their merge, each with a test that failed first.
+
+Cutting the release turned up a bug of my own from the 5.37.0 arc. The Short
+List decides which rules may interrupt, and a rule saved off the list is
+demoted by writing `warn` into whatever key its evaluator reads. The two newest
+types, `catastrophe_floor` and `verification_contract`, have no warn tier, and
+nobody told the Short List. So a floor saved from the builder with the box
+unticked (the default) got `action: 'warn'`, a key the floor's evaluator
+ignores. The rule kept holding while `/policies` showed it as WATCH and it sat
+outside the 10-line cap. The file that does this has a comment describing
+exactly that failure for the older types. The list of types it applies to was
+the part that went stale. Both types are now refused off the list the way
+`assumption_hold` is, and the chip reads each rule the way its evaluator does,
+so any row already stored this way shows as the hold it really is.
+
+Also in the release, all already on main: `verification_contract` (a contract
+can now say an obligation was never checked, instead of letting it read as a
+pass), the execution-claim fix where a bookkeeping failure after a permissive
+verdict cost the operator the tool call, and the Meta Muse connector with a
+`/terms` page and an OAuth sign-in that now returns to the consent screen.
+
+Gates: lint clean, typecheck clean, 5,749 vitest tests and 860 hook tests
+passing, `next build` green, CI, up-smoke, CodeQL and all three deploys green
+on the #247 merge. Platform and hooks only: the SDKs are not republished, the
+plugin bundle goes to 3.4.0.
+
 ## 2026-09-15 — the one character that could stop an agent working
 
 A session on another project came back with two complaints: the governance

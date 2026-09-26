@@ -4,6 +4,8 @@ Newest first. Full entries for multi-attempt debugging or reusable lessons; one-
 
 ---
 
+**2026-09-26:** PR #247 turned on `read_error_body` for the guard call, which made `api_request` able to return any JSON value; a bare-string 400 body then reached `guard_resp.get()` and crashed the pretool hook with exit 1, which Claude Code treats as non-blocking, so the tool call ran. Any change that widens what `api_request` can return to `main()` must keep `guard_resp` a dict or a sentinel; the non-object coercion in `main()` and `test_non_object_refusal_body_blocks_instead_of_crashing` pin it. Also: `TRANSIENT_FAILED` covers timeouts and post-preflight connection failures, not only 408/429/5xx, so no message keyed on it may claim the host answered.
+
 **2026-09-05:** A release note overstated cleanup as 6,312 net lines because `Get-Content | Measure-Object -Line` omitted blank lines while counting untracked archive files; derive future counts from `git diff --no-renames --numstat <base>..<commit>` against committed trees so renamed and formerly untracked files are included.
 
 ## 2026-09-05 — a whole-codebase request was narrowed to recent commits
