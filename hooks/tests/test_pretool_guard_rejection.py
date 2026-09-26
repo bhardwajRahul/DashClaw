@@ -30,6 +30,7 @@ import subprocess
 import sys
 import tempfile
 import threading
+import time
 import unittest
 import uuid
 
@@ -46,8 +47,9 @@ _REFUSAL_BODY = {
 }
 
 
-def _start_stub(status, body):
-    """Serve `status`/`body` for POST /api/guard; 200 {} for anything else."""
+def _start_stub(status, body, delay=0):
+    """Serve `status`/`body` for POST /api/guard (after `delay` seconds);
+    200 {} for anything else."""
 
     class Handler(http.server.BaseHTTPRequestHandler):
         def _reply(self, status, body):
@@ -60,6 +62,8 @@ def _start_stub(status, body):
 
         def do_POST(self):
             if "/api/guard" in self.path:
+                if delay:
+                    time.sleep(delay)
                 self._reply(status, body)
             else:
                 self._reply(200, {})
@@ -147,8 +151,8 @@ class GuardRejectionTest(unittest.TestCase):
             server.shutdown()
             server.server_close()
 
-    def _stub(self, status, body):
-        server, url = _start_stub(status, body)
+    def _stub(self, status, body, delay=0):
+        server, url = _start_stub(status, body, delay)
         self.servers.append(server)
         return url
 
@@ -218,6 +222,39 @@ class GuardRejectionTest(unittest.TestCase):
         self.assertIn("without a verdict", err)
         self.assertNotIn("unreachable", err)
         self.assertEqual(_read_orphan_log(self.home)[0]["reason"], "guard_transient")
+
+    def test_timed_out_guard_is_not_reported_as_an_http_answer(self):
+        """A timeout also ends without a verdict, but nothing answered: the
+        message must not claim an HTTP status the host never sent."""
+        url = self._stub(200, {"decision": "allow"}, delay=2)
+        code, _out, err = _run_hook(
+            self.home, self.tmp, url,
+            env_overrides={"DASHCLAW_GUARD_TIMEOUT": "0.5"},
+        )
+
+        self.assertEqual(code, 2)
+        self.assertIn("without a verdict", err)
+        self.assertIn("timeout", err)
+        self.assertNotIn("answered", err)
+        self.assertEqual(_read_orphan_log(self.home)[0]["reason"], "guard_transient")
+
+    def test_non_object_refusal_body_blocks_instead_of_crashing(self):
+        """read_error_body hands back whatever JSON the error carried. A bare
+        string is not a verdict; reading it as one crashed the hook, and a
+        crashed PreToolUse hook lets the tool call through."""
+        url = self._stub(400, "Bad Request")
+        code, _out, err = _run_hook(self.home, self.tmp, url)
+
+        self.assertEqual(code, 2, "a garbled refusal must fail closed, not crash open")
+        self.assertNotIn("Traceback", err)
+
+    def test_refusal_does_not_offer_the_outage_policy_as_a_way_out(self):
+        """The outage policy cannot change a refusal, so the block message must
+        not tell the operator to set it."""
+        url = self._stub(400, _REFUSAL_BODY)
+        _code, _out, err = _run_hook(self.home, self.tmp, url)
+
+        self.assertNotIn("DASHCLAW_GUARD_UNAVAILABLE_POLICY", err)
 
     def test_genuine_outage_still_reports_unreachable(self):
         """The original behaviour must survive: a dead host is an outage."""
