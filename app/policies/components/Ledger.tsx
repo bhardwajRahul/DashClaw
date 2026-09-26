@@ -13,7 +13,7 @@
  * renders the contract (a parallel projection of the same rules).
  */
 
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import type { FC } from 'react';
 import Link from 'next/link';
 import {
@@ -551,7 +551,11 @@ export default function Ledger({
     setFocusGrants(grantIds);
   }, [chooseLens]);
 
-  useEffect(() => {
+  // Layout, not passive: the buttons that call these (top row, Short List,
+  // inert-rule banner) are live the moment this commit lands. A passive effect
+  // can run after a yield, and a click in that gap hit a null ref and did
+  // nothing (the CI-only inert-banner failure).
+  useLayoutEffect(() => {
     registerActions?.({ openNewRule, openImport, runTests, openProof, revealSuppressed });
   }, [registerActions, openNewRule, openImport, runTests, openProof, revealSuppressed]);
 
